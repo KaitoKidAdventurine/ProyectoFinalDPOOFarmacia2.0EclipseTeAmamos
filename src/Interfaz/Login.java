@@ -131,10 +131,10 @@ public class Login extends JFrame {
 			}
 		});
 		minimizar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		minimizar.setBounds(685, 13, 30, 24);
+		minimizar.setBounds(681, 13, 40, 37);
 		barra.add(minimizar);
 		this.setLocationRelativeTo(null);
-		this.ajustarImagen(minimizar, "src/iconos/minimizar-ventana.png");
+		this.ajustarImagen(minimizar, "src/iconos/minimize0.png");
 		
 		JLabel encabezado = new JLabel("Gesti\u00F3n de procesos en las farmacias ");
 		encabezado.setFont(new Font("Tahoma", Font.BOLD, 25));

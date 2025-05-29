@@ -7,7 +7,7 @@ import javax.swing.JLabel;
 
 public final class UtilesInterfaz {
 
-	public void ajustarImagen(JLabel lbl, String ruta) {
+	public static void ajustarImagen(JLabel lbl, String ruta) {
         try {
             // Cargar la imagen original
             ImageIcon imagenOriginal = new ImageIcon(ruta);
