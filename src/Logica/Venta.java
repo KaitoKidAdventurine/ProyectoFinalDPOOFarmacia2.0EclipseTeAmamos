@@ -7,11 +7,18 @@ public abstract class Venta implements Facturar{
 	protected double importeTotal;
 	
 	
-	public String generarFactura(){
+	public Venta(Date fechaVenta2, double importeTotal)
+	{
+		
+	}	
+
+	public String generarFactura()
+	{
 		
 	}
 	
-	public double calcularTotal(){
+	public double calcularTotal()
+	{
 		
 	}
 	

@@ -92,6 +92,7 @@ public class Principal extends JFrame {
 		fondo.add(panel_2);
 		panel_2.setLayout(null);
 		
+		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBackground(new Color(56,181,89));
 		panel_3.setBounds(0, 5, 362, 237);
@@ -107,11 +108,21 @@ public class Principal extends JFrame {
 		UtilesInterfaz.ajustarImagen(icono1, "src/iconos/hogar(2).png");
 		
 		JLabel lblInicio = new JLabel("INICIO");
+		lblInicio.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
 		lblInicio.setFont(new Font("Sylfaen", Font.BOLD, 39));
 		lblInicio.setBounds(127, 275, 174, 35);
 		panel_2.add(lblInicio);
 		
 		JLabel lblVenta = new JLabel("VENTA");
+		lblVenta.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
 		lblVenta.setFont(new Font("Sylfaen", Font.BOLD, 39));
 		lblVenta.setBounds(127, 356, 160, 50);
 		panel_2.add(lblVenta);
@@ -122,6 +133,11 @@ public class Principal extends JFrame {
 		UtilesInterfaz.ajustarImagen(icono2, "src/iconos/compracarrito.png");
 		
 		JLabel lblReportes = new JLabel("REPORTES");
+		lblReportes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
 		lblReportes.setFont(new Font("Sylfaen", Font.BOLD, 39));
 		lblReportes.setBounds(127, 460, 207, 35);
 		panel_2.add(lblReportes);
@@ -131,9 +147,14 @@ public class Principal extends JFrame {
 		panel_2.add(icono3);
 		UtilesInterfaz.ajustarImagen(icono3, "src/iconos/lista-de-verificacion-de-tareas.png");
 		
-		JLabel lblPacientes = new JLabel("Pacientes");
-		lblPacientes.setFont(new Font("Sylfaen", Font.BOLD, 41));
-		lblPacientes.setBounds(127, 541, 207, 50);
+		JLabel lblPacientes = new JLabel("PACIENTES");
+		lblPacientes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+			}
+		});
+		lblPacientes.setFont(new Font("Sylfaen", Font.BOLD, 39));
+		lblPacientes.setBounds(127, 541, 249, 50);
 		panel_2.add(lblPacientes);
 		
 		JLabel icono4 = new JLabel("");
@@ -145,5 +166,10 @@ public class Principal extends JFrame {
 		panel.setBackground(new Color(79,255,125));
 		panel.setBounds(357, 37, 927, 61);
 		fondo.add(panel);
+		
+		JTabbedPane menu = new JTabbedPane(JTabbedPane.TOP);
+		menu.setBounds(-4, 670, 362, -387);
+		fondo.add(menu);
+		
 	}
 }

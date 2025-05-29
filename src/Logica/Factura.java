@@ -2,6 +2,10 @@ package Logica;
 
 import java.sql.Date;
 
+package Logica;
+
+import java.sql.Date;
+
 public class Factura 
 {
 	private String nombreDelMed;
@@ -47,3 +51,4 @@ public class Factura
 	
 	
 }
+

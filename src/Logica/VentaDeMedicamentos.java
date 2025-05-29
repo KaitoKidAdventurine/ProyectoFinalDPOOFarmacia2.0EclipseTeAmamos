@@ -24,8 +24,4 @@ public class VentaDeMedicamentos
 	{
 		this.cantidadVendida = cantidadVendida;
 	}
-	
-	
-	
-	
 }
