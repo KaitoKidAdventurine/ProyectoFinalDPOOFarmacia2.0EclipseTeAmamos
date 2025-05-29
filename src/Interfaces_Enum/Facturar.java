@@ -1,6 +1,13 @@
 package Interfaces_Enum;
 
-public interface Facturar {
-	public String generarFactura();
-	public double calcularTotal();
+import java.sql.Date;
+
+import Logica.Factura;
+
+public interface Facturar 
+{
+	Factura generarFactura(String nombreDelMed, String codigoDelMed, int cantMedVendidos, Date fechaDeLaCompra);
+	double calcularTotal();
 }
+
+

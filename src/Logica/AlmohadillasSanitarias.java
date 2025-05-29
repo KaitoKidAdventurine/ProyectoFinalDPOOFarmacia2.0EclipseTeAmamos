@@ -4,7 +4,8 @@ public class AlmohadillasSanitarias {
 	private double precioUnit;
 	private int cant;
 	
-	public boolean verificarCompraMensual(NucleoFamiliar nucleo){
+	public boolean verificarCompraMensual(NucleoFamiliar nucleo)
+	{
 		
 		
 	}
