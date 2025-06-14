@@ -34,17 +34,26 @@ public class Farmacia implements Reportes,Facturar{
 		return medMasVendidos;
 	}
 
-	public long cantDeAlmohadillasNecesarias(){
-		//implementar
+	public long cantDeAlmohadillasNecesarias()
+	{
+		long cantidad = calcularCantidad();
+		return cantidad;
+		
 	}
 
+	
+	
+	
+	// tercer reporte
+	
 	public Porcentaje comparacionDeVentasMensuales()
 	{
 		Porcentaje resultado = calcularValor();
 		return resultado ;
 	}
 
-	public ArrayList<Tarjeton> registroDeIncumplimiento(){
+	public ArrayList<Tarjeton> registroDeIncumplimiento()
+	{
 		//implementar
 	}
 
@@ -69,7 +78,7 @@ public class Farmacia implements Reportes,Facturar{
 
 	@Override 
 
-
+	// metodos del primer reporte 
 	public ArrayList<VentaDeMedicamentos> buscarOrdenDeAccion()
 	{
 
@@ -125,7 +134,35 @@ public class Farmacia implements Reportes,Facturar{
 	}
 
 
+	// metodos del segundo reporte
+	
+	public long calcularCantidad()
+	{
+		long cantidad = 0;
+		
+		for(NucleoFamiliar n: nucleos)
+		{
+			cantidad += n.getMujeres().size();
+		}
+		
+		// arreglar el tipo de dato
+		
+		if(cantidad <= getCant())
+			cantidad = getCant() - cantidad;
+		else
+			cantidad = getCant() - cantidad;
+		
+		return cantidad;
+		
+	}
+	
+	
+	
+	
+	
+	
 
+	// metodos del tercer reporte
 	public Porcentaje calcularValor()
 	{
 		double importeTotalDeAlmohadillas = 0;

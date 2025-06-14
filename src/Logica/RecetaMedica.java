@@ -2,38 +2,45 @@ package Logica;
 
 import java.awt.List;
 import java.sql.Date;
+import java.util.ArrayList;
 
 public class RecetaMedica {
 	private Date fechaDeExpedi;
 	private String nombreMed;
 	private String idMed;
-	private List<Medicamento> medicamentos;
+	private ArrayList<Medicamento> medicamentos;
 
-	public Date getFechaDeExpedi() {
+	public Date getFechaDeExpedi() 
+	{
 		return fechaDeExpedi;
 	}
 
-	public String getIdMed() {
+	public String getIdMed() 
+	{
 		return idMed;
 	}
 
-	public String getNombreMed() {
+	public String getNombreMed() 
+	{
 		return nombreMed;
 	}
 
-	public List<Medicamento> getMedicamentos() {
+	public ArrayList<Medicamento> getMedicamentos() 
+	{
 		return medicamentos;
 	}
 
 
 
-	public void setFechaDeExpedi(Date fechaDeExpedi) {
+	public void setFechaDeExpedi(Date fechaDeExpedi) 
+	{
 		this.fechaDeExpedi = fechaDeExpedi;
 	}
 
 
 
-	public void setNombreMed(String nombreMed) {
+	public void setNombreMed(String nombreMed) 
+	{
 		if(Validaciones.noEstaVacio(nombreMed))
 			if(Validaciones.noTieneNumeros(nombreMed))
 				if(Validaciones.noTieneCaracteresEsp(nombreMed))
@@ -48,7 +55,8 @@ public class RecetaMedica {
 
 
 
-	public void setIdMed(String idMed) {
+	public void setIdMed(String idMed) 
+	{
 		// el id del medicamento si puede tener numeros y letras mayusculas
 		// pero no caracteres especiales, ni letras minusculas
 
@@ -67,7 +75,8 @@ public class RecetaMedica {
 
 
 
-	public void setMedicamentos(List<Medicamento> medicamentos) {
+	public void setMedicamentos(ArrayList<Medicamento> medicamentos) 
+	{
 		this.medicamentos = medicamentos;
 	}
 
