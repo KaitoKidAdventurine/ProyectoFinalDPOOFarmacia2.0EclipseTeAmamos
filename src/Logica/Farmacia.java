@@ -6,15 +6,20 @@ import proyecto.Factura;
 import proyecto.Medicamento;
 import proyecto.VentaDeMedicamentos;
 import Interfaces_Enum.Facturar;
+import Interfaces_Enum.GestionarStockAlmohadillasSanitarias;
 import Interfaces_Enum.Reportes;
+import LogicaUtiles.Porcentaje;
 
-public class Farmacia implements Reportes,Facturar{
+public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSanitarias 
+{
 	private ArrayList<Medicamento> medicamentos;
 	private ArrayList <Venta> historialVentas;
 	private ArrayList <NucleoFamiliar> nucleos;
 	private ArrayList<Tarjeton> tarjetones;
 	private ArrayList<Factura> facturas;
+	private long cantidadDeAlmohadillasSanitarias;
 
+	
 
 	public void registrarMedicamento(){
 		//implementar
@@ -28,12 +33,14 @@ public class Farmacia implements Reportes,Facturar{
 		//implementar
 	}
 
+	// Primer reporte
 	public ArrayList<VentaDeMedicamentos> medicamentosMasVendidos()
 	{
 		ArrayList<VentaDeMedicamentos> medMasVendidos = buscarOrdenDeAccion();
 		return medMasVendidos;
 	}
 
+	// Segundo reporte
 	public long cantDeAlmohadillasNecesarias()
 	{
 		long cantidad = calcularCantidad();
@@ -44,7 +51,7 @@ public class Farmacia implements Reportes,Facturar{
 	
 	
 	
-	// tercer reporte
+	// Tercer reporte
 	
 	public Porcentaje comparacionDeVentasMensuales()
 	{
@@ -78,7 +85,7 @@ public class Farmacia implements Reportes,Facturar{
 
 	@Override 
 
-	// metodos del primer reporte 
+	// Metodos del primer reporte 
 	public ArrayList<VentaDeMedicamentos> buscarOrdenDeAccion()
 	{
 
@@ -142,18 +149,16 @@ public class Farmacia implements Reportes,Facturar{
 		
 		for(NucleoFamiliar n: nucleos)
 		{
-			cantidad += n.getMujeres().size();
+			if(n.getCompraron() == false)
+				cantidad += n.getMujeres().size();
 		}
 		
-		// arreglar el tipo de dato
+		cantidadDeAlmohadillasSanitarias -= cantidadDeAlmohadillas();
 		
-		if(cantidad <= getCant())
-			cantidad = getCant() - cantidad;
-		else
-			cantidad = getCant() - cantidad;
+		// DANGER: realizar validacion de mayor que stock 
+		cantidad -= cantidadDeAlmohadillasSanitarias;
 		
 		return cantidad;
-		
 	}
 	
 	
@@ -357,7 +362,26 @@ public class Farmacia implements Reportes,Facturar{
 	public void setMedicamentos(ArrayList<Medicamento> medicamentos) {
 		this.medicamentos = medicamentos;
 	}
+	
+	public long getCantidadDeAlmohadillasSanitarias() 
+	{
+		return cantidadDeAlmohadillasSanitarias;
+	}
 
-
+	public void setCantidadDeAlmohadillasSanitarias(long cantidadDeAlmohadillasSanitarias) 
+	{
+		this.cantidadDeAlmohadillasSanitarias = cantidadDeAlmohadillasSanitarias;
+	}
+	
+	public long cantidadDeAlmohadillas()
+	{
+		long cantidad = 0;
+		for(Venta v: historialVentas)
+			if(v instanceof AlmohadillasSanitarias)
+				cantidad += ((AlmohadillasSanitarias) v).getCant();
+		
+		return cantidad;
+			
+	}
 
 }

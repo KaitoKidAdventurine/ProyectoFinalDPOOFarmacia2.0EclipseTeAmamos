@@ -15,7 +15,7 @@ public class AlmohadillasSanitarias extends Venta implements Facturar
 	{
 		super(fechaVenta, importeTotal);
 		setPrecioUnit(precioUnit);
-		setCant(cant);
+		setCant( cant);
 	}
 	
 	
@@ -39,7 +39,7 @@ public class AlmohadillasSanitarias extends Venta implements Facturar
 
 	public void setCant(int cant) 
 	{
-		this.cant = cant;
+		this.cant =  cant;
 	}
 
 
@@ -48,17 +48,21 @@ public class AlmohadillasSanitarias extends Venta implements Facturar
 		
 		return true;
 	}
-	@Override
-	public double generarFactura()
-	{
-		
-		return 0;
-	}
+	
+	
 	
 	@Override
-	public double calcularTotal(int cant, double precio)
+	public double calcularTotal(long  cant, double precio)
 	{
 		
+		return 0.0;
+	}
+
+	@Override
+	public Factura generarFactura(String nombreDelMed, String codigoDelMed,
+			int cantMedVendidos, Date fechaDeLaCompra) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -1,4 +1,4 @@
-package Logica;
+package LogicaUtiles;
 
 public class Porcentaje 
 {

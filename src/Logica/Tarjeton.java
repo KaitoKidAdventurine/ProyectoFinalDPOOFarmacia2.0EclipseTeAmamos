@@ -29,7 +29,7 @@ public class Tarjeton{
 	{
 		return fechaVencimiento;
 	}
-	public List<MedicamentoControlado> getMedicamentosConts() 
+	public ArrayList<MedicamentoControlado> getMedicamentosConts() 
 	{
 		return medicamentosConts;
 	}
@@ -75,7 +75,7 @@ public class Tarjeton{
 	}
 
 
-	public void setMedicamentosConts(List<MedicamentoControlado> medicamentosConts) 
+	public void setMedicamentosConts(ArrayList<MedicamentoControlado> medicamentosConts) 
 	{
 		this.medicamentosConts = medicamentosConts;
 	}

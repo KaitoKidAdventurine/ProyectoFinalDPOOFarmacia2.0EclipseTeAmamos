@@ -8,7 +8,18 @@ public class NucleoFamiliar
 	private String direccion;
 	private ArrayList<Paciente> mujeres;
 	private Paciente jefe;
+	private boolean compraron;
 	
+	public boolean getCompraron() 
+	{
+		return compraron;
+	}
+
+	public void setCompraron(boolean compraron) 
+	{
+		this.compraron = compraron;
+	}
+
 	public String getId() 
 	{
 		return id;
