@@ -1,6 +1,5 @@
 package Logica;
 
-package Logica;
 
 import java.sql.Date;
 

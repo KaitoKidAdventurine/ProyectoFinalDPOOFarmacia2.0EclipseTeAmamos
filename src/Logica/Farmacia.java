@@ -1,6 +1,8 @@
 package Logica;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import proyecto.Factura;
 import proyecto.Medicamento;
@@ -83,14 +85,13 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		return 0;
 	}
 
-	@Override 
+	
 
 	// Metodos del primer reporte 
 	public ArrayList<VentaDeMedicamentos> buscarOrdenDeAccion()
 	{
-
-		ArrayList<String> nombres = new ArrayList<String>();
-		ArrayList<Integer> cantidad = new ArrayList<Integer>();
+		VentaDeMedicamentos venta;
+		ArrayList<VentaDeMedicamentos> ventas = new ArrayList<VentaDeMedicamentos>();
 		for(Medicamento m: medicamentos)
 		{
 			int totalVendidoDelMedicamento = 0;
@@ -100,45 +101,28 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 
 			if(totalVendidoDelMedicamento > 0)
 			{
-				nombres.add(m.nomComun);
-				cantidad.add(totalVendidoDelMedicamento);
+				venta.setCantidadVendida(totalVendidoDelMedicamento);
+				venta.setNombre(m.nomComun);
+				ventas.add(venta);
 			}
 		}
-		ArrayList<VentaDeMedicamentos> ventas =transformarYOrdenar(nombres, cantidad);
+		// es como tener un merge sort
+		
+	    
+	    Collections.sort(ventas, comparador);
 		return ventas;
 	}
-
-	public ArrayList<VentaDeMedicamentos> transformarYOrdenar(ArrayList<String> nombres, ArrayList<Integer> cantidad) 
+	
+	Comparator<VentaDeMedicamentos> comparador = new Comparator<VentaDeMedicamentos>() 
 	{
-		ArrayList<VentaDeMedicamentos> ventasOrdenadas = new ArrayList<VentaDeMedicamentos>();
-
-		for(int i = 0; i< nombres.size(); i++)
+		public int compare(VentaDeMedicamentos a, VentaDeMedicamentos b) 
 		{
-			for(int j = 0; j < nombres.size() -1 ; j++)
-			{
-				if(cantidad.get(j) < cantidad.get(j+1) )
-				{
-					int temp = cantidad.get(j);
-					cantidad.set(j, cantidad.get(j+1));
-					cantidad.set(j+1, temp);
-
-					String temporal = nombres.get(j);
-					nombres.set(j, nombres.get(j+1));
-					nombres.set(j+1, temporal);
-				}
-			}
+		     int cantidadB = b.getCantidadVendida();
+		     int cantidadA = a.getCantidadVendida();
+		     return cantidadB - cantidadA; 
 		}
-
-		for(int i = 0; i< nombres.size(); i++)
-		{
-			VentaDeMedicamentos ventas = new VentaDeMedicamentos();
-			ventas.setCantidadVendida(cantidad.get(i));
-			ventas.setNombre(nombres.get(i));
-			ventasOrdenadas.add(ventas);
-		}
-
-		return ventasOrdenadas;
-	}
+	};
+	
 
 
 	// metodos del segundo reporte
