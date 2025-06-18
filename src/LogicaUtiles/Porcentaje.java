@@ -4,6 +4,7 @@ public class Porcentaje
 {
 	private double porcentaje;
 	private String nombre;
+	
 	public double getPorcentaje() 
 	{
 		return porcentaje;

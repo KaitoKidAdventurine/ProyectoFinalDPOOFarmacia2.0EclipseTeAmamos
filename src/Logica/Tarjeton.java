@@ -4,14 +4,26 @@ import java.awt.List;
 import java.sql.Date;
 import java.util.ArrayList;
 
-public class Tarjeton{
+import Interfaces_Enum.ValidacionBool;
+
+public class Tarjeton implements ValidacionBool
+{
 	private String nombre;
 	private String direccionPaciente;
 	private Date fechaExpedicion;
 	private Date fechaVencimiento;
 	private ArrayList<MedicamentoControlado> medicamentosConts;
-	private boolean activo;
 
+	public Tarjeton(String nombre, String direccionPaciente, Date fechaExpedicion,
+			Date fechaVencimiento, ArrayList<MedicamentoControlado> medicamentosConts)
+	{
+		setNombre(nombre);
+		setDireccionPaciente(direccionPaciente);
+		setFechaExpedicion(fechaExpedicion);
+		setFechaVencimiento(fechaVencimiento);
+		setMedicamentosConts(medicamentosConts); 
+	}
+	
 	public String getNombre() 
 	{
 		return nombre;
@@ -78,5 +90,14 @@ public class Tarjeton{
 	public void setMedicamentosConts(ArrayList<MedicamentoControlado> medicamentosConts) 
 	{
 		this.medicamentosConts = medicamentosConts;
+	}
+	
+	
+	// Interfaz ValicacionBool
+	
+	public boolean validacion(Date fechaExpedicion, Date fechaVencimiento) 
+	{
+		Date fechaDeHoy = new Date(0);
+		return !fechaDeHoy.before(fechaExpedicion) && !fechaDeHoy.after(fechaVencimiento);
 	}
 }

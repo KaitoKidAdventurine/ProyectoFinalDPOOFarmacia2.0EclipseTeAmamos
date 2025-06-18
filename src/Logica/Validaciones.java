@@ -204,7 +204,7 @@ public class Validaciones
 		// no tiene el mismo horario con un servidor de china), y para
 		// concluir convierte el dato en un tipo de dato LocalDate.
 		
-		// Resumen: Retorna true si la fecha de hoy no sobrepasa de la
+		// Resumen: Retorna true si la fecha no sobrepasa de la
 		// fecha de hoy, mientras que si hace lo contrario decuelve false.
 		
 		
