@@ -34,7 +34,13 @@ public class RecetaMedica {
 
 	public void setFechaDeExpedi(Date fechaDeExpedi) 
 	{
-		this.fechaDeExpedi = fechaDeExpedi;
+		if(Validaciones.noEstaVacio(fechaDeExpedi))
+			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeExpedi))
+				this.fechaDeExpedi = fechaDeExpedi;
+			else
+				throw new IllegalArgumentException("El campo: fecha de Expiracion de la receta medica, la fecha sobrepasa de la fecha de hoy");
+		else
+			throw new IllegalArgumentException("El campo: fecha de Expiracion de la receta medica, se encuentra vacío");
 	}
 
 
@@ -77,7 +83,10 @@ public class RecetaMedica {
 
 	public void setMedicamentos(ArrayList<Medicamento> medicamentos) 
 	{
-		this.medicamentos = medicamentos;
+		if(medicamentos != null)
+			this.medicamentos = medicamentos;
+		else
+			throw new IllegalArgumentException("El campo: lista de medicamentos, se encuentra vacío");
 	}
 
 

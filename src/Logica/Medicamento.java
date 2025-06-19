@@ -183,13 +183,32 @@ public class Medicamento
 
 	public void setFechaDeProd(Date fechaDeProd) 
 	{
-		this.fechaDeProd = fechaDeProd;
+		if(Validaciones.noEstaVacio(fechaDeProd))
+			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeProd))
+				if(getFechaDeVenc() != null && fechaDeProd.after(getFechaDeVenc())) 
+					this.fechaDeProd = fechaDeProd;
+				else
+					throw new IllegalArgumentException("La fecha de producción no puede ser posterior a la fecha de vencimiento");
+			else
+				throw new IllegalArgumentException("El campo: fecha de Producción del medicamento, la fecha sobrepasa de la fecha de hoy");
+		else
+			throw new IllegalArgumentException("El campo: fecha de Producción del medicamento, se encuentra vacío");
 	}
 
 
 	public void setFechaDeVenc(Date fechaDeVenc) 
 	{
-		this.fechaDeVenc = fechaDeVenc;
+		if(Validaciones.noEstaVacio(fechaDeVenc))
+			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeVenc))
+				if(getFechaDeProd() != null && fechaDeVenc.before(getFechaDeProd())) 
+					this.fechaDeVenc = fechaDeVenc;
+				else
+					throw new IllegalArgumentException("La fecha de vencimiento no puede ser antes de la fecha de produción");
+			else
+				throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, la fecha sobrepasa de la fecha de hoy");
+		else
+			throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, se encuentra vacío");
+		
 	}
 
 

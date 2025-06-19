@@ -3,6 +3,7 @@ package Logica;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 
 public class Validaciones 
 {
@@ -11,7 +12,7 @@ public class Validaciones
 		return texto != null && !texto.trim().isEmpty(); 
 	}
 	
-	
+	// falta hacer una para las direcciones que dara bateo si se pone #
 
 	public static boolean noTieneNumeros(String texto)
 	{
@@ -220,6 +221,37 @@ public class Validaciones
 		
 		
 		return !fecha.before(inicio) && !fecha.after(fin);
+	}
+	
+	public static boolean noEstanVacios(ArrayList<Tarjeton> tarjetones) 
+	{
+		// Funcionalidad: Revisa que no esten vacios los tarjetones
+		// si estan vacios returna false y si estan llenos returna true
+		
+		
+		boolean salida = true;
+		for(Tarjeton t: tarjetones)
+			if(t == null)
+				salida = false;
+		return salida;
+	}
+	
+	public static boolean sonMujeres(ArrayList<Paciente> mujeres)
+	{
+		boolean salida = true;
+		
+		for(int i = 0; i < mujeres.size() && salida == true; i++)
+		{
+			Paciente pacienteX = mujeres.get(i);
+			String carnet = pacienteX.getNombre();
+			char penultimoDigito = carnet.charAt(10);
+			int numero = Character.getNumericValue(penultimoDigito);
+			if(numero % 2 == 0)
+				salida = false;
+			
+		}
+		
+		return salida;
 	}
 	
 }

@@ -15,25 +15,49 @@ public class Factura
 	
 	
 	
-	public String getNombreDelMed() {
+	public String getNombreDelMed() 
+	{
 		return nombreDelMed;
 	}
-	public void setNombreDelMed(String nombreDelMed) {
-		this.nombreDelMed = nombreDelMed;
+	
+	public void setNombreDelMed(String nombreDelMed) 
+	{
+		if(Validaciones.noEstaVacio(nombreDelMed))
+			if(Validaciones.noTieneNumeros(nombreDelMed))
+				if(Validaciones.noTieneCaracteresEsp(nombreDelMed))
+					this.nombreDelMed = nombreDelMed;
+				else
+					throw new IllegalArgumentException("El campo: nombre comun del medicamento, presenta caracteres especiales");
+			else
+				throw new IllegalArgumentException("El campo: nombre comun del medicamento, presenta números");
+		else
+			throw new IllegalArgumentException("El campo: nombre comun del medicamento, se encuentra vacío");
+	
+		
 	}
-	public String getCodigoDelMed() {
+	
+	public String getCodigoDelMed() 
+	{
 		return codigoDelMed;
 	}
-	public void setCodigoDelMed(String codigoDelMed) {
+	
+	public void setCodigoDelMed(String codigoDelMed) 
+	{
 		this.codigoDelMed = codigoDelMed;
 	}
-	public int getCantMedVendidos() {
+	
+	public int getCantMedVendidos() 
+	{
 		return cantMedVendidos;
 	}
-	public void setCantMedVendidos(int cantMedVendidos) {
+	
+	public void setCantMedVendidos(int cantMedVendidos) 
+	{
 		this.cantMedVendidos = cantMedVendidos;
 	}
-	public Date getFechaDeLaCompra() {
+	
+	public Date getFechaDeLaCompra() 
+	{
 		return fechaDeLaCompra;
 	}
 	public void setFechaDeLaCompra(Date fechaDeLaCompra) {

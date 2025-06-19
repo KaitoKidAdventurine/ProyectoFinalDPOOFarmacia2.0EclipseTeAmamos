@@ -68,28 +68,52 @@ public class Tarjeton implements ValidacionBool
 			if(Validaciones.noTieneCaracteresEsp(direccionPaciente))
 				this.direccionPaciente = direccionPaciente;
 			else
-				throw new IllegalArgumentException("El campo: nombre, presenta caracteres especiales");
+				throw new IllegalArgumentException("El campo: dirección, presenta caracteres especiales");
 		else
-			throw new IllegalArgumentException("El campo: nombre, se encuentra vacío");
+			throw new IllegalArgumentException("El campo: dirección, se encuentra vacío");
 	}	
 
 
 	public void setFechaExpedicion(Date fechaExpedicion) 
 	{
-		this.fechaExpedicion = fechaExpedicion;
+		if(Validaciones.noEstaVacio(fechaExpedicion))
+			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaExpedicion))
+				if(getFechaVencimiento() != null && fechaExpedicion.after(getFechaVencimiento())) 
+					this.fechaExpedicion = fechaExpedicion;
+				else
+					throw new IllegalArgumentException("La fecha de producción no puede ser posterior a la fecha de vencimiento");
+			else
+				throw new IllegalArgumentException("El campo: fecha de Producción del medicamento, la fecha sobrepasa de la fecha de hoy");
+		else
+			throw new IllegalArgumentException("El campo: fecha de Producción del medicamento, se encuentra vacío");
+		
 	}
 
 	
 
 	public void setFechaVencimiento(Date fechaVencimiento) 
 	{
-		this.fechaVencimiento = fechaVencimiento;
+		if(Validaciones.noEstaVacio(fechaVencimiento))
+			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaVencimiento))
+				if(getFechaExpedicion() != null && fechaVencimiento.before(getFechaExpedicion())) 
+					this.fechaVencimiento = fechaVencimiento;
+				else
+					throw new IllegalArgumentException("La fecha de vencimiento no puede ser antes de la fecha de produción");
+			else
+				throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, la fecha sobrepasa de la fecha de hoy");
+		else
+			throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, se encuentra vacío");
+		
+		
 	}
 
 
 	public void setMedicamentosConts(ArrayList<MedicamentoControlado> medicamentosConts) 
 	{
-		this.medicamentosConts = medicamentosConts;
+		if(medicamentosConts != null)
+			this.medicamentosConts = medicamentosConts;
+		else
+			throw new IllegalArgumentException("El campo:lista de medicamentos controlados, se encuentra vacío");
 	}
 	
 	
