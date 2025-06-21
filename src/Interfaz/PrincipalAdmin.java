@@ -151,7 +151,6 @@ public class PrincipalAdmin extends JFrame {
 		
 		final JPanel panel1 = new JPanel();
 		panel1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		final JTabbedPane pestanas;
 		panel1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -176,7 +175,7 @@ public class PrincipalAdmin extends JFrame {
 		lblInicio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				
+				pestanas.setSelectedIndex(0);
 			}
 		});
 		lblInicio.setBounds(68, 24, 144, 31);
@@ -185,6 +184,12 @@ public class PrincipalAdmin extends JFrame {
 		lblInicio.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
 		final JLabel iconoPrincipal = new JLabel("");
+		iconoPrincipal.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(0);
+			}
+		});
 		iconoPrincipal.setBounds(12, 13, 43, 42);
 		panel1.add(iconoPrincipal);
 		UtilesInterfaz.ajustarImagen(iconoPrincipal, "src/iconos/hogar(2).png");
@@ -212,6 +217,12 @@ public class PrincipalAdmin extends JFrame {
 		panel2.setLayout(null);
 		
 		JLabel lblComprar = new JLabel("COMPRAR");
+		lblComprar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(1);
+			}
+		});
 		lblComprar.setBounds(67, 24, 136, 31);
 		panel2.add(lblComprar);
 		lblComprar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -219,6 +230,12 @@ public class PrincipalAdmin extends JFrame {
 		lblComprar.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		
 		JLabel iconoComprar = new JLabel("");
+		iconoComprar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(1);
+			}
+		});
 		iconoComprar.setBounds(12, 13, 43, 42);
 		panel2.add(iconoComprar);
 		UtilesInterfaz.ajustarImagen(iconoComprar, "src/iconos/compracarrito.png");
@@ -245,12 +262,24 @@ public class PrincipalAdmin extends JFrame {
 		panel3.setLayout(null);
 		
 		JLabel lblMedicamentos = new JLabel("MEDICAMENTOS");
+		lblMedicamentos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(2);
+			}
+		});
 		lblMedicamentos.setBounds(62, 13, 232, 50);
 		panel3.add(lblMedicamentos);
 		lblMedicamentos.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		lblMedicamentos.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		
 		JLabel iconoMedicamentos = new JLabel("");
+		iconoMedicamentos.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(2);
+			}
+		});
 		iconoMedicamentos.setBounds(12, 13, 43, 42);
 		panel3.add(iconoMedicamentos);
 		UtilesInterfaz.ajustarImagen(iconoMedicamentos, "src/iconos/medicamento(1).png");
@@ -277,11 +306,23 @@ public class PrincipalAdmin extends JFrame {
 		panel4.setLayout(null);
 		
 		JLabel lblReportes = new JLabel("REPORTES");
+		lblReportes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(3);
+			}
+		});
 		lblReportes.setBounds(64, 13, 200, 50);
 		panel4.add(lblReportes);
 		lblReportes.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		
 		JLabel iconoReportes = new JLabel("");
+		iconoReportes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(3);
+			}
+		});
 		iconoReportes.setBounds(12, 13, 43, 42);
 		panel4.add(iconoReportes);
 		UtilesInterfaz.ajustarImagen(iconoReportes, "src/iconos/lista-de-verificacion-de-tareas.png");

@@ -1,6 +1,6 @@
 package Interfaces_Enum;
 
-<<<<<<< HEAD
+
 public enum Presentacion {
 	TABLETAS("Tabletas"),
     CAPSULAS("Cápsulas"),
@@ -37,9 +37,3 @@ public enum Presentacion {
     public String toString() {
         return descripcion;
     }
-=======
-public enum Presentacion 
-{
-	
->>>>>>> 49593027f33470da99ba69df5e782da64f41882e
-}
