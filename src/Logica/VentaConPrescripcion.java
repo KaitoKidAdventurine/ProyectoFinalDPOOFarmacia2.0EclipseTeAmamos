@@ -4,7 +4,7 @@ import java.sql.Date;
 import Interfaces_Enum.ValidacionBool;
 import LogicaUtiles.Validaciones;
 
-public class VentaConPrescripcion extends Venta implements ValidacionBool
+public class VentaConPrescripcion extends Venta
 {
 	private Date fechaDeCompra;
 
@@ -30,11 +30,5 @@ public class VentaConPrescripcion extends Venta implements ValidacionBool
 	{
 		super(fechaVenta, importeTotal);
 		setFechaDeCompra(fechaDeCompra);
-	}
-	
-	
-	public boolean validacion(Date fechaExpedicion, Date fechaVencimiento) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 }
