@@ -1,5 +1,7 @@
 package Logica;
 
+import LogicaUtiles.Validaciones;
+
 public class MedicamentoControlado extends Medicamento
 {
 	private String patologia;
@@ -27,19 +29,22 @@ public class MedicamentoControlado extends Medicamento
 	{
 
 		if(Validaciones.noEstaVacio(patologia))
-			if(Validaciones.tieneNumeros(patologia))
-				this.patologia = patologia;
+			if(Validaciones.noTieneNumeros(patologia))
+				if(Validaciones.noTieneCaracteresEsp(patologia))
+					this.patologia = patologia;
+				else
+					throw new IllegalArgumentException("El campo: patología, presenta caracteres especiales");
 			else
-				throw new IllegalArgumentException("Presenta numeros la patologia");
+				throw new IllegalArgumentException("El campo: patología, presenta números");
 		else
-			throw new IllegalArgumentException("La patologia se encuentra vacía");
+			throw new IllegalArgumentException("El campo: patología, se encuentra vacío");
 	}
 
 
 	
 	public void setCantAsigMensual(long cantAsigMensual) 
 	{
-		if(Validaciones.nuloOVacioNum(cantAsigMensual))
+		if(Validaciones.noEstaVacio(cantAsigMensual))
 			if(Validaciones.tieneNumeros(cantAsigMensual))
 				this.cantAsigMensual = cantAsigMensual;
 			else
@@ -52,7 +57,7 @@ public class MedicamentoControlado extends Medicamento
 
 	public void setCantDispensadaMensual(long cantDispensadaMensual) 
 	{
-		if(Validaciones.nuloOVacioNum(cantDispensadaMensual))
+		if(Validaciones.noEstaVacio(cantDispensadaMensual))
 			if(Validaciones.tieneNumeros(cantDispensadaMensual))
 				this.cantDispensadaMensual = cantDispensadaMensual;
 			else
