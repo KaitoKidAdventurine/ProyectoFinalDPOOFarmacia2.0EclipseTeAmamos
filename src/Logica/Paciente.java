@@ -2,6 +2,8 @@ package Logica;
 
 import java.util.ArrayList;
 
+import LogicaUtiles.Validaciones;
+
 public class Paciente 
 {
 	protected String nombre;
@@ -74,6 +76,10 @@ public class Paciente
 		else
 			throw new IllegalArgumentException("El campo: núcleo del paciente, se encuentra vacío");
 	}
+	
+	
+	
+	
 	// implementar
 	public void setCi(String ci) 
 	{

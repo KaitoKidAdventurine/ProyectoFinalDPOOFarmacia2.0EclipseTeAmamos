@@ -1,6 +1,8 @@
 package Logica;
 import java.util.ArrayList;
 
+import LogicaUtiles.Validaciones;
+
 public class PacienteControlado extends Paciente 
 {
 	private String patologia;

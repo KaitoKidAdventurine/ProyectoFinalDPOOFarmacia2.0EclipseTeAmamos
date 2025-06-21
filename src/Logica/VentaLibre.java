@@ -1,10 +1,16 @@
 package Logica;
+import java.sql.Date;
 import java.util.ArrayList;
 
-public class VentaLibre extends Venta {
+public class VentaLibre extends Venta 
+{
 	private ArrayList <Medicamento> inventario;
 	
-	
+	public VentaLibre(Date fechaVenta, double importeTotal) 
+	{
+		super(fechaVenta, importeTotal);
+		setInventario(inventario);
+	}
 	
 	public ArrayList<Medicamento> getInventario() 
 	{
@@ -15,16 +21,9 @@ public class VentaLibre extends Venta {
 
 	public void setInventario(ArrayList<Medicamento> inventario) 
 	{
-		if(invetario != null)
+		if(inventario != null)
 			this.inventario = inventario;
 		else
-			Trow new
-	}
-
-
-
-	public void vender()
-	{
-		
+			throw new IllegalArgumentException("El campo: nombre del medicamento, se encuentra vacío");
 	}
 }

@@ -1,8 +1,4 @@
-package Logica;
-
-import java.sql.Date;
-
-package Logica;
+package LogicaUtiles;
 
 import java.sql.Date;
 
@@ -43,6 +39,9 @@ public class Factura
 	
 	public void setCodigoDelMed(String codigoDelMed) 
 	{
+		
+		
+		
 		this.codigoDelMed = codigoDelMed;
 	}
 	

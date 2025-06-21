@@ -4,6 +4,8 @@ import java.awt.List;
 import java.sql.Date;
 import java.util.ArrayList;
 
+import LogicaUtiles.Validaciones;
+
 public class RecetaMedica {
 	private Date fechaDeExpedi;
 	private String nombreMed;

@@ -2,6 +2,8 @@ package Logica;
 
 import java.sql.Date;
 
+import LogicaUtiles.Validaciones;
+
 public class Medicamento 
 {
 	protected String nomComun;

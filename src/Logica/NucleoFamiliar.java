@@ -2,6 +2,8 @@ package Logica;
 
 import java.util.ArrayList;
 
+import LogicaUtiles.Validaciones;
+
 public class NucleoFamiliar 
 {
 	private String id;

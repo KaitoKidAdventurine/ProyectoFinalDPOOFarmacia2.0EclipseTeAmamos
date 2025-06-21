@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 
 import Interfaces_Enum.ValidacionBool;
+import LogicaUtiles.Validaciones;
 
 public class Tarjeton implements ValidacionBool
 {

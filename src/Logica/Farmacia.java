@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import proyecto.Factura;
-import proyecto.Medicamento;
-import proyecto.VentaDeMedicamentos;
+import LogicaUtiles.Porcentaje;
+import LogicaUtiles.Factura;
+import Logica.Medicamento;
+import LogicaUtiles.VentaDeMedicamentos;
 import Interfaces_Enum.Facturar;
 import Interfaces_Enum.GestionarStockAlmohadillasSanitarias;
 import Interfaces_Enum.Reportes;
-import LogicaUtiles.Porcentaje;
 
 public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSanitarias 
 {
@@ -22,16 +22,30 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	private long cantidadDeAlmohadillasSanitarias;
 
 	
+	public Farmacia(ArrayList<Medicamento> medicamentos, ArrayList <Venta> historialVentas, 
+			ArrayList <NucleoFamiliar> nucleos, ArrayList<Tarjeton> tarjetones, 
+			ArrayList<Factura> facturas, long cantidadDeAlmohadillasSanitarias)
+	{
+		setMedicamentos(medicamentos);
+		setHistorialVentas(historialVentas);
+		setNucleos(nucleos);
+		setTarjetones(tarjetones);
+		setFacturas(facturas);
+		setCantidadDeAlmohadillasSanitarias(cantidadDeAlmohadillasSanitarias);
+	}
 
-	public void registrarMedicamento(){
+	public void registrarMedicamento()
+	{
 		//implementar
 	}
 
-	public void procesarVenta(){
+	public void procesarVenta()
+	{
 		//implementar
 	}
 
-	public void generarReporte(){
+	public void generarReporte()
+	{
 		//implementar
 	}
 
@@ -50,15 +64,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		
 	}
 
-	
-	
-	
 	// Tercer Reporte
 	
 	public Porcentaje comparacionDeVentasMensuales()
 	{
 		Porcentaje resultado = calcularValor();
-		return resultado ;
+		return resultado;
 	}
 	
 	// Cuarto Reporte
@@ -67,32 +78,17 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		ArrayList<Tarjeton> tarjetonesNoActivos = tarjetonesDesactivados();
 		return tarjetonesNoActivos;
 	}
-
-
-
-
-
-
-	@Override
+	
 	public Factura generarFactura(String nombreDelMed, String codigoDelMed, int cantMedVendidos, Date fechaDeLaCompra) 
 	{
 		Factura facturacion = new Factura(nombreDelMed, codigoDelMed, cantMedVendidos, fechaDeLaCompra);
 		return facturacion;
 	}
-
-	@Override
-	public double calcularTotal() 
-	{
-		
-		return 0;
-	}
-
 	
-
 	// Metodos del primer reporte 
 	public ArrayList<VentaDeMedicamentos> buscarOrdenDeAccion()
 	{
-		VentaDeMedicamentos venta;
+		VentaDeMedicamentos venta = null;
 		ArrayList<VentaDeMedicamentos> ventas = new ArrayList<VentaDeMedicamentos>();
 		for(Medicamento m: medicamentos)
 		{
@@ -156,42 +152,13 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	// metodos del tercer reporte
 	public Porcentaje calcularValor()
 	{
-		double importeTotalDeAlmohadillas = 0;
-		double importeTotalDeMedPrescripcion = 0;
-		double importeTotalDeMedControlados = 0;
-		double importeTotalDeMedVentaLibre = 0;
+		double importeTotalDeAlmohadillas = cantDeDineroObtenidoPorAlmohadillas();;
+		double importeTotalDeMedPrescripcion = cantDeDineroObtenidoPorMedPrescripcion();
+		double importeTotalDeMedControlados = cantDeDineroObtenidoPorMedControlados();
+		double importeTotalDeMedVentaLibre = cantDeDineroObtenidoPorMedVentaLibre();
 		double total = 0;
 		Porcentaje resultado;
-		
-		for(Venta h: historialVentas)
-		{
-			if(h instanceof AlmohadillasSanitarias)
-			{
-				AlmohadillasSanitarias almohadilla = (AlmohadillasSanitarias)h;
-				importeTotalDeAlmohadillas += almohadilla.getImporteTotal();
-			}
-
-			else if(h instanceof VentaConPrescripcion)
-			{
-				VentaConPrescripcion prescripcion = (VentaConPrescripcion)h;
-				importeTotalDeMedPrescripcion += prescripcion.getImporteTotal();
-			}
-
-			else if(h instanceof VentaControlada)
-			{
-				VentaControlada control = (VentaControlada)h;
-				importeTotalDeMedControlados += control.getImporteTotal();
-			}
-
-			else if(h instanceof VentaLibre)
-			{
-				VentaLibre ventLib = (VentaLibre)h;
-				importeTotalDeMedVentaLibre += ventLib.getImporteTotal();
-			}
-		}
-
-		total = importeTotalDeAlmohadillas + importeTotalDeMedPrescripcion 
-				+ importeTotalDeMedControlados + importeTotalDeMedVentaLibre;
+		total = calcularTotal();
 
 		if(total != 0)
 		{
@@ -260,7 +227,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	public int repeticiones(double max,double alm, double pres,
 			double contro, double libr)
 	{
-		int contador;
+		int contador = 0;
 		
 		if(max == alm)
 			contador++;
@@ -280,7 +247,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	public String revisionDeRepeticiones(int cont,double max,double alm, double pres,
 			double contro, double libr)
 	{
-		String nombres;
+		String nombres = null;
 		switch(cont)
 		{
 			case 4:
@@ -340,11 +307,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 				break;
 			}
 			
-			return nombres;
-			
 		}
-		
-		
+		return nombres;
 	}
 	
 	
@@ -401,4 +365,105 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 			
 	}
 
+	
+	
+	public double calcularTotal() 
+	{
+		double total = 0;
+		total += cantDeDineroObtenidoPorAlmohadillas();
+		total += cantDeDineroObtenidoPorMedPrescripcion();
+		total += cantDeDineroObtenidoPorMedControlados();
+		total +=cantDeDineroObtenidoPorMedVentaLibre();
+		return total;
+	}
+
+	public double cantDeDineroObtenidoPorAlmohadillas()
+	{
+		double importeTotalDeAlmohadillas = 0;
+		for(Venta h: historialVentas)
+		{
+			if(h instanceof AlmohadillasSanitarias)
+			{
+				AlmohadillasSanitarias almohadilla = (AlmohadillasSanitarias)h;
+					importeTotalDeAlmohadillas += almohadilla.getImporteTotal();
+			}
+		}
+		return importeTotalDeAlmohadillas;
+	}
+	
+	public double cantDeDineroObtenidoPorMedPrescripcion()
+	{
+		double importeTotalDeMedPrescripcion = 0;
+		for(Venta h: historialVentas)
+		{
+			if(h instanceof VentaConPrescripcion)
+			{
+				VentaConPrescripcion prescripcion = (VentaConPrescripcion)h;
+					importeTotalDeMedPrescripcion += prescripcion.getImporteTotal();
+			}
+		}
+		return importeTotalDeMedPrescripcion ;
+	}
+	
+	public double cantDeDineroObtenidoPorMedControlados()
+	{
+		double importeTotalDeMedControlados = 0;
+		for(Venta h: historialVentas)
+		{
+			
+			if(h instanceof VentaControlada)
+			{
+				VentaControlada control = (VentaControlada)h;
+				importeTotalDeMedControlados += control.getImporteTotal();
+			}
+		}
+		return importeTotalDeMedControlados;
+	}
+	
+	public double cantDeDineroObtenidoPorMedVentaLibre()
+	{
+		double importeTotalDeMedVentaLibre = 0;
+		for(Venta h: historialVentas)
+		{
+			if(h instanceof VentaLibre)
+			{
+				VentaLibre ventLib = (VentaLibre)h;
+				importeTotalDeMedVentaLibre += ventLib.getImporteTotal();
+			}
+		}
+		return importeTotalDeMedVentaLibre;
+	}
+	
+	
+	public ArrayList<Venta> getHistorialVentas() {
+		return historialVentas;
+	}
+
+	public void setHistorialVentas(ArrayList<Venta> historialVentas) {
+		this.historialVentas = historialVentas;
+	}
+
+	public ArrayList<NucleoFamiliar> getNucleos() {
+		return nucleos;
+	}
+
+	public void setNucleos(ArrayList<NucleoFamiliar> nucleos) {
+		this.nucleos = nucleos;
+	}
+
+	public ArrayList<Tarjeton> getTarjetones() {
+		return tarjetones;
+	}
+
+	public void setTarjetones(ArrayList<Tarjeton> tarjetones) {
+		this.tarjetones = tarjetones;
+	}
+
+	public Comparator<VentaDeMedicamentos> getComparador() {
+		return comparador;
+	}
+
+	public void setComparador(Comparator<VentaDeMedicamentos> comparador) {
+		this.comparador = comparador;
+	}
 }

@@ -2,7 +2,7 @@ package Interfaces_Enum;
 
 import java.sql.Date;
 
-import Logica.Factura;
+import LogicaUtiles.Factura;
 
 public interface Facturar 
 {

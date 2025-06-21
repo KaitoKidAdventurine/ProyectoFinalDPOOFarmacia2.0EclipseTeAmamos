@@ -1,9 +1,12 @@
-package Logica;
+package LogicaUtiles;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+
+import Logica.Paciente;
+import Logica.Tarjeton;
 
 public class Validaciones 
 {

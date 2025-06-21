@@ -1,9 +1,11 @@
 package Logica;
 import Interfaces_Enum.Facturar;
+import LogicaUtiles.Validaciones;
 
 import java.sql.Date;
 
-public abstract class Venta implements Facturar{
+public abstract class Venta
+{
 	protected Date fechaVenta;
 	protected double importeTotal;
 	
@@ -55,13 +57,4 @@ public abstract class Venta implements Facturar{
 		
 	}	
 
-	public String generarFactura()
-	{
-		
-	}
-	
-	public double calcularTotal()
-	{
-		
-	}
 }

@@ -1,5 +1,7 @@
 package Logica;
 
+import LogicaUtiles.Validaciones;
+
 public class MedicamentoControlado extends Medicamento
 {
 	private String patologia;
@@ -42,7 +44,7 @@ public class MedicamentoControlado extends Medicamento
 	
 	public void setCantAsigMensual(long cantAsigMensual) 
 	{
-		if(Validaciones.nuloOVacioNum(cantAsigMensual))
+		if(Validaciones.noEstaVacio(cantAsigMensual))
 			if(Validaciones.tieneNumeros(cantAsigMensual))
 				this.cantAsigMensual = cantAsigMensual;
 			else

@@ -1,13 +1,16 @@
 package Interfaces_Enum;
+import java.sql.Date;
 import java.util.ArrayList;
 
-import proyecto.VentaDeMedicamentos;
+import LogicaUtiles.VentaDeMedicamentos;
 import Logica.Tarjeton;
+import LogicaUtiles.Porcentaje;
 
-public interface Reportes {
-	public ArrayList<Logica.VentaDeMedicamentos> medicamentosMasVendidos();
+public interface Reportes 
+{
+	public ArrayList<VentaDeMedicamentos> medicamentosMasVendidos();
 	public long cantDeAlmohadillasNecesarias();
-	public double comparacionDeVentasMensuales();
+	public Porcentaje comparacionDeVentasMensuales();
 	public ArrayList<Tarjeton> registroDeIncumplimiento();
 
 }

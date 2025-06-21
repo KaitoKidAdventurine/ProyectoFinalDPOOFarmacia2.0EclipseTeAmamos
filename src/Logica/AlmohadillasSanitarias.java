@@ -4,8 +4,9 @@ package Logica;
 import java.sql.Date;
 
 import Interfaces_Enum.Facturar;
+import LogicaUtiles.Validaciones;
 
-public class AlmohadillasSanitarias extends Venta implements Facturar 
+public class AlmohadillasSanitarias extends Venta 
 {
 	private double precioUnit;
 	private int cant;
@@ -26,7 +27,18 @@ public class AlmohadillasSanitarias extends Venta implements Facturar
 
 	public void setPrecioUnit(double precioUnit) 
 	{
-		this.precioUnit = precioUnit;
+		
+		if(Validaciones.noEstaVacio(precioUnit))
+			if(!Validaciones.esUnaLetra(precioUnit))
+				if(Validaciones.noTieneCaracteresEsp(precioUnit))
+					this.precioUnit = precioUnit;
+				else
+					throw new IllegalArgumentException("El campo: precio, presenta caracteres especiales");
+			else
+				throw new IllegalArgumentException("El campo: precio, presenta letras");
+		else
+			throw new IllegalArgumentException("El campo: precio, se encuentra vacío");
+		
 	}
 
 
@@ -38,6 +50,7 @@ public class AlmohadillasSanitarias extends Venta implements Facturar
 
 	public void setCant(int cant) 
 	{
+		
 		this.cant =  cant;
 	}
 
@@ -50,18 +63,6 @@ public class AlmohadillasSanitarias extends Venta implements Facturar
 	
 	
 	
-	@Override
-	public double calcularTotal(long  cant, double precio)
-	{
-		
-		return 0.0;
-	}
-
-	@Override
-	public Factura generarFactura(String nombreDelMed, String codigoDelMed,
-			int cantMedVendidos, Date fechaDeLaCompra) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 }
