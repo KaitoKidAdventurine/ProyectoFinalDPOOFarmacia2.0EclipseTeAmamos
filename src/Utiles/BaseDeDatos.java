@@ -3,6 +3,8 @@ package Utiles;
 import java.util.*;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
+
+import Interfaces_Enum.Presentacion;
 import Logica.*;
 
 public class BaseDeDatos {
@@ -110,20 +112,22 @@ public class BaseDeDatos {
         return "Calle " + (1 + random.nextInt(100)) + ", #" + (1 + random.nextInt(500));
     }
 
-    public Medicamento crearMedicamento() {
+    public Medicamento generarMedicamento() {
+        // Seleccionar una presentación aleatoria
+        Presentacion[] presentaciones = Presentacion.values();
+        Presentacion presentacion = presentaciones[random.nextInt(presentaciones.length)];
+        
         Medicamento med = new Medicamento();
-        med.setNomComun("Med-" + random.nextInt(1000));
-        med.setNomCientifico("Sci-" + random.nextInt(1000));
-        med.setPresentacion(PRESENTACIONES.get(random.nextInt(PRESENTACIONES.size())));
+        
         med.setPrecio(5 + random.nextDouble() * 100);
         med.setTipo(random.nextBoolean() ? "Venta libre" : "Con prescripción");
         med.setFortalezaDelMed((50 + random.nextInt(950)) + " mg");
-        med.setTempDeAlmac(2 + random.nextDouble() * 28);
-        med.setCantExis(random.nextInt(1000));
+        med.setTemperaturaAlmacenamiento(2 + random.nextDouble() * 28);
+        med.setCantidadExistencia(random.nextInt(1000));
         
         LocalDate fechaProd = LocalDate.now().minusMonths(random.nextInt(36));
-        med.setFechaDeProd(Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        med.setFechaDeVenc(Date.from(fechaProd.plusYears(2).atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        med.setFechaProduccion(Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        med.setFechaVencimiento(Date.from(fechaProd.plusYears(2).atStartOfDay(ZoneId.systemDefault()).toInstant()));
         
         return med;
     }

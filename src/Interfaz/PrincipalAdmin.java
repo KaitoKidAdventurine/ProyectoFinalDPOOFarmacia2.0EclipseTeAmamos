@@ -151,6 +151,7 @@ public class PrincipalAdmin extends JFrame {
 		
 		final JPanel panel1 = new JPanel();
 		panel1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		final JTabbedPane pestanas;
 		panel1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -203,7 +204,7 @@ public class PrincipalAdmin extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				pestanas.setSelectedIndex(0);
+				pestanas.setSelectedIndex(1);
 			}
 		});
 		panel2.setBounds(0, 221, 294, 68);
@@ -231,6 +232,10 @@ public class PrincipalAdmin extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent e) {
 				panel3.setBackground(new Color(2,184,47));
+			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(2);
 			}
 		});
 		panel3.setBackground(new Color(2,184,47));
@@ -261,6 +266,10 @@ public class PrincipalAdmin extends JFrame {
 			public void mouseExited(MouseEvent arg0) {
 				panel4.setBackground(new Color(2,184,47));
 			}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(3);
+			}
 		});
 		panel4.setBackground(new Color(2,184,47));
 		panel4.setBounds(0, 370, 294, 68);
@@ -277,7 +286,7 @@ public class PrincipalAdmin extends JFrame {
 		panel4.add(iconoReportes);
 		UtilesInterfaz.ajustarImagen(iconoReportes, "src/iconos/lista-de-verificacion-de-tareas.png");
 		
-		JTabbedPane pestanas = new JTabbedPane(JTabbedPane.TOP);
+		pestanas = new JTabbedPane(JTabbedPane.TOP);
 		pestanas.setBounds(292, 37, 1010, 680);
 		contentPane.add(pestanas);
 		
@@ -296,29 +305,51 @@ public class PrincipalAdmin extends JFrame {
 		lblPrincipal.setBounds(373, 0, 205, 43);
 		panel.add(lblPrincipal);
 		
-		
 		JPanel comprar = new JPanel();
 		pestanas.addTab("", null, comprar, null);
 		comprar.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.GREEN);
-		panel_1.setBounds(0, 0, 1029, 43);
-		comprar.add(panel_1);
-		panel_1.setLayout(null);
+		JPanel panel_3 = new JPanel();
+		panel_3.setBackground(Color.GREEN);
+		panel_3.setBounds(0, 0, 1029, 43);
+		comprar.add(panel_3);
+		panel_3.setLayout(null);
 		
-		JLabel lblComprar_1 = new JLabel("COMPRAR");
-		lblComprar_1.setFont(new Font("Times New Roman", Font.BOLD, 26));
-		lblComprar_1.setBounds(418, 0, 176, 43);
-		panel_1.add(lblComprar_1);
+		JLabel lblNewLabel = new JLabel("COMPRAR");
+		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 26));
+		lblNewLabel.setBounds(434, 13, 144, 25);
+		panel_3.add(lblNewLabel);
+		
 		
 		JPanel medicamentos = new JPanel();
 		pestanas.addTab("", null, medicamentos, null);
 		medicamentos.setLayout(null);
 		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(Color.GREEN);
+		panel_1.setBounds(0, 0, 1029, 43);
+		medicamentos.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JLabel lblComprar_1 = new JLabel("MEDICAMENTOS");
+		lblComprar_1.setFont(new Font("Times New Roman", Font.BOLD, 26));
+		lblComprar_1.setBounds(394, 0, 237, 43);
+		panel_1.add(lblComprar_1);
+		
 		JPanel reportes = new JPanel();
 		pestanas.addTab("", null, reportes, null);
 		reportes.setLayout(null);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBackground(Color.GREEN);
+		panel_2.setBounds(0, 0, 1029, 43);
+		reportes.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblReportes_1 = new JLabel("REPORTES");
+		lblReportes_1.setFont(new Font("Times New Roman", Font.BOLD, 26));
+		lblReportes_1.setBounds(439, 0, 155, 43);
+		panel_2.add(lblReportes_1);
 		
 		
 		
