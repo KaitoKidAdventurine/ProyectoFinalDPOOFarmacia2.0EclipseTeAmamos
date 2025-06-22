@@ -73,7 +73,7 @@ public class AgregarPacientes extends JFrame {
 		
 		JPanel panelDatosGenerales = new JPanel();
 		panelDatosGenerales.setBackground(Color.WHITE);
-		panelDatosGenerales.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelDatosGenerales.setBorder(new LineBorder(new Color(0, 255, 0), 3));
 		panelDatosGenerales.setName("");
 		panelDatosGenerales.setBounds(12, 79, 330, 412);
 		contentPane.add(panelDatosGenerales);
