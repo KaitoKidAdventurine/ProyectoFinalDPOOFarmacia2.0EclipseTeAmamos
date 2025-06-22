@@ -42,6 +42,7 @@ import javax.swing.JTabbedPane;
 import java.awt.Label;
 import java.awt.Panel;
 import javax.swing.border.MatteBorder;
+import javax.swing.JTable;
 
 public class PrincipalAdmin extends JFrame {
 
@@ -402,19 +403,114 @@ public class PrincipalAdmin extends JFrame {
 		pestanas.addTab("", null, reportes, null);
 		reportes.setLayout(null);
 		
-		JLabel repor1 = new JLabel("");
-		repor1.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		repor1.setOpaque(true);
-		repor1.setBackground(new Color(116,255,78));
-		repor1.setBounds(78, 161, 381, 216);
-		reportes.add(repor1);
+		JLabel icon4 = new JLabel("");
+		icon4.setBounds(848, 412, 40, 34);
+		reportes.add(icon4);
+		UtilesInterfaz.ajustarImagen(icon4, "src/iconos/senal-alt-1.png");
+		
+		JLabel icon3 = new JLabel("");
+		icon3.setBounds(407, 412, 40, 34);
+		reportes.add(icon3);
+		UtilesInterfaz.ajustarImagen(icon3, "src/iconos/comprobacion-de-lista.png");
+		
+		JLabel lblTopVentas = new JLabel("TOP Ventas");
+		lblTopVentas.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTopVentas.setBounds(536, 403, 200, 50);
+		reportes.add(lblTopVentas);
+		
+		JLabel lblActivos = new JLabel("Activos");
+		lblActivos.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblActivos.setBounds(94, 403, 200, 50);
+		reportes.add(lblActivos);
+		
+		JLabel icon2 = new JLabel("");
+		icon2.setBounds(848, 170, 40, 34);
+		reportes.add(icon2);
+		UtilesInterfaz.ajustarImagen(icon2, "src/iconos/toalla-sanitaria.png");
+		
+		JLabel lblAlmohadillasSanitarias = new JLabel("Almohadillas Sanitarias");
+		lblAlmohadillasSanitarias.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblAlmohadillasSanitarias.setBounds(536, 161, 251, 50);
+		reportes.add(lblAlmohadillasSanitarias);
+		
+		JLabel icon1 = new JLabel("");
+		icon1.setBounds(407, 167, 40, 34);
+		reportes.add(icon1);
+		UtilesInterfaz.ajustarImagen(icon1, "src/iconos/libros-de-medicina.png");
+		
+		JLabel lblVendidos = new JLabel("vendidos");
+		lblVendidos.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblVendidos.setBounds(86, 233, 200, 50);
+		reportes.add(lblVendidos);
+		
+		JLabel lblListadoConLos = new JLabel("Listado con los 10 medicamentos m\u00E1s ");
+		lblListadoConLos.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblListadoConLos.setBounds(86, 211, 349, 50);
+		reportes.add(lblListadoConLos);
+		
+		JLabel label_6 = new JLabel("_______________________");
+		label_6.setFont(new Font("Tahoma", Font.BOLD, 25));
+		label_6.setBounds(530, 413, 381, 50);
+		reportes.add(label_6);
+		
+		JLabel label_5 = new JLabel("_______________________");
+		label_5.setFont(new Font("Tahoma", Font.BOLD, 25));
+		label_5.setBounds(86, 413, 381, 50);
+		reportes.add(label_5);
+		
+		JLabel repor3 = new JLabel("");
+		repor3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(6);
+			}
+		});
+		repor3.setOpaque(true);
+		repor3.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
+		repor3.setBackground(new Color(116,255,78));
+		repor3.setBounds(78, 403, 381, 216);
+		reportes.add(repor3);
+		
+		JLabel label_4 = new JLabel("_______________________");
+		label_4.setFont(new Font("Tahoma", Font.BOLD, 25));
+		label_4.setBounds(530, 170, 381, 50);
+		reportes.add(label_4);
 		
 		JLabel repor2 = new JLabel("");
+		repor2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(5);
+			}
+		});
 		repor2.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
 		repor2.setBackground(new Color(116,255,78));
 		repor2.setOpaque(true);
 		repor2.setBounds(520, 161, 381, 216);
 		reportes.add(repor2);
+		
+		JLabel lblMedicamentos_1 = new JLabel("TOP Medicamentos");
+		lblMedicamentos_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblMedicamentos_1.setBounds(94, 167, 192, 43);
+		reportes.add(lblMedicamentos_1);
+		
+		JLabel lbls = new JLabel("_______________________");
+		lbls.setFont(new Font("Tahoma", Font.BOLD, 25));
+		lbls.setBounds(86, 170, 381, 50);
+		reportes.add(lbls);
+		
+		JLabel repor1 = new JLabel("");
+		repor1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(4);
+			}
+		});
+		repor1.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
+		repor1.setOpaque(true);
+		repor1.setBackground(new Color(116,255,78));
+		repor1.setBounds(78, 161, 381, 216);
+		reportes.add(repor1);
 		
 		JLabel lblElijaUnReporte = new JLabel("Elija un reporte");
 		lblElijaUnReporte.setForeground(Color.BLACK);
@@ -439,23 +535,49 @@ public class PrincipalAdmin extends JFrame {
 		label_3.setBounds(0, 49, 1005, 79);
 		reportes.add(label_3);
 		
-		JLabel repor3 = new JLabel("");
-		repor3.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		repor3.setOpaque(true);
-		repor3.setBackground(new Color(116,255,78));
-		repor3.setBounds(78, 403, 381, 216);
-		reportes.add(repor3);
-		
 		JLabel repor4 = new JLabel("");
+		repor4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(7);
+			}
+		});
 		repor4.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
 		repor4.setBackground(new Color(116,255,78));
 		repor4.setOpaque(true);
 		repor4.setBounds(520, 403, 381, 216);
 		reportes.add(repor4);
 		
+		JLabel iconMed = new JLabel("");
+		iconMed.setBounds(94, 176, 40, 34);
+		reportes.add(iconMed);
+		
 		Panel reporte1 = new Panel();
+		reporte1.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, reporte1, null);
 		reporte1.setLayout(null);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(Color.GREEN);
+		panel_4.setBounds(0, 0, 1015, 57);
+		reporte1.add(panel_4);
+		panel_4.setLayout(null);
+		
+		JLabel regresar = new JLabel("");
+		regresar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				pestanas.setSelectedIndex(3);
+			}
+		});
+		regresar.setBounds(12, 13, 44, 31);
+		panel_4.add(regresar);
+		UtilesInterfaz.ajustarImagen(regresar, "src/iconos/deshacer.png");
+		
+		JLabel lblTopMedicamentos = new JLabel("TOP Medicamentos");
+		lblTopMedicamentos.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTopMedicamentos.setBounds(79, 0, 200, 57);
+		panel_4.add(lblTopMedicamentos);
 		
 		Panel reporte2 = new Panel();
 		pestanas.addTab("New tab", null, reporte2, null);
