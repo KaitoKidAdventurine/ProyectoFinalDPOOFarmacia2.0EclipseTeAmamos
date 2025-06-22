@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 package LogicaUtiles;
 
 
@@ -36,3 +37,43 @@ public class VentaDeMedicamentos
 		this.cantidadVendida = cantidadVendida;
 	}
 }
+=======
+package LogicaUtiles;
+
+
+public class VentaDeMedicamentos
+{
+	private String  nombre;
+	private int cantidadVendida;
+
+	public String getNombre() 
+	{
+		return nombre;
+	}
+
+	public void setNombre(String nombre) 
+	{
+		if(Validaciones.noEstaVacio(nombre))
+			if(Validaciones.noTieneNumeros(nombre))
+				if(Validaciones.noTieneCaracteresEsp(nombre))
+					this.nombre = nombre;
+				else
+					throw new IllegalArgumentException("El campo: nombre del medicamento, presenta caracteres especiales");
+			else
+				throw new IllegalArgumentException("El campo: nombre del medicamento, presenta números");
+		else
+			throw new IllegalArgumentException("El campo: nombre del medicamento, se encuentra vacío");
+	}
+
+	public int getCantidadVendida() 
+	{
+		return cantidadVendida;
+	}
+
+	public void setCantidadVendida(int cantidadVendida) 
+	{
+		
+		this.cantidadVendida = cantidadVendida;
+	}
+}
+>>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8

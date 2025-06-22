@@ -27,6 +27,7 @@ public class AgregarPacientes extends JFrame {
 	/**
 	 * Launch the application.
 	 */
+<<<<<<< HEAD
 	public static void main(String[] args) 
 	{
 		EventQueue.invokeLater(new Runnable() 
@@ -39,6 +40,15 @@ public class AgregarPacientes extends JFrame {
 					frame.setVisible(true);
 				} catch (Exception e) 
 				{
+=======
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					AgregarPacientes frame = new AgregarPacientes();
+					frame.setVisible(true);
+				} catch (Exception e) {
+>>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 					e.printStackTrace();
 				}
 			}
@@ -48,8 +58,12 @@ public class AgregarPacientes extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+<<<<<<< HEAD
 	public AgregarPacientes() 
 	{
+=======
+	public AgregarPacientes() {
+>>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 524, 572);
 		contentPane = new JPanel();
