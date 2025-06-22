@@ -71,6 +71,9 @@ public class AgregarPacientes extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+	    // Centrar la ventana en la pantalla
+	    this.setLocationRelativeTo(null);
+		
 		JPanel panelDatosGenerales = new JPanel();
 		panelDatosGenerales.setBackground(Color.WHITE);
 		panelDatosGenerales.setBorder(new LineBorder(new Color(0, 255, 0), 3));

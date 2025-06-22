@@ -78,6 +78,9 @@ public class PrincipalAdmin extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+	    // Centrar la ventana en la pantalla
+	    this.setLocationRelativeTo(null);
+		
 		JPanel barraSuperior = new JPanel();
 		barraSuperior.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override

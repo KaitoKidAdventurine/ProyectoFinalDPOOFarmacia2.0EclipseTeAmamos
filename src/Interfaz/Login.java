@@ -66,6 +66,9 @@ public class Login extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+	    // Centrar la ventana en la pantalla
+	    this.setLocationRelativeTo(null);
 
 		JPanel barra = new JPanel();
 		barra.addMouseMotionListener(new MouseMotionAdapter() {
