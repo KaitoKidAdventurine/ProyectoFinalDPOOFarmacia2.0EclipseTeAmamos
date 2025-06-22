@@ -151,8 +151,7 @@ public class Login extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) 
 			{
-				Navegacion.registrar("Información" ,new Informacion());
-				Navegacion.irA("Información");
+
 			}
 		});
 		Informacion.setBounds(307, 415, 187, 47);

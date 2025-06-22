@@ -38,6 +38,7 @@ public class Navegacion
 		{
 			obtenerVentana(ventanaActual).setVisible(false);
 		}
+		
 		ventanaActual = nombre;
 	}
 

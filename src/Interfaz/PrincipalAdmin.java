@@ -39,6 +39,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.Window.Type;
 import javax.swing.JTabbedPane;
+import java.awt.Label;
 
 public class PrincipalAdmin extends JFrame {
 
@@ -329,6 +330,21 @@ public class PrincipalAdmin extends JFrame {
 		iconoReportes.setBounds(12, 13, 43, 42);
 		panel4.add(iconoReportes);
 		UtilesInterfaz.ajustarImagen(iconoReportes, "src/iconos/lista-de-verificacion-de-tareas.png");
+		
+		JLabel label = new JLabel("");
+		label.setBounds(84, 13, 113, 122);
+		menu.add(label);
+		UtilesInterfaz.ajustarImagen(label, "src/imagenes/logoMinsap.png");
+		
+		Label label_2 = new Label("_________________________________________________");
+		label_2.setFont(new Font("Arial Black", Font.BOLD, 29));
+		label_2.setBounds(0, 408, 294, 47);
+		menu.add(label_2);
+		
+		Label label_1 = new Label("_________________________________________________");
+		label_1.setBounds(0, 109, 294, 47);
+		menu.add(label_1);
+		label_1.setFont(new Font("Arial Black", Font.BOLD, 29));
 		
 		pestanas = new JTabbedPane(JTabbedPane.TOP);
 		pestanas.setBounds(292, 37, 1010, 680);
