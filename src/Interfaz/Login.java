@@ -1,16 +1,9 @@
 package Interfaz;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
-import java.awt.Point;
-
-import javax.swing.Icon;
 import javax.swing.JFrame;
-<<<<<<< HEAD
 import javax.swing.JOptionPane;
-=======
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -24,37 +17,27 @@ import java.awt.SystemColor;
 
 import javax.swing.border.BevelBorder;
 import javax.swing.JPasswordField;
-import javax.swing.border.CompoundBorder;
-
 import java.awt.Color;
 import java.awt.Cursor;
 
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-<<<<<<< HEAD
+
 import Utiles.Navegacion;
 
-=======
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
-	private JLabel fondo;
 	private JTextField txtIngreseSuNombre;
 	private JPasswordField passwordField;
 	private JTextField txtEntrar;
 	private int posX;
 	private int posY;
-	private Point e;
-
 	/**
 	 * Launch the application.
 	 */
@@ -77,53 +60,34 @@ public class Login extends JFrame {
 	public Login() {
 		setUndecorated(true);
 		setResizable(false);
-<<<<<<< HEAD
-
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 755, 491);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		JPanel barra = new JPanel();
 		barra.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				// Calcular nueva posición
-<<<<<<< HEAD
+
 				int newX = getLocation().x + e.getX() - posX;
 				int newY = getLocation().y + e.getY() - posY;
-
-				// Mover la ventana
-				setLocation(newX, newY);
-=======
-                int newX = getLocation().x + e.getX() - posX;
-                int newY = getLocation().y + e.getY() - posY;
-                
                 // Mover la ventana
                 setLocation(newX, newY);
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
+
 			}
 		});
 		barra.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// Guardar posición inicial del mouse
-<<<<<<< HEAD
-				posX = e.getX();
-				posY = e.getY();
-=======
+
                 posX = e.getX();
                 posY = e.getY();
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
+
 			}
 		});
 		barra.setBorder(new LineBorder(new Color(0, 0, 0), 2));
@@ -131,11 +95,7 @@ public class Login extends JFrame {
 		barra.setBounds(-12, -9, 773, 50);
 		contentPane.add(barra);
 		barra.setLayout(null);
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		final JLabel cruz = new JLabel("");
 		cruz.addMouseListener(new MouseAdapter() {
 			@Override
@@ -146,11 +106,7 @@ public class Login extends JFrame {
 			public void mouseEntered(MouseEvent arg0) {
 				ajustarImagen(cruz, "src/iconos/exit1.png");
 			}
-<<<<<<< HEAD
 
-=======
-			
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 			@Override
 			public void mouseExited(MouseEvent arg0) {
 				ajustarImagen(cruz, "src/iconos/exit0.png");
@@ -160,11 +116,7 @@ public class Login extends JFrame {
 		cruz.setBounds(721, 13, 40, 37);
 		barra.add(cruz);
 		this.ajustarImagen(cruz, "src/iconos/exit0.png");
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		JLabel minimizar = new JLabel("");
 		minimizar.addMouseListener(new MouseAdapter() {
 			@Override
@@ -177,25 +129,17 @@ public class Login extends JFrame {
 		barra.add(minimizar);
 		this.setLocationRelativeTo(null);
 		this.ajustarImagen(minimizar, "src/iconos/minimize0.png");
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		JLabel encabezado = new JLabel("Gesti\u00F3n de procesos en las farmacias ");
 		encabezado.setFont(new Font("Tahoma", Font.BOLD, 25));
 		encabezado.setBounds(272, 90, 471, 68);
 		contentPane.add(encabezado);
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		JLabel iniciarseccion = new JLabel("Iniciar sesi\u00F3n");
 		iniciarseccion.setFont(new Font("Tahoma", Font.BOLD, 22));
 		iniciarseccion.setBounds(417, 194, 203, 41);
 		contentPane.add(iniciarseccion);
-<<<<<<< HEAD
+
 
 		JLabel Informacion = new JLabel("   Informaci\u00F3n");
 		Informacion.setFont(new Font("Tahoma", Font.BOLD, 24));
@@ -212,46 +156,29 @@ public class Login extends JFrame {
 		Informacion.setBackground(new Color(61,194,68));
 		contentPane.add(Informacion);
 
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
+
 		JLabel usuario = new JLabel("Usuario");
 		usuario.setFont(new Font("Tahoma", Font.BOLD, 19));
 		usuario.setBounds(297, 237, 140, 35);
 		contentPane.add(usuario);
-<<<<<<< HEAD
 
-		txtIngreseSuNombre = new JTextField();
-
-=======
 		
 		txtIngreseSuNombre = new JTextField();
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		txtIngreseSuNombre.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				if (txtIngreseSuNombre.getText().equals("Ingrese su nombre de usuario")) {
 					txtIngreseSuNombre.setText("");
 					txtIngreseSuNombre.setForeground(Color.BLACK);
-<<<<<<< HEAD
+
 				}
-=======
-                }
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 				if(String.valueOf(passwordField.getPassword()).isEmpty()){
 					passwordField.setText("••••••••");
 					passwordField.setForeground(Color.GRAY);
 				}
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-<<<<<<< HEAD
 
-=======
-				
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 			}
+
 		});
 		txtIngreseSuNombre.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		txtIngreseSuNombre.setBackground(SystemColor.controlHighlight);
@@ -260,40 +187,21 @@ public class Login extends JFrame {
 		txtIngreseSuNombre.setBounds(295, 271, 391, 35);
 		contentPane.add(txtIngreseSuNombre);
 		txtIngreseSuNombre.setColumns(10);
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		JLabel contraseña = new JLabel("Contrase\u00F1a");
 		contraseña.setFont(new Font("Tahoma", Font.BOLD, 19));
 		contraseña.setBounds(297, 329, 140, 35);
 		contentPane.add(contraseña);
-<<<<<<< HEAD
 
 		passwordField = new JPasswordField();
-
-		passwordField.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-				if (String.valueOf(passwordField.getPassword()).equals("••••••••")) 
-				{
-=======
-		
-		passwordField = new JPasswordField();
-		
 		passwordField.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				if (String.valueOf(passwordField.getPassword()).equals("••••••••")) {
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 					passwordField.setText("");
 					passwordField.setForeground(Color.BLACK);
 					passwordField.setEchoChar('•');
 				}
-<<<<<<< HEAD
 				if(txtIngreseSuNombre.getText().isEmpty())
 				{
 					txtIngreseSuNombre.setText("Ingrese su nombre de usuario");
@@ -305,18 +213,10 @@ public class Login extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent e) 
 			{
-
-=======
 				if(txtIngreseSuNombre.getText().isEmpty()){
 					txtIngreseSuNombre.setText("Ingrese su nombre de usuario");
 					txtIngreseSuNombre.setForeground(Color.GRAY);
                 }
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 			}
 		});
 		passwordField.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -324,20 +224,25 @@ public class Login extends JFrame {
 		passwordField.setText("••••••••");
 		passwordField.setBounds(297, 364, 389, 35);
 		contentPane.add(passwordField);
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		JLabel lblBienvenidoAlSistema = new JLabel("Bienvenido al Sistema de");
 		lblBienvenidoAlSistema.setFont(new Font("Tahoma", Font.BOLD, 24));
 		lblBienvenidoAlSistema.setBounds(348, 68, 323, 35);
 		contentPane.add(lblBienvenidoAlSistema);
-<<<<<<< HEAD
 
-		JPanel entrar = new JPanel();
-		entrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
+		JPanel entrar1 = new JPanel();
+		entrar1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+		entrar1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		entrar1.setBackground(new Color(61,194,68));
+		entrar1.setName("");
+		entrar1.setBounds(532, 412, 177, 50);
+		contentPane.add(entrar1);
+		entrar1.setLayout(null);
+
+		
+		txtEntrar = new JTextField();
 		txtEntrar.addMouseListener(new MouseAdapter() 
 		{
 			@Override
@@ -349,7 +254,7 @@ public class Login extends JFrame {
 				String contrasenaCorrectaParaElPaciente = "12345678";
 				String nombreDelAdmin = "OmarDavid";
 
-				if (contrasenaIngresada.equals(contrasenaCorrectaParaAdmin)&& usuarioIngresado.equals(nombreDelAdmin)) 
+				if (nombreDelAdmin.equals(usuarioIngresado) && contrasenaCorrectaParaAdmin.equals(contrasenaIngresada)) 
 				{
 					JOptionPane.showMessageDialog(null, "Acceso permitido. Bienvenido administrador");
 					Navegacion.registrar("Principal Admin" ,new PrincipalAdmin());
@@ -374,41 +279,15 @@ public class Login extends JFrame {
 				}
 			}
 		});
-=======
-		
-		JPanel entrar = new JPanel();
-		entrar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
-		entrar.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		entrar.setBackground(new Color(61,194,68));
-		entrar.setName("");
-		entrar.setBounds(532, 412, 177, 50);
-		contentPane.add(entrar);
-		entrar.setLayout(null);
-<<<<<<< HEAD
-
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
-		txtEntrar = new JTextField();
-		txtEntrar.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-			}
-		});
 		txtEntrar.setEditable(false);
 		txtEntrar.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		txtEntrar.setOpaque(false);
 		txtEntrar.setFont(new Font("Tahoma", Font.BOLD, 24));
 		txtEntrar.setText("      Entrar");
 		txtEntrar.setBounds(0, 0, 177, 50);
-		entrar.add(txtEntrar);
+		entrar1.add(txtEntrar);
 		txtEntrar.setColumns(10);
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 		JLabel fondo_1 = new JLabel("");
 		fondo_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		fondo_1.setBounds(0, 35, 761, 456);
@@ -416,32 +295,7 @@ public class Login extends JFrame {
 		this.ajustarImagen(fondo_1, "src/imagenes/fondo con logo del minsap.png");
 		this.setLocationRelativeTo(null);
 	}
-<<<<<<< HEAD
 
-	public void ajustarImagen(JLabel lbl, String ruta) {
-		try {
-			// Cargar la imagen original
-			ImageIcon imagenOriginal = new ImageIcon(ruta);
-
-			// Escalar la imagen al tamaño del JLabel manteniendo calidad
-			Image imagenEscalada = imagenOriginal.getImage().getScaledInstance(
-					lbl.getWidth(), 
-					lbl.getHeight(),
-					Image.SCALE_SMOOTH); // Usar SCALE_SMOOTH para mejor calidad
-
-			// Crear nuevo ImageIcon y asignar al JLabel
-			ImageIcon icono = new ImageIcon(imagenEscalada);
-			lbl.setIcon(icono);
-
-			// Forzar actualización
-			lbl.revalidate();
-			lbl.repaint();
-		} catch (Exception e) {
-			System.err.println("Error al cargar la imagen: " + e.getMessage());
-			// Puedes mostrar un mensaje de error o una imagen por defecto aquí
-		}
-	}
-=======
 	
 	public void ajustarImagen(JLabel lbl, String ruta) {
         try {
@@ -466,5 +320,4 @@ public class Login extends JFrame {
             // Puedes mostrar un mensaje de error o una imagen por defecto aquí
         }
     }
->>>>>>> a1967e86147c5d9379e2a6965cc52413a721fbe8
 }
