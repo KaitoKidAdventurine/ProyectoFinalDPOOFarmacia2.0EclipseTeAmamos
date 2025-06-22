@@ -403,6 +403,21 @@ public class PrincipalAdmin extends JFrame {
 		pestanas.addTab("", null, reportes, null);
 		reportes.setLayout(null);
 		
+		JLabel lblMujeresDeLos = new JLabel("mujeres de los n\u00FAcleos familiares");
+		lblMujeresDeLos.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblMujeresDeLos.setBounds(530, 254, 281, 50);
+		reportes.add(lblMujeresDeLos);
+		
+		JLabel lblNecesariasParaAbastecer = new JLabel("necesarias para abastecer a todas las");
+		lblNecesariasParaAbastecer.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblNecesariasParaAbastecer.setBounds(530, 233, 349, 50);
+		reportes.add(lblNecesariasParaAbastecer);
+		
+		JLabel lblCantidadDeAlmohadillas = new JLabel("Cantidad de almohadillas sanitarias");
+		lblCantidadDeAlmohadillas.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblCantidadDeAlmohadillas.setBounds(530, 211, 329, 50);
+		reportes.add(lblCantidadDeAlmohadillas);
+		
 		JLabel icon4 = new JLabel("");
 		icon4.setBounds(848, 412, 40, 34);
 		reportes.add(icon4);
