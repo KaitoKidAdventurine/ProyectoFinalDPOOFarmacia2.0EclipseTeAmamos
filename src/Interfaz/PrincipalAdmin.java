@@ -364,7 +364,7 @@ public class PrincipalAdmin extends JFrame {
 		
 		JLabel lblPrincipal = new JLabel("PRINCIPAL");
 		lblPrincipal.setFont(new Font("Times New Roman", Font.BOLD, 26));
-		lblPrincipal.setBounds(373, 0, 205, 43);
+		lblPrincipal.setBounds(12, 0, 205, 43);
 		panel.add(lblPrincipal);
 		
 		JPanel comprar = new JPanel();
@@ -379,7 +379,7 @@ public class PrincipalAdmin extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("COMPRAR");
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 26));
-		lblNewLabel.setBounds(434, 13, 144, 25);
+		lblNewLabel.setBounds(12, 0, 144, 43);
 		panel_3.add(lblNewLabel);
 		
 		
@@ -395,7 +395,7 @@ public class PrincipalAdmin extends JFrame {
 		
 		JLabel lblComprar_1 = new JLabel("MEDICAMENTOS");
 		lblComprar_1.setFont(new Font("Times New Roman", Font.BOLD, 26));
-		lblComprar_1.setBounds(394, 0, 237, 43);
+		lblComprar_1.setBounds(12, 0, 237, 43);
 		panel_1.add(lblComprar_1);
 		
 		JPanel reportes = new JPanel();
@@ -430,7 +430,7 @@ public class PrincipalAdmin extends JFrame {
 		
 		JLabel lblReportes_1 = new JLabel("REPORTES");
 		lblReportes_1.setFont(new Font("Times New Roman", Font.BOLD, 26));
-		lblReportes_1.setBounds(439, 0, 155, 43);
+		lblReportes_1.setBounds(12, 0, 155, 43);
 		panel_2.add(lblReportes_1);
 		
 		Label label_3 = new Label("_______________________________________________________________________");
@@ -440,12 +440,14 @@ public class PrincipalAdmin extends JFrame {
 		reportes.add(label_3);
 		
 		JLabel repor3 = new JLabel("");
+		repor3.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
 		repor3.setOpaque(true);
 		repor3.setBackground(new Color(116,255,78));
 		repor3.setBounds(78, 403, 381, 216);
 		reportes.add(repor3);
 		
 		JLabel repor4 = new JLabel("");
+		repor4.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
 		repor4.setBackground(new Color(116,255,78));
 		repor4.setOpaque(true);
 		repor4.setBounds(520, 403, 381, 216);
