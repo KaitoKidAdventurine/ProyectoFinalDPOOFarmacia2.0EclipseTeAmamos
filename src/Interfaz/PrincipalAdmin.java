@@ -40,6 +40,8 @@ import java.awt.event.FocusEvent;
 import java.awt.Window.Type;
 import javax.swing.JTabbedPane;
 import java.awt.Label;
+import java.awt.Panel;
+import javax.swing.border.MatteBorder;
 
 public class PrincipalAdmin extends JFrame {
 
@@ -109,12 +111,6 @@ public class PrincipalAdmin extends JFrame {
 		contentPane.add(barraSuperior);
 		barraSuperior.setLayout(null);
 		
-		JLabel iconoMenu = new JLabel("");
-		iconoMenu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		iconoMenu.setBounds(12, 13, 46, 32);
-		barraSuperior.add(iconoMenu);
-		UtilesInterfaz.ajustarImagen(iconoMenu, "src/iconos/menu-hamburguesa.png");
-		
 		final JLabel cruz = new JLabel("");
 		cruz.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		cruz.addMouseListener(new MouseAdapter() {
@@ -146,6 +142,12 @@ public class PrincipalAdmin extends JFrame {
 		minimizar.setBounds(1149, 0, 77, 58);
 		barraSuperior.add(minimizar);
 		UtilesInterfaz.ajustarImagen(minimizar, "src/iconos/minimize0.png");
+		
+		JLabel lblNewLabel_1 = new JLabel("Sistema de Gesti\u00F3n de Procesos en las Farmacia");
+		lblNewLabel_1.setForeground(Color.BLACK);
+		lblNewLabel_1.setFont(new Font("Times New Roman", Font.BOLD, 30));
+		lblNewLabel_1.setBounds(12, 13, 681, 45);
+		barraSuperior.add(lblNewLabel_1);
 		
 		JPanel menu = new JPanel();
 		menu.setBackground(new Color (12,184,47));
@@ -347,7 +349,7 @@ public class PrincipalAdmin extends JFrame {
 		label_1.setFont(new Font("Arial Black", Font.BOLD, 29));
 		
 		pestanas = new JTabbedPane(JTabbedPane.TOP);
-		pestanas.setBounds(292, 37, 1010, 680);
+		pestanas.setBounds(292, 33, 1010, 684);
 		contentPane.add(pestanas);
 		
 		JPanel principal = new JPanel();
@@ -356,7 +358,7 @@ public class PrincipalAdmin extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.GREEN);
-		panel.setBounds(0, 0, 1029, 43);
+		panel.setBounds(0, 0, 1016, 43);
 		principal.add(panel);
 		panel.setLayout(null);
 		
@@ -400,6 +402,26 @@ public class PrincipalAdmin extends JFrame {
 		pestanas.addTab("", null, reportes, null);
 		reportes.setLayout(null);
 		
+		JLabel repor1 = new JLabel("");
+		repor1.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
+		repor1.setOpaque(true);
+		repor1.setBackground(new Color(116,255,78));
+		repor1.setBounds(78, 161, 381, 216);
+		reportes.add(repor1);
+		
+		JLabel repor2 = new JLabel("");
+		repor2.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
+		repor2.setBackground(new Color(116,255,78));
+		repor2.setOpaque(true);
+		repor2.setBounds(520, 161, 381, 216);
+		reportes.add(repor2);
+		
+		JLabel lblElijaUnReporte = new JLabel("Elija un reporte");
+		lblElijaUnReporte.setForeground(Color.BLACK);
+		lblElijaUnReporte.setFont(new Font("Times New Roman", Font.BOLD, 28));
+		lblElijaUnReporte.setBounds(10, 56, 251, 43);
+		reportes.add(lblElijaUnReporte);
+		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(Color.GREEN);
 		panel_2.setBounds(0, 0, 1029, 43);
@@ -410,6 +432,37 @@ public class PrincipalAdmin extends JFrame {
 		lblReportes_1.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		lblReportes_1.setBounds(439, 0, 155, 43);
 		panel_2.add(lblReportes_1);
+		
+		Label label_3 = new Label("_______________________________________________________________________");
+		label_3.setFont(new Font("Arial Black", Font.BOLD, 50));
+		label_3.setForeground(Color.GREEN);
+		label_3.setBounds(0, 49, 1005, 79);
+		reportes.add(label_3);
+		
+		JLabel repor3 = new JLabel("");
+		repor3.setOpaque(true);
+		repor3.setBackground(new Color(116,255,78));
+		repor3.setBounds(78, 403, 381, 216);
+		reportes.add(repor3);
+		
+		JLabel repor4 = new JLabel("");
+		repor4.setBackground(new Color(116,255,78));
+		repor4.setOpaque(true);
+		repor4.setBounds(520, 403, 381, 216);
+		reportes.add(repor4);
+		
+		Panel reporte1 = new Panel();
+		pestanas.addTab("New tab", null, reporte1, null);
+		reporte1.setLayout(null);
+		
+		Panel reporte2 = new Panel();
+		pestanas.addTab("New tab", null, reporte2, null);
+		
+		Panel reporte3 = new Panel();
+		pestanas.addTab("New tab", null, reporte3, null);
+		
+		Panel reporte4 = new Panel();
+		pestanas.addTab("New tab", null, reporte4, null);
 		
 		
 		
