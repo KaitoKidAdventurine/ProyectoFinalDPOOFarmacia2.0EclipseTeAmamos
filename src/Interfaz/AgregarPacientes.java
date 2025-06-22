@@ -37,13 +37,19 @@ public class AgregarPacientes extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
+
+	public static void main(String[] args) 
+	{
+		EventQueue.invokeLater(new Runnable() 
+		{
+			public void run() 
+			{
+				try 
+				{
 					AgregarPacientes frame = new AgregarPacientes();
 					frame.setVisible(true);
-				} catch (Exception e) {
+				} catch (Exception e) 
+				{
 					e.printStackTrace();
 				}
 			}
@@ -53,18 +59,20 @@ public class AgregarPacientes extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+
 	public AgregarPacientes() {
+
 		setTitle("Registro Paciente");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 391, 596);
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(18,255,100));
+		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JPanel panelDatosGenerales = new JPanel();
-		panelDatosGenerales.setBackground(new Color(110,237,103));
+		panelDatosGenerales.setBackground(Color.WHITE);
 		panelDatosGenerales.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelDatosGenerales.setName("");
 		panelDatosGenerales.setBounds(12, 79, 330, 412);
