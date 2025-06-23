@@ -1,3 +1,4 @@
+
 package Utiles;
 
 import java.util.*;
@@ -10,8 +11,13 @@ import LogicaUtiles.Factura;
 
 public class BaseDeDatos {
     // Instancia única (Singleton)
+<<<<<<< HEAD
     private final static Random random;
 
+=======
+    private static BaseDeDatos instancia;
+    private final Random random;
+>>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
     private final List<Venta> ventas;
 	private final List<Factura> facturas;
 	
@@ -24,13 +30,17 @@ public class BaseDeDatos {
         this.facturas = new ArrayList<Factura>();
         inicializarDatosPrueba();
     }
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
     // Datos de prueba
     private static final List<String> NOMBRES_MASCULINOS = Arrays.asList(
-        "Alejandro", "Benjamin", "Carlos", "Daniel", "Emilio", 
-        "Fernando", "Gabriel", "Hector", "Ignacio", "Javier",
-        "Kevin", "Luis", "Manuel", "Nicolas", "Oscar",
-        "Pablo", "Raúl", "Sergio", "Tomas", "Victor");
+        "Alejandro", "Benjamín", "Carlos", "Daniel", "Emilio", 
+        "Fernando", "Gabriel", "Héctor", "Ignacio", "Javier",
+        "Kevin", "Luis", "Manuel", "Nicolás", "Oscar",
+        "Pablo", "Raúl", "Sergio", "Tomás", "Víctor");
     
     private static final List<String> NOMBRES_FEMENINOS = Arrays.asList(
         "Adriana", "Beatriz", "Camila", "Diana", "Elena",
@@ -48,6 +58,10 @@ public class BaseDeDatos {
     private final Map<String, Paciente> pacientes;
     private final Map<String, Medicamento> medicamentos;
 
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
 
     public static synchronized BaseDeDatos obtenerInstancia() {
         BaseDeDatos instancia = null;
@@ -56,7 +70,7 @@ public class BaseDeDatos {
         }
         return instancia;
     }
-    
+
     private void inicializarDatosPrueba() {
         // Inicialización con datos de prueba
         for (int i = 0; i < 50; i++) {
@@ -200,19 +214,23 @@ public class BaseDeDatos {
     }
 
     // Métodos de consulta
-    public List<Paciente> obtenerPacientes() {
+    public List<Paciente> obtenerPacientes() 
+    {
         return new ArrayList<Paciente>(pacientes.values());
     }
 
-    public List<Medicamento> obtenerMedicamentos() {
+    public List<Medicamento> obtenerMedicamentos() 
+    {
         return new ArrayList<Medicamento>(medicamentos.values());
     }
 
     // Método de validación
-    public boolean validarCarnetIdentidad(String ci, char genero, LocalDate fechaNacimiento) {
+    public boolean validarCarnetIdentidad(String ci, char genero, LocalDate fechaNacimiento) 
+    {
         if (ci == null || ci.length() != 11) return false;
         
-        try {
+        try 
+        {
             int añoCI = Integer.parseInt(ci.substring(0, 2));
             int mesCI = Integer.parseInt(ci.substring(2, 4));
             int diaCI = Integer.parseInt(ci.substring(4, 6));
@@ -224,7 +242,10 @@ public class BaseDeDatos {
             boolean generoValido = (Integer.parseInt(ci.substring(10)) % 2 == 0) == (genero == 'M');
             
             return fechaValida && generoValido;
-        } catch (Exception e) {
+        } 
+        
+        catch (Exception e) 
+        {
             return false;
         }
     }
@@ -258,10 +279,10 @@ public class BaseDeDatos {
 	        // VentaConPrescripcion
 	        Date fechaVenta1 = generarFechaAleatoria();
 	        double importeTotal1 = 20 + random.nextDouble() * 150;
-	        VentaConPrescripcion ventaPrescripcion = new VentaConPrescripcion(fechaVenta1, importeTotal1);
+	        VentaConPrescripcion ventaPrescripcion = new VentaConPrescripcion((java.sql.Date) fechaVenta1, importeTotal1);
 	        try 
 	        {	
-	            ventaPrescripcion.setFechaDeCompra(generarFechaAleatoria());
+	            ventaPrescripcion.setFechaDeCompra((java.sql.Date) generarFechaAleatoria());
 	        } 
 	        
 	        catch (Exception e) 

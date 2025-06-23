@@ -7,7 +7,8 @@ import java.util.List;
 import LogicaUtiles.Validaciones;
 
 
-public class Paciente {
+public class Paciente 
+{
     protected String nombre;
     protected String ci;
     protected String direccion;
@@ -23,12 +24,13 @@ public class Paciente {
     }
 
     // Constructor completo
-    public Paciente(String nombre, String ci, String direccion, Date fechaNacimiento, char genero) {
-        this.nombre = nombre;
-        this.ci = ci;
-        this.direccion = direccion;
-        this.fechaNacimiento = fechaNacimiento;
-        this.genero = genero;
+    public Paciente(String nombre, String ci, String direccion, Date fechaNacimiento, char genero) 
+    {
+    	setNombre(nombre);
+    	setCi(ci);
+    	setDireccion(direccion);
+    	setFechaNacimiento(fechaNacimiento);
+    	setGenero(genero);
         this.tarjetones = new ArrayList<Tarjeton>();
         this.esControlado = false;
     }

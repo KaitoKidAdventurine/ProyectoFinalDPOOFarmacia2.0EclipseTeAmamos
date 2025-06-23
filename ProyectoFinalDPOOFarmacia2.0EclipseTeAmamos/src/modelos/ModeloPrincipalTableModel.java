@@ -17,7 +17,8 @@ public abstract class ModeloPrincipalTableModel<T> extends DefaultTableModel {
 
     public void cargar(List<Medicamento> listaMedicamentos) {
         this.setRowCount(0); // Limpiar tabla antes de llenar
-        for (T elem : (List<T>) listaMedicamentos) {
+        for (T elem : (List<T>) listaMedicamentos) 
+        {
             adicionar(elem);
         }
     }
