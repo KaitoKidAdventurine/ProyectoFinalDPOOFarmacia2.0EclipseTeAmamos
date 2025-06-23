@@ -6,14 +6,12 @@ import java.time.temporal.ChronoUnit;
 
 import Interfaces_Enum.Presentacion;
 import Logica.*;
+import LogicaUtiles.Factura;
 
 public class BaseDeDatos {
     // Instancia única (Singleton)
-    private final Random random;
-<<<<<<< HEAD
-    private static volatile BaseDeDatos instancia;
-    
-=======
+    private final static Random random;
+
     private final List<Venta> ventas;
 	private final List<Factura> facturas;
 	
@@ -26,8 +24,7 @@ public class BaseDeDatos {
         this.facturas = new ArrayList<Factura>();
         inicializarDatosPrueba();
     }
-	
->>>>>>> 6e770434d6cac210f7f67205144dce4cb70fb04d
+
     // Datos de prueba
     private static final List<String> NOMBRES_MASCULINOS = Arrays.asList(
         "Alejandro", "Benjamin", "Carlos", "Daniel", "Emilio", 
@@ -51,19 +48,10 @@ public class BaseDeDatos {
     private final Map<String, Paciente> pacientes;
     private final Map<String, Medicamento> medicamentos;
 
-<<<<<<< HEAD
-    private BaseDeDatos() {
-        this.random = new Random();
-        this.pacientes = new HashMap<String, Paciente>();
-        this.medicamentos = new HashMap<String, Medicamento>();
-        inicializarDatosPrueba();
-    }
-=======
-    
 
->>>>>>> 6e770434d6cac210f7f67205144dce4cb70fb04d
     public static synchronized BaseDeDatos obtenerInstancia() {
-        if (instancia == null) {
+        BaseDeDatos instancia = null;
+		if (instancia == null) {
             instancia = new BaseDeDatos();
         }
         return instancia;
@@ -99,7 +87,7 @@ public class BaseDeDatos {
         return hoy.minusYears(10 + random.nextInt(80)); // Entre 10 y 90 años
     }
 
-    private String generarNombreCompleto(char genero) {
+    public static String generarNombreCompleto(char genero) {
         String nombre = genero == 'M' ? 
             NOMBRES_MASCULINOS.get(random.nextInt(NOMBRES_MASCULINOS.size())) :
             NOMBRES_FEMENINOS.get(random.nextInt(NOMBRES_FEMENINOS.size()));
@@ -111,19 +99,38 @@ public class BaseDeDatos {
         return nombre + " " + apellido1 + " " + apellido2;
     }
 
-    private String generarCarnetIdentidad(char genero, LocalDate fechaNacimiento) {
-        StringBuilder ci = new StringBuilder();
+    public static String generarCarnetIdentidad(char genero, Date fechaNacimiento) {
+        if(fechaNacimiento == null) {
+            throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
+        }
+        if(genero != 'M' && genero != 'F') {
+            throw new IllegalArgumentException("El género debe ser 'M' o 'F'");
+        }
+
+        StringBuilder ci = new StringBuilder(11); // Tamaño fijo para CI
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(fechaNacimiento);
         
         // Año (2 últimos dígitos)
-        ci.append(String.format("%02d", fechaNacimiento.getYear() % 100));
-        // Mes
-        ci.append(String.format("%02d", fechaNacimiento.getMonthValue()));
-        // Día
-        ci.append(String.format("%02d", fechaNacimiento.getDayOfMonth()));
+        ci.append(String.format("%02d", cal.get(Calendar.YEAR) % 100));
+        
+        // Mes (2 dígitos)
+        ci.append(String.format("%02d", cal.get(Calendar.MONTH) + 1));
+        
+        // Día (2 dígitos)
+        ci.append(String.format("%02d", cal.get(Calendar.DAY_OF_MONTH)));
+        
         // 3 dígitos aleatorios
         ci.append(String.format("%03d", random.nextInt(1000)));
+        
         // Dígito de género (par=M, impar=F)
-        ci.append(genero == 'M' ? random.nextInt(5) * 2 : random.nextInt(5) * 2 + 1);
+        int digitoGenero = genero == 'M' ? random.nextInt(5) * 2 : random.nextInt(5) * 2 + 1;
+        ci.append(digitoGenero);
+        
+        // Validar longitud final
+        if(ci.length() != 11) {
+            throw new IllegalStateException("El CI generado no tiene 11 dígitos");
+        }
         
         return ci.toString();
     }

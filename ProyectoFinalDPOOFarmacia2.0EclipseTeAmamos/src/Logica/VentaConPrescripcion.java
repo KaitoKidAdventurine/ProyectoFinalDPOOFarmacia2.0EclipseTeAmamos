@@ -28,9 +28,9 @@ public class VentaConPrescripcion extends Venta
 		
 	}
 
-	public VentaConPrescripcion(Date fechaVenta, double importeTotal)
+	public VentaConPrescripcion(java.util.Date date, double importeTotal)
 	{
-		super(fechaVenta, importeTotal);
+		super(date, importeTotal);
 		setFechaDeCompra(fechaDeCompra);
 	}
 }
