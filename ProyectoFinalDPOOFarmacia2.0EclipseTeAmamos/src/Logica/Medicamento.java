@@ -184,8 +184,8 @@ public class Medicamento
 
 	public void setFechaDeProd(Date fechaDeProd) 
 	{
-		if(Validaciones.noEstaVacio(fechaDeProd))
-			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeProd))
+		if(Validaciones.noEstaVacio((java.sql.Date)fechaDeProd))
+			if(Validaciones.sobrepasaDeLaFechaDeHoy((java.sql.Date)fechaDeProd))
 				if(getFechaDeVenc() != null && fechaDeProd.after(getFechaDeVenc())) 
 					this.fechaDeProd = fechaDeProd;
 				else
@@ -199,8 +199,8 @@ public class Medicamento
 
 	public void setFechaDeVenc(Date fechaDeVenc) 
 	{
-		if(Validaciones.noEstaVacio(fechaDeVenc))
-			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeVenc))
+		if(Validaciones.noEstaVacio((java.sql.Date)fechaDeVenc))
+			if(Validaciones.sobrepasaDeLaFechaDeHoy((java.sql.Date)fechaDeVenc))
 				if(getFechaDeProd() != null && fechaDeVenc.before(getFechaDeProd())) 
 					this.fechaDeVenc = fechaDeVenc;
 				else

@@ -147,7 +147,7 @@ public class Validaciones
 		// que no haya ningun caracter especial
 
 
-		return texto.matches("[a-zA-Z0-9]+");
+		return texto.matches("[a-zA-Z0-9αινσϊ ]+");
 	}
 
 	public static boolean noTieneCaracteresEsp(double numero) 

@@ -1,3 +1,4 @@
+
 package Utiles;
 
 import java.util.*;
@@ -6,14 +7,12 @@ import java.time.temporal.ChronoUnit;
 
 import Interfaces_Enum.Presentacion;
 import Logica.*;
+import LogicaUtiles.Factura;
 
 public class BaseDeDatos {
     // Instancia única (Singleton)
+    private static BaseDeDatos instancia;
     private final Random random;
-<<<<<<< HEAD
-    private static volatile BaseDeDatos instancia;
-    
-=======
     private final List<Venta> ventas;
 	private final List<Factura> facturas;
 	
@@ -27,13 +26,12 @@ public class BaseDeDatos {
         inicializarDatosPrueba();
     }
 	
->>>>>>> 6e770434d6cac210f7f67205144dce4cb70fb04d
     // Datos de prueba
     private static final List<String> NOMBRES_MASCULINOS = Arrays.asList(
-        "Alejandro", "Benjamin", "Carlos", "Daniel", "Emilio", 
-        "Fernando", "Gabriel", "Hector", "Ignacio", "Javier",
-        "Kevin", "Luis", "Manuel", "Nicolas", "Oscar",
-        "Pablo", "Raúl", "Sergio", "Tomas", "Victor");
+        "Alejandro", "Benjamín", "Carlos", "Daniel", "Emilio", 
+        "Fernando", "Gabriel", "Héctor", "Ignacio", "Javier",
+        "Kevin", "Luis", "Manuel", "Nicolás", "Oscar",
+        "Pablo", "Raúl", "Sergio", "Tomás", "Víctor");
     
     private static final List<String> NOMBRES_FEMENINOS = Arrays.asList(
         "Adriana", "Beatriz", "Camila", "Diana", "Elena",
@@ -51,24 +49,15 @@ public class BaseDeDatos {
     private final Map<String, Paciente> pacientes;
     private final Map<String, Medicamento> medicamentos;
 
-<<<<<<< HEAD
-    private BaseDeDatos() {
-        this.random = new Random();
-        this.pacientes = new HashMap<String, Paciente>();
-        this.medicamentos = new HashMap<String, Medicamento>();
-        inicializarDatosPrueba();
-    }
-=======
     
 
->>>>>>> 6e770434d6cac210f7f67205144dce4cb70fb04d
     public static synchronized BaseDeDatos obtenerInstancia() {
         if (instancia == null) {
             instancia = new BaseDeDatos();
         }
         return instancia;
     }
-    
+
     private void inicializarDatosPrueba() {
         // Inicialización con datos de prueba
         for (int i = 0; i < 50; i++) {
@@ -193,19 +182,23 @@ public class BaseDeDatos {
     }
 
     // Métodos de consulta
-    public List<Paciente> obtenerPacientes() {
+    public List<Paciente> obtenerPacientes() 
+    {
         return new ArrayList<Paciente>(pacientes.values());
     }
 
-    public List<Medicamento> obtenerMedicamentos() {
+    public List<Medicamento> obtenerMedicamentos() 
+    {
         return new ArrayList<Medicamento>(medicamentos.values());
     }
 
     // Método de validación
-    public boolean validarCarnetIdentidad(String ci, char genero, LocalDate fechaNacimiento) {
+    public boolean validarCarnetIdentidad(String ci, char genero, LocalDate fechaNacimiento) 
+    {
         if (ci == null || ci.length() != 11) return false;
         
-        try {
+        try 
+        {
             int añoCI = Integer.parseInt(ci.substring(0, 2));
             int mesCI = Integer.parseInt(ci.substring(2, 4));
             int diaCI = Integer.parseInt(ci.substring(4, 6));
@@ -217,7 +210,10 @@ public class BaseDeDatos {
             boolean generoValido = (Integer.parseInt(ci.substring(10)) % 2 == 0) == (genero == 'M');
             
             return fechaValida && generoValido;
-        } catch (Exception e) {
+        } 
+        
+        catch (Exception e) 
+        {
             return false;
         }
     }
@@ -251,10 +247,10 @@ public class BaseDeDatos {
 	        // VentaConPrescripcion
 	        Date fechaVenta1 = generarFechaAleatoria();
 	        double importeTotal1 = 20 + random.nextDouble() * 150;
-	        VentaConPrescripcion ventaPrescripcion = new VentaConPrescripcion(fechaVenta1, importeTotal1);
+	        VentaConPrescripcion ventaPrescripcion = new VentaConPrescripcion((java.sql.Date) fechaVenta1, importeTotal1);
 	        try 
 	        {	
-	            ventaPrescripcion.setFechaDeCompra(generarFechaAleatoria());
+	            ventaPrescripcion.setFechaDeCompra((java.sql.Date) generarFechaAleatoria());
 	        } 
 	        
 	        catch (Exception e) 
