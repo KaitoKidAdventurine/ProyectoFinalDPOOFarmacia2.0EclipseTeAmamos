@@ -2,6 +2,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import LogicaUtiles.Validaciones;
+
 
 public class Paciente {
     protected String nombre;
@@ -54,14 +56,23 @@ public class Paciente {
         return nombre;
     }
 
-    public void setNombre(String nombre) {
-        if (nombre == null || nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("El nombre no puede estar vacío");
-        }
-        this.nombre = nombre;
+    public void setNombre(String nombre) 
+    {
+    	if(Validaciones.noEstaVacio(nombre))
+			if(Validaciones.noTieneNumeros(nombre))
+				if(Validaciones.noTieneCaracteresEsp(nombre))
+					this.nombre = nombre;
+				else
+					throw new IllegalArgumentException("El campo: nombre comun del medicamento, presenta caracteres especiales");
+			else
+				throw new IllegalArgumentException("El campo: nombre comun del medicamento, presenta números");
+		else
+			throw new IllegalArgumentException("El campo: nombre comun del medicamento, se encuentra vacío");
+        
     }
 
-    public String getCi() {
+    public String getCi() 
+    {
         return ci;
     }
 
