@@ -1,5 +1,5 @@
 package Logica;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 
 public class VentaLibre extends Venta 
@@ -8,7 +8,7 @@ public class VentaLibre extends Venta
 	
 	public VentaLibre(Date fechaVenta, double importeTotal) 
 	{
-		super(fechaVenta, importeTotal);
+		super((java.sql.Date) fechaVenta, importeTotal);
 		setInventario(inventario);
 	}
 	

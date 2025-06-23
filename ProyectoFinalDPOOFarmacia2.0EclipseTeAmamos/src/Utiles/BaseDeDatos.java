@@ -11,7 +11,19 @@ public class BaseDeDatos {
     // Instancia única (Singleton)
     private static BaseDeDatos instancia;
     private final Random random;
-    
+    private final List<Venta> ventas;
+	private final List<Factura> facturas;
+	
+	private BaseDeDatos() 
+	{
+        this.random = new Random();
+        this.pacientes = new HashMap<String, Paciente>();
+        this.medicamentos = new HashMap<String, Medicamento>();
+        this.ventas = new ArrayList<Venta>();
+        this.facturas = new ArrayList<Factura>();
+        inicializarDatosPrueba();
+    }
+	
     // Datos de prueba
     private static final List<String> NOMBRES_MASCULINOS = Arrays.asList(
         "Alejandro", "Benjamín", "Carlos", "Daniel", "Emilio", 
@@ -35,12 +47,7 @@ public class BaseDeDatos {
     private final Map<String, Paciente> pacientes;
     private final Map<String, Medicamento> medicamentos;
 
-    private BaseDeDatos() {
-        this.random = new Random();
-        this.pacientes = new HashMap<String, Paciente>();
-        this.medicamentos = new HashMap<String, Medicamento>();
-        inicializarDatosPrueba();
-    }
+    
 
     public static synchronized BaseDeDatos obtenerInstancia() {
         if (instancia == null) {
@@ -201,4 +208,166 @@ public class BaseDeDatos {
             return false;
         }
     }
+    public void registrarVenta(Venta venta) 
+	{
+	    ventas.add(venta);
+	}
+
+
+	public List<Venta> obtenerVentas() 
+	{
+	    return new ArrayList<Venta>(ventas);
+	}
+
+
+
+
+
+	private void generarVentasPrueba() 
+	{
+	    List<Medicamento> listaMedicamentos = new ArrayList<Medicamento>(medicamentos.values());
+
+	    if (listaMedicamentos.isEmpty()) 
+	    {
+	        System.out.println("No hay medicamentos disponibles para generar ventas.");
+	        return;
+	    }
+
+	    for (int i = 0; i < 50; i++) 
+	    {
+	        // VentaConPrescripcion
+	        Date fechaVenta1 = generarFechaAleatoria();
+	        double importeTotal1 = 20 + random.nextDouble() * 150;
+	        VentaConPrescripcion ventaPrescripcion = new VentaConPrescripcion(fechaVenta1, importeTotal1);
+	        try 
+	        {	
+	            ventaPrescripcion.setFechaDeCompra(generarFechaAleatoria());
+	        } 
+	        
+	        catch (Exception e) 
+	        {
+	            System.err.println("Error al setear fecha de compra: " + e.getMessage());
+	        }
+	        ventas.add(ventaPrescripcion);
+	        
+	        if (!listaMedicamentos.isEmpty()) 
+	        {
+	        	Medicamento med = listaMedicamentos.get(random.nextInt(listaMedicamentos.size()));
+
+	        	Factura factura1 = new Factura(
+	        	    med.getNomComun(),          // Nombre del medicamento
+	        	    med.getNomCientifico(),     // Codigo del medicamento
+	        	    1,                          // Cantidad vendida (ejemplo)
+	        	    fechaVenta1                 // Fecha de la compra
+	        	);
+
+	        	facturas.add(factura1);
+	        }
+	        
+	        
+	        // VentaControlada
+	        Date fechaVenta2 = generarFechaAleatoria();
+	        double importeTotal2 = 10 + random.nextDouble() * 200;
+	        ventas.add(new VentaControlada(fechaVenta2, importeTotal2));
+	        
+	        if (!listaMedicamentos.isEmpty()) 
+	        {
+	        	Medicamento med = listaMedicamentos.get(random.nextInt(listaMedicamentos.size()));
+	        	facturas.add(new Factura(
+	        		    med.getNomComun(),          // nombreDelMed
+	        		    med.getNomCientifico(),     // codigoDelMed
+	        		    1,                          // cantMedVendidos
+	        		    fechaVenta2                 // fechaDeLaCompra
+	        		));
+	        }
+
+
+	        // VentaLibre
+	        Date fechaVenta3 = generarFechaAleatoria();
+	        double importeTotal3 = 10 + random.nextDouble() * 100;
+
+	        ArrayList<Medicamento> carrito = new ArrayList<Medicamento>();
+	        for (int j = 0; j < 2 + random.nextInt(4); j++) 
+	        {
+	            if (!listaMedicamentos.isEmpty()) 
+	            {
+	                carrito.add(listaMedicamentos.get(random.nextInt(listaMedicamentos.size())));
+	            }
+	        }
+
+	        VentaLibre ventaLibre = new VentaLibre(fechaVenta3, importeTotal3);
+	        
+	        try 
+	        {
+	            ventaLibre.setInventario(carrito);
+	        } 
+	        
+	        catch (Exception e) 
+	        {
+	            System.err.println("Error al setear inventario: " + e.getMessage());
+	        }
+	        ventas.add(ventaLibre);
+	        
+	        if (!carrito.isEmpty()) 
+	        {
+	            for (Medicamento med : carrito) 
+	            {
+	            	facturas.add(new Factura(
+	            		    med.getNomComun(), 
+	            		    med.getNomCientifico(), 
+	            		    1, 
+	            		    fechaVenta3
+	            		));
+	            }
+	        }
+
+	        // AlmohadillasSanitarias
+	        Date fechaVenta4 = generarFechaAleatoria();
+	        double precioUnit = 5 + random.nextDouble() * 10;
+	        int cantidad = 5 + random.nextInt(10);
+
+	        try 
+	        {
+	        	ventas.add(new AlmohadillasSanitarias(precioUnit, cantidad, fechaVenta4));
+	        } 
+	        
+	        catch (Exception e) 
+	        {
+	            System.err.println("Error al crear AlmohadillasSanitarias: " + e.getMessage());
+	        }
+	        
+	        Factura factura4 = new Factura("Almohadillas Sanitarias", "ALM-001", cantidad, fechaVenta4);
+	        facturas.add(factura4);
+	        
+	    }
+
+	    
+	}
+	
+	private Date generarFechaAleatoria() 
+	{
+	    Calendar calendario = Calendar.getInstance();
+	    int anioActual = calendario.get(Calendar.YEAR);
+
+	    // Establecer al 1 de enero del anno actual
+	    Calendar inicioAnio = Calendar.getInstance();
+	    inicioAnio.set(anioActual, Calendar.JANUARY, 1);
+
+	    // Calcular los dias transcurridos desde el 1 de enero hasta hoy
+	    long milisegundosDesdeInicio = calendario.getTimeInMillis() - inicioAnio.getTimeInMillis();
+	    int diasTranscurridos = (int) (milisegundosDesdeInicio / (24 * 60 * 60 * 1000));
+
+	    // Genera una cantidad aleatoria de dias entre 0 y los dias transcurridos
+	    int diasAleatorios = random.nextInt(diasTranscurridos + 1);
+
+	    // Avanzar desde el 1ero de enero y pone dias aleatorios
+	    inicioAnio.add(Calendar.DAY_OF_YEAR, diasAleatorios);
+
+	    return inicioAnio.getTime();
+	}
+	
+	public List<Factura> obtenerFacturas() 
+	{
+	    return new ArrayList<Factura>(facturas);
+	}
 }

@@ -3,6 +3,8 @@ import java.sql.Date;
 
 import Interfaces_Enum.ValidacionBool;
 import LogicaUtiles.Validaciones;
+import Interfaces_Enum.ValidacionBool;
+import LogicaUtiles.Validaciones;
 
 public class VentaConPrescripcion extends Venta
 {

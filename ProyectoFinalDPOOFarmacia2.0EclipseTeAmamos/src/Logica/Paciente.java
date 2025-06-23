@@ -1,3 +1,5 @@
+package Logica;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +46,7 @@ public class Paciente {
     }
 
     public List<Tarjeton> obtenerTarjetones() {
-        return new ArrayList<>(tarjetones); // Devuelve copia para proteger encapsulamiento
+        return new ArrayList<Tarjeton>(tarjetones); // Devuelve copia para proteger encapsulamiento
     }
 
     public boolean removerTarjeton(Tarjeton tarjeton) {
