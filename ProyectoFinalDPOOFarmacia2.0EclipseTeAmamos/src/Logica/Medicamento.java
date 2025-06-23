@@ -212,6 +212,11 @@ public class Medicamento
 		
 	}
 
+	public Object getPrecio() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

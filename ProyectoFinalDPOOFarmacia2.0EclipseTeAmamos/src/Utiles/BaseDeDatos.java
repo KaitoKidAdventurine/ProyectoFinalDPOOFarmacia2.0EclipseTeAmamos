@@ -9,15 +9,15 @@ import Logica.*;
 
 public class BaseDeDatos {
     // Instancia única (Singleton)
-    private static BaseDeDatos instancia;
     private final Random random;
+    private static volatile BaseDeDatos instancia;
     
     // Datos de prueba
     private static final List<String> NOMBRES_MASCULINOS = Arrays.asList(
-        "Alejandro", "Benjamín", "Carlos", "Daniel", "Emilio", 
-        "Fernando", "Gabriel", "Héctor", "Ignacio", "Javier",
-        "Kevin", "Luis", "Manuel", "Nicolás", "Oscar",
-        "Pablo", "Raúl", "Sergio", "Tomás", "Víctor");
+        "Alejandro", "Benjamin", "Carlos", "Daniel", "Emilio", 
+        "Fernando", "Gabriel", "Hector", "Ignacio", "Javier",
+        "Kevin", "Luis", "Manuel", "Nicolas", "Oscar",
+        "Pablo", "Raúl", "Sergio", "Tomas", "Victor");
     
     private static final List<String> NOMBRES_FEMENINOS = Arrays.asList(
         "Adriana", "Beatriz", "Camila", "Diana", "Elena",
@@ -41,14 +41,13 @@ public class BaseDeDatos {
         this.medicamentos = new HashMap<String, Medicamento>();
         inicializarDatosPrueba();
     }
-
     public static synchronized BaseDeDatos obtenerInstancia() {
         if (instancia == null) {
             instancia = new BaseDeDatos();
         }
         return instancia;
     }
-
+    
     private void inicializarDatosPrueba() {
         // Inicialización con datos de prueba
         for (int i = 0; i < 50; i++) {
