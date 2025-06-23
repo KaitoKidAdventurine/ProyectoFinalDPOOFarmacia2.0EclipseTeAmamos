@@ -579,13 +579,15 @@ public class PrincipalAdmin extends JFrame {
 		panel_4.setLayout(null);
 		
 		JLabel regresar = new JLabel("");
-		regresar.addMouseListener(new MouseAdapter() {
+		regresar.addMouseListener(new MouseAdapter() 
+		{
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent arg0) 
+			{
 				pestanas.setSelectedIndex(3);
 			}
 		});
-		regresar.setBounds(12, 13, 44, 31);
+		regresar.setBounds(0, 0, 64, 57);
 		panel_4.add(regresar);
 		UtilesInterfaz.ajustarImagen(regresar, "src/iconos/deshacer.png");
 		
@@ -596,14 +598,95 @@ public class PrincipalAdmin extends JFrame {
 		
 		Panel reporte2 = new Panel();
 		pestanas.addTab("New tab", null, reporte2, null);
+		reporte2.setLayout(null);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(Color.GREEN);
+		panel_5.setBounds(0, 0, 1015, 57);
+		reporte2.add(panel_5);
+		panel_5.setLayout(null);
+		
+		JLabel regresar_2 = new JLabel("");
+		regresar_2.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseClicked(MouseEvent arg0) 
+			{
+				pestanas.setSelectedIndex(3);
+			}
+		});
+		regresar_2.setBounds(0, 0, 64, 57);
+		panel_5.add(regresar_2);
+		UtilesInterfaz.ajustarImagen(regresar_2, "src/iconos/deshacer.png");
+		
+		
+		
+		
+		
+		JLabel lblNewLabel_3 = new JLabel("New label");
+		lblNewLabel_3.setBounds(312, 0, 122, 57);
+		panel_5.add(lblNewLabel_3);
+		
 		
 		Panel reporte3 = new Panel();
 		pestanas.addTab("New tab", null, reporte3, null);
+		reporte3.setLayout(null);
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBackground(Color.GREEN);
+		panel_6.setBounds(0, 0, 1015, 57);
+		reporte3.add(panel_6);
+		panel_6.setLayout(null);
+		
+		JLabel regresar_3 = new JLabel("");
+		regresar_3.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseClicked(MouseEvent arg0) 
+			{
+				pestanas.setSelectedIndex(3);
+			}
+		});
+		regresar_3.setBounds(0, 0, 64, 57);
+		panel_6.add(regresar_3);
+		UtilesInterfaz.ajustarImagen(regresar_3, "src/iconos/deshacer.png");
+		
+		
+		
+		
+		
+		JLabel lblNewLabel_4 = new JLabel("New label");
+		lblNewLabel_4.setBounds(290, 17, 69, 20);
+		panel_6.add(lblNewLabel_4);
 		
 		Panel reporte4 = new Panel();
 		pestanas.addTab("New tab", null, reporte4, null);
+		reporte4.setLayout(null);
+		
+		JPanel panel_7 = new JPanel();
+		panel_7.setBackground(Color.GREEN);
+		panel_7.setBounds(0, 0, 1015, 57);
+		reporte4.add(panel_7);
+		panel_7.setLayout(null);
+		
+		JLabel regresar_4 = new JLabel("");
+		regresar_4.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseClicked(MouseEvent arg0) 
+			{
+				pestanas.setSelectedIndex(3);
+			}
+		});
+		regresar_4.setBounds(0, 0, 64, 57);
+		panel_7.add(regresar_4);
+		UtilesInterfaz.ajustarImagen(regresar_4, "src/iconos/deshacer.png");
 		
 		
 		
+		JLabel lblNewLabel_5 = new JLabel("New label");
+		lblNewLabel_5.setBounds(307, 16, 69, 20);
+		panel_7.add(lblNewLabel_5);
+
 	}
 }
