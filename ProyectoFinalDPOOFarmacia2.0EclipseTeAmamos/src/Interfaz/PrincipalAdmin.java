@@ -193,7 +193,7 @@ public class PrincipalAdmin extends JFrame {
 		final JLabel iconoPrincipal = new JLabel("");
 		iconoPrincipal.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(0);
 			}
 		});
@@ -215,7 +215,7 @@ public class PrincipalAdmin extends JFrame {
 				panel2.setBackground(new Color(2,184,47));
 			}
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(1);
 			}
 		});
@@ -226,7 +226,7 @@ public class PrincipalAdmin extends JFrame {
 		JLabel lblComprar = new JLabel("COMPRAR");
 		lblComprar.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent ae) {
 				pestanas.setSelectedIndex(1);
 			}
 		});
@@ -239,7 +239,7 @@ public class PrincipalAdmin extends JFrame {
 		JLabel iconoComprar = new JLabel("");
 		iconoComprar.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(1);
 			}
 		});
@@ -271,7 +271,7 @@ public class PrincipalAdmin extends JFrame {
 		JLabel lblMedicamentos = new JLabel("MEDICAMENTOS");
 		lblMedicamentos.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(2);
 			}
 		});
@@ -283,7 +283,7 @@ public class PrincipalAdmin extends JFrame {
 		JLabel iconoMedicamentos = new JLabel("");
 		iconoMedicamentos.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(2);
 			}
 		});
@@ -299,11 +299,11 @@ public class PrincipalAdmin extends JFrame {
 				panel4.setBackground(new Color(0,237,21));
 			}
 			@Override
-			public void mouseExited(MouseEvent arg0) {
+			public void mouseExited(MouseEvent e) {
 				panel4.setBackground(new Color(2,184,47));
 			}
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(3);
 			}
 		});
@@ -315,7 +315,7 @@ public class PrincipalAdmin extends JFrame {
 		JLabel lblReportes = new JLabel("REPORTES");
 		lblReportes.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(3);
 			}
 		});
@@ -326,7 +326,7 @@ public class PrincipalAdmin extends JFrame {
 		JLabel iconoReportes = new JLabel("");
 		iconoReportes.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(3);
 			}
 		});
