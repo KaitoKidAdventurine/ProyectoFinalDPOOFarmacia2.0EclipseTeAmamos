@@ -1,8 +1,7 @@
 package Logica;
 
 
-import java.sql.Date;
-
+import java.util.Date;
 import Interfaces_Enum.Facturar;
 import LogicaUtiles.Validaciones;
 
@@ -11,11 +10,11 @@ public class AlmohadillasSanitarias extends Venta
 	private double precioUnit;
 	private int cant;
 	
-	public AlmohadillasSanitarias(double precioUnit, int cant,Date fechaVenta, double importeTotal)
+	public AlmohadillasSanitarias(double precioUnit, int cant,Date fechaVenta)
 	{
-		super(fechaVenta, importeTotal);
+		super(fechaVenta, cant * precioUnit);
 		setPrecioUnit(precioUnit);
-		setCant( cant);
+		setCant(cant);
 	}
 	
 	

@@ -1,8 +1,7 @@
 package Logica;
 import Interfaces_Enum.Facturar;
 import LogicaUtiles.Validaciones;
-
-import java.sql.Date;
+import java.util.Date;
 
 public abstract class Venta
 {
@@ -25,8 +24,8 @@ public abstract class Venta
 	
 	public void setFechaVenta(Date fechaVenta) 
 	{
-		if(Validaciones.noEstaVacio(fechaVenta))
-			if(Validaciones.noSePasaDeLaFechaDeHoy(fechaVenta))
+		if(Validaciones.noEstaVacio((java.sql.Date)fechaVenta))
+			if(Validaciones.noSePasaDeLaFechaDeHoy((java.sql.Date) fechaVenta))
 				this.fechaVenta = fechaVenta;
 			else
 				throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, la fecha sobrepasa de la fecha de hoy");
