@@ -112,23 +112,54 @@ public class BaseDeDatos {
         return "Calle " + (1 + random.nextInt(100)) + ", #" + (1 + random.nextInt(500));
     }
 
-    public Medicamento generarMedicamento() {
-        // Seleccionar una presentación aleatoria
-        Presentacion[] presentaciones = Presentacion.values();
-        Presentacion presentacion = presentaciones[random.nextInt(presentaciones.length)];
-        
+    public Medicamento crearMedicamento() {
         Medicamento med = new Medicamento();
-        
-        med.setPrecio(5 + random.nextDouble() * 100);
-        med.setTipo(random.nextBoolean() ? "Venta libre" : "Con prescripción");
-        med.setFortalezaDelMed((50 + random.nextInt(950)) + " mg");
-        med.setTemperaturaAlmacenamiento(2 + random.nextDouble() * 28);
-        med.setCantidadExistencia(random.nextInt(1000));
-        
+
+        // Nombres comunes y científicos ficticios
+        String[] nombresComunes = {
+            "Paracetamol", "Ibuprofeno", "Amoxicilina", "Loratadina", "Omeprazol",
+            "Metformina", "Simvastatina", "Aspirina", "Dipirona", "Clonazepam",
+            "Salbutamol", "Levotiroxina", "Diclofenaco", "Ranitidina", "Cetirizina",
+            "Naproxeno", "Prednisona", "Tramadol", "Fluoxetina", "Venlafaxina"
+        };
+
+        String[] nombresCientificos = {
+            "Acetaminophen", "Ibuprofen", "Amoxicillin", "Loratadine", "Omeprazole",
+            "Metformin", "Simvastatin", "Acetylsalicylic Acid", "Metamizole", "Clonazepam",
+            "Salbutamol", "Levothyroxine Sodium", "Diclofenac", "Ranitidine", "Cetirizine",
+            "Naproxen", "Prednisone", "Tramadol Hydrochloride", "Fluoxetine", "Venlafaxine"
+        };
+
+        Presentacion[] presentaciones = Presentacion.values();
+        String[] tipos = {"Venta libre", "Con prescripción", "Medicamento controlado"};
+
+        // Seleccionar valores aleatorios
+        String nomComun = nombresComunes[random.nextInt(nombresComunes.length)];
+        String nomCientifico = nombresCientificos[random.nextInt(nombresCientificos.length)];
+        Presentacion presentacionEnum = presentaciones[random.nextInt(presentaciones.length)];
+        String tipo = tipos[random.nextInt(tipos.length)];
+
+        // Atributos numéricos y fechas
+        double precio = 5 + random.nextDouble() * 100;
+        String fortalezaDelMed = (50 + random.nextInt(950)) + " mg";
+        double tempDeAlmac = 2 + random.nextDouble() * 28;
+        long cantExis = random.nextInt(1000);
         LocalDate fechaProd = LocalDate.now().minusMonths(random.nextInt(36));
-        med.setFechaProduccion(Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        med.setFechaVencimiento(Date.from(fechaProd.plusYears(2).atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        
+        Date fechaProduccion = Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        Date fechaVencimiento = Date.from(fechaProd.plusYears(2).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        // Asignar al objeto usando tus atributos exactos
+        med.setNomComun(nomComun);
+        med.setNomCientifico(nomCientifico);
+        med.setPresentacion(presentacionEnum.getDescripcion()); // Usamos getDescripcion()
+        med.setPrecio(precio);
+        med.setTipo(tipo);
+        med.setFortalezaDelMed(fortalezaDelMed);
+        med.setTempDeAlmac(tempDeAlmac);
+        med.setCantExis(cantExis);
+        med.setFechaDeProd(fechaProduccion);
+        med.setFechaDeVenc(fechaVencimiento);
+
         return med;
     }
 
