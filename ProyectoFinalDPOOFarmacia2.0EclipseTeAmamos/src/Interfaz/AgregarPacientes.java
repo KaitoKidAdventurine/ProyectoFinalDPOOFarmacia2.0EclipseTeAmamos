@@ -25,6 +25,9 @@ import javax.swing.DefaultComboBoxModel;
 import Interfaces_Enum.Sexo;
 import javax.swing.JRadioButton;
 import java.awt.SystemColor;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.EtchedBorder;
 
 public class AgregarPacientes extends JFrame {
 
@@ -33,6 +36,7 @@ public class AgregarPacientes extends JFrame {
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	private JTextField textField_4;
 
 	/**
 	 * Launch the application.
@@ -64,7 +68,7 @@ public class AgregarPacientes extends JFrame {
 
 		setTitle("Registro Paciente");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 391, 596);
+		setBounds(100, 100, 392, 623);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.WHITE);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -78,7 +82,7 @@ public class AgregarPacientes extends JFrame {
 		panelDatosGenerales.setBackground(Color.WHITE);
 		panelDatosGenerales.setBorder(new LineBorder(new Color(0, 255, 0), 3));
 		panelDatosGenerales.setName("");
-		panelDatosGenerales.setBounds(12, 79, 330, 412);
+		panelDatosGenerales.setBounds(12, 64, 330, 444);
 		contentPane.add(panelDatosGenerales);
 		panelDatosGenerales.setLayout(null);
 		
@@ -190,10 +194,32 @@ public class AgregarPacientes extends JFrame {
 		rdbtnNo.setBounds(120, 331, 74, 25);
 		panelDatosGenerales.add(rdbtnNo);
 		
+		JLabel lblIdDelNcleo = new JLabel("ID del n\u00FAcleo");
+		lblIdDelNcleo.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblIdDelNcleo.setBounds(12, 365, 160, 25);
+		panelDatosGenerales.add(lblIdDelNcleo);
+		
+		textField_4 = new JTextField();
+		textField_4.setBounds(12, 392, 274, 22);
+		panelDatosGenerales.add(textField_4);
+		textField_4.setColumns(10);
+		
 		JLabel lblFormularioDeRegistro = new JLabel("Formulario de Registro");
 		lblFormularioDeRegistro.setForeground(SystemColor.desktop);
 		lblFormularioDeRegistro.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		lblFormularioDeRegistro.setBounds(22, 13, 339, 53);
 		contentPane.add(lblFormularioDeRegistro);
+		
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnAgregar.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(0, 100, 0), new Color(152, 251, 152)));
+		btnAgregar.setBounds(265, 528, 97, 33);
+		contentPane.add(btnAgregar);
+		
+		JButton btnNewButton = new JButton("Cancelar");
+		btnNewButton.setBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(0, 100, 0), new Color(152, 251, 152)));
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnNewButton.setBounds(22, 530, 115, 33);
+		contentPane.add(btnNewButton);
 	}
 }

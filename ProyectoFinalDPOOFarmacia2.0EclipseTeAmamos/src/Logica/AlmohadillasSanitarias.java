@@ -24,7 +24,7 @@ public class AlmohadillasSanitarias extends Venta
 	}
 
 
-	public void setPrecioUnit(double precioUnit) 
+	public void setPrecioUnit (double precioUnit) throws IllegalArgumentException
 	{
 		
 		if(Validaciones.noEstaVacio(precioUnit))

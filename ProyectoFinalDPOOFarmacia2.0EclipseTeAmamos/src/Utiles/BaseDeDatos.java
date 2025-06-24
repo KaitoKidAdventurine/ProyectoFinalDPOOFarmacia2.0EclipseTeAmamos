@@ -8,14 +8,14 @@ import Logica.*;
 import LogicaUtiles.Factura;
 
 public class BaseDeDatos {
-<<<<<<< HEAD
+
     // Instancia única (Singleton)
 
     private static  BaseDeDatos instancia;
     private final Random random;
-=======
-    private static BaseDeDatos instancia;
->>>>>>> d8dbdc4cd71a52f8c919f003047e67b01700f386
+
+
+
     private final List<Venta> ventas;
     private final List<Factura> facturas;
     private final List<Tarjeton> tarjetones;
@@ -31,7 +31,6 @@ public class BaseDeDatos {
         this.tarjetones = new ArrayList<Tarjeton>();
         inicializarDatosPrueba();
     }
-<<<<<<< HEAD
 
     // Datos de prueba
     private static final List<String> NOMBRES_MASCULINOS = Arrays.asList(
@@ -52,15 +51,9 @@ public class BaseDeDatos {
         "Katz", "López", "Méndez", "Núñez", "Ortiz",
         "Pérez", "Quintero", "Rojas", "Sánchez", "Torres");
 
-    // Estructuras de almacenamiento
-    private final Map<String, Paciente> pacientes;
-    private final Map<String, Medicamento> medicamentos;
 
 
-=======
->>>>>>> d8dbdc4cd71a52f8c919f003047e67b01700f386
-
-    public static synchronized BaseDeDatos obtenerInstancia() {
+    public static  BaseDeDatos obtenerInstancia() {
         if (instancia == null) {
             instancia = new BaseDeDatos();
         }
@@ -77,6 +70,7 @@ public class BaseDeDatos {
 
     private void inicializarPacientes() {
         // Hombres (25)
+    	
         agregarPaciente("Alejandro Bermúdez Cervantes", "88041568485", 'M', LocalDate.of(1988, 4, 15), "Calle 23, #45");
         agregarPaciente("Benjamín Delgado Espinoza", "90062012345", 'M', LocalDate.of(1990, 6, 20), "Calle 12, #34");
         agregarPaciente("Carlos Fuentes Gutiérrez", "78031049284", 'M', LocalDate.of(1978, 3, 10), "Calle 34, #56");
@@ -124,6 +118,8 @@ public class BaseDeDatos {
         agregarPaciente("Sofía Juárez Katz", "97041878901", 'F', LocalDate.of(1997, 4, 18), "Calle 74, #35");
         agregarPaciente("Tatiana Katz López", "83052134567", 'F', LocalDate.of(1983, 5, 21), "Calle 85, #46");
         agregarPaciente("Valeria López Méndez", "93062490123", 'F', LocalDate.of(1993, 6, 24), "Calle 96, #57");
+        
+        
     }
     
     
@@ -398,7 +394,7 @@ public class BaseDeDatos {
         return new ArrayList<Paciente>(pacientes.values());
     }
 
-    public List<Medicamento> obtenerMedicamentos() {
+    public ArrayList<Medicamento> obtenerMedicamentos() {
         return new ArrayList<Medicamento>(medicamentos.values());
     }
 
