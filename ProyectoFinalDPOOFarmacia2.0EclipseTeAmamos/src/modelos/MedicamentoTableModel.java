@@ -2,13 +2,15 @@ package modelos;
 
 import Logica.Medicamento;
 import Utiles.BaseDeDatos;
+
 import javax.swing.table.DefaultTableModel;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento> 
 {
-
-    private static final long serialVersionUID = 1L;
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     public MedicamentoTableModel() {
         super(new String[] {
@@ -18,11 +20,14 @@ public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento
             "Precio", 
             "Tipo", 
             "Fortaleza", 
+            "Stock",
             "Temperatura Almacén",
-            "Cantidad Existente", 
             "Fecha Producción", 
             "Fecha Vencimiento"
         });
+        
+        // Cargar datos iniciales
+        cargar(BaseDeDatos.obtenerInstancia().obtenerMedicamentos());
     }
 
     public void adicionar(Medicamento med) {

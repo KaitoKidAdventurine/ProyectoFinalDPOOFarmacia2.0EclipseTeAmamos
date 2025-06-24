@@ -11,13 +11,9 @@ import LogicaUtiles.Factura;
 
 public class BaseDeDatos {
     // Instancia única (Singleton)
-<<<<<<< HEAD
-    private final static Random random;
 
-=======
-    private static BaseDeDatos instancia;
+    private static  BaseDeDatos instancia;
     private final Random random;
->>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
     private final List<Venta> ventas;
 	private final List<Factura> facturas;
 	
@@ -30,11 +26,7 @@ public class BaseDeDatos {
         this.facturas = new ArrayList<Factura>();
         inicializarDatosPrueba();
     }
-<<<<<<< HEAD
 
-=======
-	
->>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
     // Datos de prueba
     private static final List<String> NOMBRES_MASCULINOS = Arrays.asList(
         "Alejandro", "Benjamín", "Carlos", "Daniel", "Emilio", 
@@ -58,10 +50,7 @@ public class BaseDeDatos {
     private final Map<String, Paciente> pacientes;
     private final Map<String, Medicamento> medicamentos;
 
-<<<<<<< HEAD
-=======
-    
->>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
+
 
     public static synchronized BaseDeDatos obtenerInstancia() {
         BaseDeDatos instancia = null;

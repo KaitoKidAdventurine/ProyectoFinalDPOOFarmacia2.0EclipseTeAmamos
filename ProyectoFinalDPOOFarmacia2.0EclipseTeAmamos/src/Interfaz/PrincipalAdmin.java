@@ -6,7 +6,9 @@ import LogicaUtiles.VentaDeMedicamentos;
 import Utiles.BaseDeDatos;
 import modelos.MedicamentoTableModel;
 import modelos.ModeloPrincipalTableModel;
+
 import javax.swing.table.DefaultTableModel;
+
 import java.awt.Component;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -56,6 +58,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
@@ -66,6 +69,7 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
@@ -76,7 +80,6 @@ public class PrincipalAdmin extends JFrame
 	private int posX;
 	private int posY;
 	private Point e;
-	private JTable tablaMedicamentos;
 	private MedicamentoTableModel medicamentoTableModel;
 	private JScrollPane scrollPane;
 
@@ -112,7 +115,6 @@ public class PrincipalAdmin extends JFrame
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		cargarTablaMedicamentos();
 		// Centrar la ventana en la pantalla
 		this.setLocationRelativeTo(null);
 
@@ -450,49 +452,12 @@ public class PrincipalAdmin extends JFrame
 		comprar.add(compra3);
 
 
+
 		JPanel medicamentos = new JPanel();
 		pestanas.addTab("", null, medicamentos, null);
 		medicamentos.setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 292, 970, 358);
-		medicamentos.add(scrollPane);
 
-
-
-		medicamentoTableModel = new MedicamentoTableModel();
-		tablaMedicamentos.setModel(medicamentoTableModel);
-
-		tablaMedicamentos = new JTable();
-		scrollPane.setViewportView(tablaMedicamentos);
-<<<<<<< HEAD
-		
-
-						JPanel panel_1 = new JPanel();
-						panel_1.setBounds(0, 0, 1029, 43);
-						panel_1.setBackground(Color.GREEN);
-						medicamentos.add(panel_1);
-						panel_1.setLayout(null);
-						
-						JLabel lblComprar_1 = new JLabel("MEDICAMENTOS");
-						lblComprar_1.setFont(new Font("Times New Roman", Font.BOLD, 26));
-						lblComprar_1.setBounds(12, 0, 237, 43);
-						panel_1.add(lblComprar_1);
-		
-=======
-
-		// INICIALIZAR MODELO DE TABLA (ya está)
-		medicamentoTableModel = new MedicamentoTableModel();
-
-		// ASIGNAR MODELO A LA TABLA
-		tablaMedicamentos.setModel(medicamentoTableModel);
-
-		// CARGAR DATOS DESDE TU BASE DE DATOS SIMULADA
-		List<Medicamento> listaMedicamentos = BaseDeDatos.obtenerInstancia().obtenerMedicamentos();
-		medicamentoTableModel.cargar(listaMedicamentos);
-
-		// LLENAR EL MODELO CON LOS DATOS
-		medicamentoTableModel.cargar(listaMedicamentos);
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 0, 1029, 43);
@@ -505,7 +470,16 @@ public class PrincipalAdmin extends JFrame
 		lblComprar_1.setBounds(12, 0, 237, 43);
 		panel_1.add(lblComprar_1);
 
->>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
+		JPanel panel_11 = new JPanel();
+		panel_11.setBounds(0, 0, 1029, 43);
+		panel_11.setBackground(Color.GREEN);
+		medicamentos.add(panel_11);
+		panel_11.setLayout(null);
+
+		JLabel lblComprar_11 = new JLabel("MEDICAMENTOS");
+		lblComprar_11.setFont(new Font("Times New Roman", Font.BOLD, 26));
+		lblComprar_11.setBounds(12, 0, 237, 43);
+		panel_11.add(lblComprar_11);
 
 		JPanel reportes = new JPanel();
 		pestanas.addTab("", null, reportes, null);
@@ -704,13 +678,9 @@ public class PrincipalAdmin extends JFrame
 		reporte1.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, reporte1, null);
 		reporte1.setLayout(null);
-<<<<<<< HEAD
-		
-		final Farmacia farmacia = Farmacia.obtenerInstancia();
-		
-=======
 
->>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
+		final Farmacia farmacia = Farmacia.obtenerInstancia();
+
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(Color.GREEN);
 		panel_4.setBounds(0, 0, 1015, 57);
@@ -734,8 +704,7 @@ public class PrincipalAdmin extends JFrame
 		lblTopMedicamentos.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTopMedicamentos.setBounds(79, 0, 200, 57);
 		panel_4.add(lblTopMedicamentos);
-<<<<<<< HEAD
-		
+
 		final JPanel panelLista = new JPanel();
 		panelLista.setBackground(Color.LIGHT_GRAY);
 		panelLista.setBounds(37, 176, 927, 446);
@@ -769,10 +738,7 @@ public class PrincipalAdmin extends JFrame
 	        panelLista.add(item);
 	    }
 	    
-=======
 
-
->>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
 		Panel reporte2 = new Panel();
 		reporte2.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, reporte2, null);
@@ -796,18 +762,12 @@ public class PrincipalAdmin extends JFrame
 		regresar_2.setBounds(0, 0, 64, 57);
 		panel_5.add(regresar_2);
 		UtilesInterfaz.ajustarImagen(regresar_2, "src/iconos/deshacer.png");
-<<<<<<< HEAD
 		
 		JLabel lblAlmohadillasSanitarias_1 = new JLabel("Almohadillas Sanitarias");
 		lblAlmohadillasSanitarias_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblAlmohadillasSanitarias_1.setBounds(72, 0, 307, 57);
 		panel_5.add(lblAlmohadillasSanitarias_1);
 		
-		
-=======
-
-
-
 
 
 		JLabel lblNewLabel_3 = new JLabel("New label");
@@ -815,7 +775,6 @@ public class PrincipalAdmin extends JFrame
 		panel_5.add(lblNewLabel_3);
 
 
->>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
 		Panel reporte3 = new Panel();
 		reporte3.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, reporte3, null);
@@ -839,21 +798,19 @@ public class PrincipalAdmin extends JFrame
 		regresar_3.setBounds(0, 0, 64, 57);
 		panel_6.add(regresar_3);
 		UtilesInterfaz.ajustarImagen(regresar_3, "src/iconos/deshacer.png");
-<<<<<<< HEAD
+
 		
 		JLabel lblTopVentas_1 = new JLabel("TOP Ventas");
 		lblTopVentas_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTopVentas_1.setBounds(76, 0, 200, 57);
 		panel_6.add(lblTopVentas_1);
 		
-=======
 
 
 		JLabel lblNewLabel_4 = new JLabel("New label");
 		lblNewLabel_4.setBounds(290, 17, 69, 20);
 		panel_6.add(lblNewLabel_4);
 
->>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
 		Panel reporte4 = new Panel();
 		reporte4.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, reporte4, null);
@@ -877,7 +834,7 @@ public class PrincipalAdmin extends JFrame
 		regresar_4.setBounds(0, 0, 64, 57);
 		panel_7.add(regresar_4);
 		UtilesInterfaz.ajustarImagen(regresar_4, "src/iconos/deshacer.png");
-<<<<<<< HEAD
+
 		
 		JLabel lblActivos_1 = new JLabel("Activos");
 		lblActivos_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -885,46 +842,8 @@ public class PrincipalAdmin extends JFrame
 		panel_7.add(lblActivos_1);
 
 	}
-=======
 
 
-
-		JLabel lblNewLabel_5 = new JLabel("New label");
-		lblNewLabel_5.setBounds(307, 16, 69, 20);
-		panel_7.add(lblNewLabel_5);
-
-	}
-
-	// Método para cargar los datos
-	private void cargarTablaMedicamentos() 
-	{
-		String[] columnas = {"Nombre Común", "Nombre Científico", "Presentación", "Precio", "Tipo", "Fortaleza", "Stock", "Fecha Vencimiento"};
-		DefaultTableModel modelo = new DefaultTableModel(columnas, 0);
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-		List<Medicamento> listaMedicamentos = BaseDeDatos.obtenerInstancia().obtenerMedicamentos();
-
-		for (Medicamento med : listaMedicamentos) 
-		{
-			Object[] fila = 
-				{
-					med.getNomComun(),
-					med.getNomCientifico(),
-					med.getPresentacion(),
-					"$" + String.format("%.2f", med.getPrecio()), // Formato de precio
-					med.getTipo(),
-					med.getFortalezaDelMed(),
-					med.getCantExis(),
-					sdf.format(med.getFechaDeVenc()) // Fecha formateada
-			};
-			modelo.addRow(fila);
-		}
-
-		tablaMedicamentos.setModel(modelo);
-	}
-
->>>>>>> 8f9275ad78df2e87582aa13a603d432b138847ae
 }
 
 

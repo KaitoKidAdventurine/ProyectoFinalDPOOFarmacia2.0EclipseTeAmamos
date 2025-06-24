@@ -38,7 +38,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
         // Aquí puedes cargar datos iniciales si es necesario
     }
     
-    // Método para obtener la instancia (sin parámetros)
+    // Método para obtener la instancia (Singleton)
     public static Farmacia obtenerInstancia() {
         if (instancia == null) {
             instancia = new Farmacia();
