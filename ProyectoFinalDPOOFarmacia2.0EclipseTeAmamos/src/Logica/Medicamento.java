@@ -31,6 +31,11 @@ public class Medicamento
 		return presentacion;
 	}
 
+	public double getPrecio() 
+	{
+		return precio;
+	}
+	
 	public String getTipo() 
 	{
 		return tipo;
@@ -176,6 +181,8 @@ public class Medicamento
 			throw new IllegalArgumentException("El campo: cantidad de medicamentos existentes, se encuentra vacío");
 	}
 
+	
+
 	public void setFechaDeProd(Date fechaDeProd) 
 	{
 		if(Validaciones.noEstaVacio(fechaDeProd))
@@ -205,12 +212,4 @@ public class Medicamento
 			throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, se encuentra vacío");
 
 	}
-
-	public Object getPrecio() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 }

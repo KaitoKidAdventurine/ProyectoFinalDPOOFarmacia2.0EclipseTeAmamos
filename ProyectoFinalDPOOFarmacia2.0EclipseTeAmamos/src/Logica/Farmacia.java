@@ -14,6 +14,9 @@ import Interfaces_Enum.Reportes;
 
 public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSanitarias 
 {
+	//Instancia única (Singleton)
+    private static Farmacia instancia;
+	
 	private ArrayList<Medicamento> medicamentos;
 	private ArrayList <Venta> historialVentas;
 	private ArrayList <NucleoFamiliar> nucleos;
@@ -21,18 +24,27 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	private ArrayList<Factura> facturas;
 	private long cantidadDeAlmohadillasSanitarias;
 
-	
-	public Farmacia(ArrayList<Medicamento> medicamentos, ArrayList <Venta> historialVentas, 
-			ArrayList <NucleoFamiliar> nucleos, ArrayList<Tarjeton> tarjetones, 
-			ArrayList<Factura> facturas, long cantidadDeAlmohadillasSanitarias)
-	{
-		setMedicamentos(medicamentos);
-		setHistorialVentas(historialVentas);
-		setNucleos(nucleos);
-		setTarjetones(tarjetones);
-		setFacturas(facturas);
-		setCantidadDeAlmohadillasSanitarias(cantidadDeAlmohadillasSanitarias);
-	}
+
+    // Constructor PRIVADO
+    private Farmacia() {
+        // Inicializar todas las listas
+        this.medicamentos = new ArrayList<Medicamento>();
+        this.historialVentas = new ArrayList<Venta>();
+        this.nucleos = new ArrayList<NucleoFamiliar>();
+        this.tarjetones = new ArrayList<Tarjeton>();
+        this.facturas = new ArrayList<Factura>();
+        this.cantidadDeAlmohadillasSanitarias = 0;
+        
+        // Aquí puedes cargar datos iniciales si es necesario
+    }
+    
+    // Método para obtener la instancia (sin parámetros)
+    public static Farmacia obtenerInstancia() {
+        if (instancia == null) {
+            instancia = new Farmacia();
+        }
+        return instancia;
+    }
 
 	public void registrarMedicamento()
 	{

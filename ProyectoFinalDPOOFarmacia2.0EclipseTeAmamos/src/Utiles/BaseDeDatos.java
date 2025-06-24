@@ -3,26 +3,25 @@ package Utiles;
 import java.util.*;
 import java.time.*;
 import java.sql.Date;
-
 import Interfaces_Enum.Presentacion;
 import Logica.*;
 import LogicaUtiles.Factura;
 
 public class BaseDeDatos {
-    // Instancia única (Singleton)
     private static BaseDeDatos instancia;
     private final List<Venta> ventas;
     private final List<Factura> facturas;
-    
-    // Estructuras de almacenamiento
+    private final List<Tarjeton> tarjetones;
     private final Map<String, Paciente> pacientes;
     private final Map<String, Medicamento> medicamentos;
+    private static final LocalDate FECHA_LIMITE = LocalDate.of(2025, 6, 23);
 
     private BaseDeDatos() {
         this.pacientes = new HashMap<String, Paciente>();
         this.medicamentos = new HashMap<String, Medicamento>();
         this.ventas = new ArrayList<Venta>();
         this.facturas = new ArrayList<Factura>();
+        this.tarjetones = new ArrayList<Tarjeton>();
         inicializarDatosPrueba();
     }
 
@@ -33,15 +32,15 @@ public class BaseDeDatos {
         return instancia;
     }
 
-    private void inicializarDatosPrueba() {
+    private void inicializarDatosPrueba() 
+    {
         inicializarPacientes();
         inicializarMedicamentos();
+        inicializarTarjetones();
         inicializarVentasYFacturas();
     }
 
     private void inicializarPacientes() {
-        // 45 pacientes completamente definidos
-        
         // Hombres (25)
         agregarPaciente("Alejandro Bermúdez Cervantes", "88041568485", 'M', LocalDate.of(1988, 4, 15), "Calle 23, #45");
         agregarPaciente("Benjamín Delgado Espinoza", "90062012345", 'M', LocalDate.of(1990, 6, 20), "Calle 12, #34");
@@ -91,309 +90,296 @@ public class BaseDeDatos {
         agregarPaciente("Tatiana Katz López", "83052134567", 'F', LocalDate.of(1983, 5, 21), "Calle 85, #46");
         agregarPaciente("Valeria López Méndez", "93062490123", 'F', LocalDate.of(1993, 6, 24), "Calle 96, #57");
     }
+    
+    
+    
+    
+    private void inicializarMedicamentos() {
+        // Venta libre (10)
+        agregarMedicamento("Paracetamol", "Acetaminophen", "Tabletas", 5.99, "Venta libre", "500 mg", 25.0, 1000, 
+                         LocalDate.of(2023, 1, 15), LocalDate.of(2024, 1, 15));
+        agregarMedicamento("Ibuprofeno", "Ibuprofen", "Tabletas", 7.50, "Venta libre", "400 mg", 25.0, 800, 
+                         LocalDate.of(2023, 2, 10), LocalDate.of(2024, 2, 10));
+        agregarMedicamento("Aspirina", "Acetylsalicylic Acid", "Tabletas", 4.25, "Venta libre", "500 mg", 25.0, 1200, 
+                         LocalDate.of(2023, 3, 5), LocalDate.of(2024, 3, 5));
+        agregarMedicamento("Cetirizina", "Cetirizine", "Tabletas", 8.75, "Venta libre", "10 mg", 25.0, 600, 
+                         LocalDate.of(2023, 4, 20), LocalDate.of(2024, 4, 20));
+        agregarMedicamento("Loratadina", "Loratadine", "Tabletas", 9.99, "Venta libre", "10 mg", 25.0, 700, 
+                         LocalDate.of(2023, 5, 15), LocalDate.of(2024, 5, 15));
+        agregarMedicamento("Omeprazol", "Omeprazole", "Cápsulas", 12.50, "Venta libre", "20 mg", 25.0, 500, 
+                         LocalDate.of(2023, 6, 10), LocalDate.of(2024, 6, 10));
+        agregarMedicamento("Ranitidina", "Ranitidine", "Tabletas", 6.80, "Venta libre", "150 mg", 25.0, 900, 
+                         LocalDate.of(2023, 7, 5), LocalDate.of(2024, 7, 5));
+        agregarMedicamento("Diclofenaco", "Diclofenac", "Gel", 15.25, "Venta libre", "1%", 25.0, 400, 
+                         LocalDate.of(2023, 8, 1), LocalDate.of(2024, 8, 1));
+        agregarMedicamento("Naproxeno", "Naproxen", "Tabletas", 10.50, "Venta libre", "250 mg", 25.0, 750, 
+                         LocalDate.of(2023, 9, 15), LocalDate.of(2024, 9, 15));
+        agregarMedicamento("Salbutamol", "Salbutamol", "Inhalador", 18.99, "Venta libre", "100 mcg", 25.0, 300, 
+                         LocalDate.of(2023, 10, 10), LocalDate.of(2024, 10, 10));
+
+        // Con prescripción (10)
+        agregarMedicamento("Amoxicilina", "Amoxicillin", "Cápsulas", 12.75, "Con prescripción", "250 mg", 20.0, 500, 
+                         LocalDate.of(2023, 1, 20), LocalDate.of(2024, 1, 20));
+        agregarMedicamento("Ciprofloxacino", "Ciprofloxacin", "Tabletas", 22.50, "Con prescripción", "500 mg", 20.0, 400, 
+                         LocalDate.of(2023, 2, 15), LocalDate.of(2024, 2, 15));
+        agregarMedicamento("Azitromicina", "Azithromycin", "Tabletas", 28.99, "Con prescripción", "250 mg", 20.0, 350, 
+                         LocalDate.of(2023, 3, 10), LocalDate.of(2024, 3, 10));
+        agregarMedicamento("Atorvastatina", "Atorvastatin", "Tabletas", 35.75, "Con prescripción", "20 mg", 20.0, 300, 
+                         LocalDate.of(2023, 4, 5), LocalDate.of(2024, 4, 5));
+        agregarMedicamento("Metformina", "Metformin", "Tabletas", 18.50, "Con prescripción", "500 mg", 20.0, 450, 
+                         LocalDate.of(2023, 5, 1), LocalDate.of(2024, 5, 1));
+        agregarMedicamento("Losartán", "Losartan", "Tabletas", 24.99, "Con prescripción", "50 mg", 20.0, 380, 
+                         LocalDate.of(2023, 6, 15), LocalDate.of(2024, 6, 15));
+        agregarMedicamento("Simvastatina", "Simvastatin", "Tabletas", 30.25, "Con prescripción", "20 mg", 20.0, 320, 
+                         LocalDate.of(2023, 7, 10), LocalDate.of(2024, 7, 10));
+        agregarMedicamento("Levotiroxina", "Levothyroxine", "Tabletas", 19.80, "Con prescripción", "50 mcg", 20.0, 420, 
+                         LocalDate.of(2023, 8, 5), LocalDate.of(2024, 8, 5));
+        agregarMedicamento("Clonazepam", "Clonazepam", "Tabletas", 42.50, "Con prescripción", "2 mg", 20.0, 280, 
+                         LocalDate.of(2023, 9, 1), LocalDate.of(2024, 9, 1));
+        agregarMedicamento("Fluoxetina", "Fluoxetine", "Cápsulas", 38.75, "Con prescripción", "20 mg", 20.0, 310, 
+                         LocalDate.of(2023, 10, 15), LocalDate.of(2024, 10, 15));
+
+        // Controlados (10)
+        agregarMedicamentoControlado("Morfina", "Morphine", "Inyección", 125.99, "Medicamento controlado", "10 mg/ml", 15.0, 150, 
+                                   LocalDate.of(2023, 1, 10), LocalDate.of(2024, 1, 10), "Dolor crónico", 5, 0);
+        agregarMedicamentoControlado("Oxicodona", "Oxycodone", "Tabletas", 95.50, "Medicamento controlado", "5 mg", 15.0, 180, 
+                                   LocalDate.of(2023, 2, 5), LocalDate.of(2024, 2, 5), "Dolor postoperatorio", 4, 0);
+        agregarMedicamentoControlado("Metadona", "Methadone", "Tabletas", 88.25, "Medicamento controlado", "10 mg", 15.0, 200, 
+                                   LocalDate.of(2023, 3, 1), LocalDate.of(2024, 3, 1), "Dependencia opioides", 3, 0);
+        agregarMedicamentoControlado("Fentanilo", "Fentanyl", "Parche", 210.75, "Medicamento controlado", "25 mcg/h", 15.0, 120, 
+                                   LocalDate.of(2023, 4, 15), LocalDate.of(2024, 4, 15), "Dolor oncológico", 2, 0);
+        agregarMedicamentoControlado("Codeína", "Codeine", "Jarabe", 65.99, "Medicamento controlado", "10 mg/5ml", 15.0, 250, 
+                                   LocalDate.of(2023, 5, 10), LocalDate.of(2024, 5, 10), "Tos persistente", 6, 0);
+        agregarMedicamentoControlado("Diazepam", "Diazepam", "Tabletas", 55.50, "Medicamento controlado", "5 mg", 15.0, 300, 
+                                   LocalDate.of(2023, 6, 5), LocalDate.of(2024, 6, 5), "Ansiedad", 4, 0);
+        agregarMedicamentoControlado("Alprazolam", "Alprazolam", "Tabletas", 60.25, "Medicamento controlado", "1 mg", 15.0, 280, 
+                                   LocalDate.of(2023, 7, 1), LocalDate.of(2024, 7, 1), "Trastorno de pánico", 3, 0);
+        agregarMedicamentoControlado("Metilfenidato", "Methylphenidate", "Tabletas", 75.80, "Medicamento controlado", "10 mg", 15.0, 220, 
+                                   LocalDate.of(2023, 8, 15), LocalDate.of(2024, 8, 15), "TDAH", 5, 0);
+        agregarMedicamentoControlado("Zolpidem", "Zolpidem", "Tabletas", 68.50, "Medicamento controlado", "10 mg", 15.0, 240, 
+                                   LocalDate.of(2023, 9, 10), LocalDate.of(2024, 9, 10), "Insomnio", 4, 0);
+        agregarMedicamentoControlado("Tramadol", "Tramadol", "Cápsulas", 72.99, "Medicamento controlado", "50 mg", 15.0, 260, 
+                                   LocalDate.of(2023, 10, 5), LocalDate.of(2024, 10, 5), "Dolor moderado", 5, 0);
+    }
+
+    private void inicializarVentasYFacturas() {
+        // Obtener listas de medicamentos por tipo
+        List<Medicamento> ventaLibre = new ArrayList<Medicamento>();
+        List<Medicamento> conPrescripcion = new ArrayList<Medicamento>();
+        List<Medicamento> controlados = new ArrayList<Medicamento>();
+        for (Medicamento m : medicamentos.values()) {
+            if (m.getTipo().equals("Venta libre")) {
+                ventaLibre.add(m);
+            } else if (m.getTipo().equals("Con prescripción")) {
+                conPrescripcion.add(m);
+            } else if (m.getTipo().equals("Medicamento controlado")) {
+                controlados.add(m);
+            }
+        }
+
+        // Crear 120 ventas distribuidas
+        crearVentasLibres(ventaLibre, 40);
+        crearVentasConPrescripcion(conPrescripcion, 40);
+        crearVentasControladas(controlados, 30);
+        crearVentasAlmohadillas(10);
+    }
 
     private void agregarPaciente(String nombre, String ci, char genero, LocalDate fechaNac, String direccion) {
         Paciente p = new Paciente();
         p.setNombre(nombre);
         p.setCi(ci);
         p.setGenero(genero);
-        p.setFechaNacimiento(Date.from(fechaNac.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        p.setFechaNacimiento(java.sql.Date.valueOf(fechaNac)); 
         p.setDireccion(direccion);
         pacientes.put(ci, p);
     }
 
-    private void inicializarMedicamentos() {
-        // 30 medicamentos completamente definidos
-        
-        // Venta libre (10)
-        agregarMedicamento("Paracetamol", "Acetaminophen", "Tabletas", 5.99, "Venta libre", "500 mg", 25.0, 1000, 
-                          LocalDate.of(2023, 1, 15), LocalDate.of(2025, 1, 15));
-        agregarMedicamento("Ibuprofeno", "Ibuprofen", "Tabletas", 7.50, "Venta libre", "400 mg", 25.0, 800, 
-                          LocalDate.of(2023, 2, 10), LocalDate.of(2025, 2, 10));
-        agregarMedicamento("Aspirina", "Acetylsalicylic Acid", "Tabletas", 4.25, "Venta libre", "500 mg", 25.0, 1200, 
-                          LocalDate.of(2023, 3, 5), LocalDate.of(2025, 3, 5));
-        agregarMedicamento("Cetirizina", "Cetirizine", "Tabletas", 8.75, "Venta libre", "10 mg", 25.0, 600, 
-                          LocalDate.of(2023, 4, 20), LocalDate.of(2025, 4, 20));
-        agregarMedicamento("Loratadina", "Loratadine", "Tabletas", 9.99, "Venta libre", "10 mg", 25.0, 700, 
-                          LocalDate.of(2023, 5, 15), LocalDate.of(2025, 5, 15));
-        agregarMedicamento("Omeprazol", "Omeprazole", "Cápsulas", 12.50, "Venta libre", "20 mg", 25.0, 500, 
-                          LocalDate.of(2023, 6, 10), LocalDate.of(2025, 6, 10));
-        agregarMedicamento("Ranitidina", "Ranitidine", "Tabletas", 6.80, "Venta libre", "150 mg", 25.0, 900, 
-                          LocalDate.of(2023, 7, 5), LocalDate.of(2025, 7, 5));
-        agregarMedicamento("Diclofenaco", "Diclofenac", "Gel", 15.25, "Venta libre", "1%", 25.0, 400, 
-                          LocalDate.of(2023, 8, 1), LocalDate.of(2025, 8, 1));
-        agregarMedicamento("Naproxeno", "Naproxen", "Tabletas", 10.50, "Venta libre", "250 mg", 25.0, 750, 
-                          LocalDate.of(2023, 9, 15), LocalDate.of(2025, 9, 15));
-        agregarMedicamento("Salbutamol", "Salbutamol", "Inhalador", 18.99, "Venta libre", "100 mcg", 25.0, 300, 
-                          LocalDate.of(2023, 10, 10), LocalDate.of(2025, 10, 10));
-
-        // Con prescripción (10)
-        agregarMedicamento("Amoxicilina", "Amoxicillin", "Cápsulas", 12.75, "Con prescripción", "250 mg", 20.0, 500, 
-                          LocalDate.of(2023, 1, 20), LocalDate.of(2024, 1, 20));
-        agregarMedicamento("Ciprofloxacino", "Ciprofloxacin", "Tabletas", 22.50, "Con prescripción", "500 mg", 20.0, 400, 
-                          LocalDate.of(2023, 2, 15), LocalDate.of(2024, 2, 15));
-        agregarMedicamento("Azitromicina", "Azithromycin", "Tabletas", 28.99, "Con prescripción", "250 mg", 20.0, 350, 
-                          LocalDate.of(2023, 3, 10), LocalDate.of(2024, 3, 10));
-        agregarMedicamento("Atorvastatina", "Atorvastatin", "Tabletas", 35.75, "Con prescripción", "20 mg", 20.0, 300, 
-                          LocalDate.of(2023, 4, 5), LocalDate.of(2024, 4, 5));
-        agregarMedicamento("Metformina", "Metformin", "Tabletas", 14.25, "Con prescripción", "500 mg", 20.0, 600, 
-                          LocalDate.of(2023, 5, 1), LocalDate.of(2024, 5, 1));
-        agregarMedicamento("Losartán", "Losartan", "Tabletas", 18.50, "Con prescripción", "50 mg", 20.0, 450, 
-                          LocalDate.of(2023, 6, 20), LocalDate.of(2024, 6, 20));
-        agregarMedicamento("Levotiroxina", "Levothyroxine", "Tabletas", 16.80, "Con prescripción", "50 mcg", 20.0, 500, 
-                          LocalDate.of(2023, 7, 15), LocalDate.of(2024, 7, 15));
-        agregarMedicamento("Sertralina", "Sertraline", "Tabletas", 42.99, "Con prescripción", "50 mg", 20.0, 250, 
-                          LocalDate.of(2023, 8, 10), LocalDate.of(2024, 8, 10));
-        agregarMedicamento("Tramadol", "Tramadol Hydrochloride", "Cápsulas", 30.50, "Con prescripción", "50 mg", 20.0, 200, 
-                          LocalDate.of(2023, 9, 5), LocalDate.of(2024, 9, 5));
-        agregarMedicamento("Dexametasona", "Dexamethasone", "Tabletas", 25.25, "Con prescripción", "4 mg", 20.0, 350, 
-                          LocalDate.of(2023, 10, 1), LocalDate.of(2024, 10, 1));
-
-        // Controlados (10)
-        agregarMedicamentoControlado("Clonazepam", "Clonazepam", "Tabletas", 45.99, "Medicamento controlado", "2 mg", 20.0, 150, 
-                                   "Ansiedad", LocalDate.of(2023, 1, 10), LocalDate.of(2024, 1, 10));
-        agregarMedicamentoControlado("Alprazolam", "Alprazolam", "Tabletas", 52.50, "Medicamento controlado", "1 mg", 20.0, 120, 
-                                   "Trastorno de pánico", LocalDate.of(2023, 2, 5), LocalDate.of(2024, 2, 5));
-        agregarMedicamentoControlado("Metadona", "Methadone", "Tabletas", 65.75, "Medicamento controlado", "10 mg", 20.0, 80, 
-                                   "Dependencia opioide", LocalDate.of(2023, 3, 1), LocalDate.of(2024, 3, 1));
-        agregarMedicamentoControlado("Oxicodona", "Oxycodone", "Cápsulas", 78.99, "Medicamento controlado", "5 mg", 20.0, 60, 
-                                   "Dolor crónico", LocalDate.of(2023, 4, 15), LocalDate.of(2024, 4, 15));
-        agregarMedicamentoControlado("Diazepam", "Diazepam", "Tabletas", 38.50, "Medicamento controlado", "5 mg", 20.0, 100, 
-                                   "Ansiedad", LocalDate.of(2023, 5, 10), LocalDate.of(2024, 5, 10));
-        agregarMedicamentoControlado("Zolpidem", "Zolpidem", "Tabletas", 55.25, "Medicamento controlado", "10 mg", 20.0, 90, 
-                                   "Insomnio", LocalDate.of(2023, 6, 5), LocalDate.of(2024, 6, 5));
-        agregarMedicamentoControlado("Fentanilo", "Fentanyl", "Parche", 120.99, "Medicamento controlado", "25 mcg/h", 20.0, 40, 
-                                   "Dolor severo", LocalDate.of(2023, 7, 1), LocalDate.of(2024, 7, 1));
-        agregarMedicamentoControlado("Metilfenidato", "Methylphenidate", "Tabletas", 68.75, "Medicamento controlado", "10 mg", 20.0, 70, 
-                                   "TDAH", LocalDate.of(2023, 8, 20), LocalDate.of(2024, 8, 20));
-        agregarMedicamentoControlado("Codeína", "Codeine", "Jarabe", 42.50, "Medicamento controlado", "15 mg/5ml", 20.0, 110, 
-                                   "Tos y dolor", LocalDate.of(2023, 9, 15), LocalDate.of(2024, 9, 15));
-        agregarMedicamentoControlado("Morfina", "Morphine", "Inyección", 95.99, "Medicamento controlado", "10 mg/ml", 20.0, 50, 
-                                   "Dolor severo", LocalDate.of(2023, 10, 10), LocalDate.of(2024, 10, 10));
-    }
-
-    private void agregarMedicamento(String nombre, String cientifico, String presentacion, 
-                                  double precio, String tipo, String fortaleza, 
-                                  double temp, long cantidad, LocalDate fechaProd, LocalDate fechaVenc) {
+    private void agregarMedicamento(String nomComun, String nomCientifico, String presentacion,
+                                    double precio, String tipo, String fortaleza, double tempAlmac,
+                                    long cantExis, LocalDate fechaProd, LocalDate fechaVenc) {
         Medicamento m = new Medicamento();
-        m.setNomComun(nombre);
-        m.setNomCientifico(cientifico);
+        m.setNomComun(nomComun);
+        m.setNomCientifico(nomCientifico);
         m.setPresentacion(presentacion);
         m.setPrecio(precio);
         m.setTipo(tipo);
         m.setFortalezaDelMed(fortaleza);
-        m.setTempDeAlmac(temp);
-        m.setCantExis(cantidad);
-        m.setFechaDeProd(Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        m.setFechaDeVenc(Date.from(fechaVenc.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        medicamentos.put(nombre, m);
+        m.setTempDeAlmac(tempAlmac);
+        m.setCantExis(cantExis);
+        m.setFechaDeProd(java.sql.Date.valueOf(fechaProd)); 
+        m.setFechaDeVenc(java.sql.Date.valueOf(fechaVenc)); 
+        medicamentos.put(nomComun, m);
     }
 
-    private void agregarMedicamentoControlado(String nombre, String cientifico, String presentacion, 
-                                            double precio, String tipo, String fortaleza, 
-                                            double temp, long cantidad, String patologia,
-                                            LocalDate fechaProd, LocalDate fechaVenc) {
+    private void agregarMedicamentoControlado(String nomComun, String nomCientifico, String presentacion,
+                                            double precio, String tipo, String fortaleza, double tempAlmac,
+                                            long cantExis, LocalDate fechaProd, LocalDate fechaVenc,
+                                            String patologia, long cantAsig, long cantDisp) {
         MedicamentoControlado mc = new MedicamentoControlado();
-        mc.setNomComun(nombre);
-        mc.setNomCientifico(cientifico);
+        mc.setNomComun(nomComun);
+        mc.setNomCientifico(nomCientifico);
         mc.setPresentacion(presentacion);
         mc.setPrecio(precio);
         mc.setTipo(tipo);
         mc.setFortalezaDelMed(fortaleza);
-        mc.setTempDeAlmac(temp);
-        mc.setCantExis(cantidad);
-        mc.setFechaDeProd(Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        mc.setFechaDeVenc(Date.from(fechaVenc.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        mc.setTempDeAlmac(tempAlmac);
+        mc.setCantExis(cantExis);
+        mc.setFechaDeProd(java.sql.Date.valueOf(fechaProd)); 
+        mc.setFechaDeVenc(java.sql.Date.valueOf(fechaVenc)); 
         mc.setPatologia(patologia);
-        mc.setCantAsigMensual(cantidad / 2);
-        mc.setCantDispensadaMensual(0);
-        medicamentos.put(nombre, mc);
+        mc.setCantAsigMensual(cantAsig);
+        mc.setCantDispensadaMensual(cantDisp);
+        medicamentos.put(nomComun, mc);
     }
 
-    private void inicializarVentasYFacturas() {
-        // Fechas predefinidas para las ventas
-        LocalDate fecha1 = LocalDate.of(2023, 10, 1);
-        LocalDate fecha2 = LocalDate.of(2023, 10, 5);
-        LocalDate fecha3 = LocalDate.of(2023, 10, 10);
-        LocalDate fecha4 = LocalDate.of(2023, 10, 15);
-        LocalDate fecha5 = LocalDate.of(2023, 10, 20);
-        
-        // 150 facturas distribuidas en los 3 tipos de ventas
-        
-        // Venta Libre (90 facturas)
-        for (int i = 1; i <= 90; i++) {
-            LocalDate fechaVenta;
-            if (i <= 18) fechaVenta = fecha1;
-            else if (i <= 36) fechaVenta = fecha2;
-            else if (i <= 54) fechaVenta = fecha3;
-            else if (i <= 72) fechaVenta = fecha4;
-            else fechaVenta = fecha5;
-            
-            String medNombre;
-            String medCientifico;
-            double precio;
-            int cantidad = (i % 5) + 1; // 1-5 unidades
-            
-            if (i % 10 == 1) {
-                medNombre = "Paracetamol";
-                medCientifico = "Acetaminophen";
-                precio = 5.99;
-            } else if (i % 10 == 2) {
-                medNombre = "Ibuprofeno";
-                medCientifico = "Ibuprofen";
-                precio = 7.50;
-            } 
-            // ... continuar con los otros 8 medicamentos de venta libre
-            else {
-                medNombre = "Salbutamol";
-                medCientifico = "Salbutamol";
-                precio = 18.99;
+    private void inicializarTarjetones() {
+        List<Paciente> listaPacientes = new ArrayList<Paciente>(pacientes.values());
+        Collections.shuffle(listaPacientes);
+        for (int i = 0; i < 15; i++) {
+            Paciente p = listaPacientes.get(i);
+            int numTarjetones = 1 + (i % 3);
+            for (int j = 0; j < numTarjetones; j++) {
+                LocalDate fechaExp = LocalDate.of(2024, 1 + (i % 12), 1 + (j * 10));
+                LocalDate fechaVenc = fechaExp.plusMonths(6);
+                List<Medicamento> medicamentosControlados = obtenerMedicamentos();
+                Collections.shuffle(medicamentosControlados);
+                int numMedicamentos = 1 + (j % 3);
+                ArrayList<MedicamentoControlado> medsControlados = new ArrayList<MedicamentoControlado>();
+                for (int k = 0; k < numMedicamentos && k < medicamentosControlados.size(); k++) {
+                    medsControlados.add((MedicamentoControlado) medicamentosControlados.get(k));
+                }
+                Tarjeton t = new Tarjeton(
+                    p.getNombre(),
+                    p.getDireccion(),
+                    java.sql.Date.valueOf(fechaExp), 
+                    java.sql.Date.valueOf(fechaVenc), 
+                    medsControlados
+                );
+                tarjetones.add(t);
+                p.agregarTarjeton(t);
             }
-            
-            // Crear venta
-            VentaLibre vl = new VentaLibre(Date.from(fechaVenta.atStartOfDay(ZoneId.systemDefault()).toInstant()), 
-                       precio * cantidad);
+        }
+    }
+
+    private void crearVentasLibres(List<Medicamento> medicamentos, int cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            LocalDate fechaVenta = LocalDate.of(2025, 1, 1).plusDays(i % 175);
             ArrayList<Medicamento> carrito = new ArrayList<Medicamento>();
-            carrito.add(medicamentos.get(medNombre));
-            vl.setInventario(carrito);
-            ventas.add(vl);
-            
-            // Crear factura
-            facturas.add(new Factura(medNombre, medCientifico, cantidad, 
-                                  Date.from(fechaVenta.atStartOfDay(ZoneId.systemDefault()).toInstant())));
-        }
-        
-        // Venta con Prescripción (30 facturas)
-        for (int i = 1; i <= 30; i++) {
-            LocalDate fechaVenta;
-            if (i <= 6) fechaVenta = fecha1;
-            else if (i <= 12) fechaVenta = fecha2;
-            else if (i <= 18) fechaVenta = fecha3;
-            else if (i <= 24) fechaVenta = fecha4;
-            else fechaVenta = fecha5;
-            
-            String medNombre;
-            String medCientifico;
-            double precio;
-            int cantidad = 1; // Siempre 1 unidad
-            
-            if (i % 10 == 1) {
-                medNombre = "Amoxicilina";
-                medCientifico = "Amoxicillin";
-                precio = 12.75;
-            } else if (i % 10 == 2) {
-                medNombre = "Ciprofloxacino";
-                medCientifico = "Ciprofloxacin";
-                precio = 22.50;
-            } 
-            // ... continuar con los otros 8 medicamentos con prescripción
-            else {
-                medNombre = "Dexametasona";
-                medCientifico = "Dexamethasone";
-                precio = 25.25;
+            int numMedicamentos = 1 + (i % 4);
+            Collections.shuffle(medicamentos);
+            double importeTotal = 0;
+            for (int j = 0; j < numMedicamentos && j < medicamentos.size(); j++) {
+                Medicamento m = medicamentos.get(j);
+                carrito.add(m);
+                importeTotal += m.getPrecio();
+                facturas.add(new Factura(
+                    m.getNomComun(),
+                    m.getNomCientifico(),
+                    1,
+                    java.sql.Date.valueOf(fechaVenta) 
+                ));
             }
-            
-            // Crear venta
-            VentaConPrescripcion vcp = new VentaConPrescripcion(
-                (Date) Date.from(fechaVenta.atStartOfDay(ZoneId.systemDefault()).toInstant()), 
-                precio * cantidad);
-            vcp.setFechaDeCompra((Date) Date.from(fechaVenta.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            ventas.add(vcp);
-            
-            // Crear factura
-            facturas.add(new Factura(medNombre, medCientifico, cantidad, 
-                                  Date.from(fechaVenta.atStartOfDay(ZoneId.systemDefault()).toInstant())));
-        }
-        
-        // Venta Controlada (20 facturas)
-        for (int i = 1; i <= 20; i++) {
-            LocalDate fechaVenta;
-            if (i <= 4) fechaVenta = fecha1;
-            else if (i <= 8) fechaVenta = fecha2;
-            else if (i <= 12) fechaVenta = fecha3;
-            else if (i <= 16) fechaVenta = fecha4;
-            else fechaVenta = fecha5;
-            
-            String medNombre;
-            String medCientifico;
-            double precio;
-            int cantidad = 1; // Siempre 1 unidad
-            
-            if (i % 10 == 1) {
-                medNombre = "Clonazepam";
-                medCientifico = "Clonazepam";
-                precio = 45.99;
-            } else if (i % 10 == 2) {
-                medNombre = "Alprazolam";
-                medCientifico = "Alprazolam";
-                precio = 52.50;
-            } 
-            // ... continuar con los otros 8 medicamentos controlados
-            else {
-                medNombre = "Morfina";
-                medCientifico = "Morphine";
-                precio = 95.99;
+            VentaLibre venta = new VentaLibre(
+                java.sql.Date.valueOf(fechaVenta),
+                importeTotal
+            );
+            try {
+                venta.setInventario(carrito);
+            } catch (Exception e) {
+                System.err.println("Error al crear venta libre: " + e.getMessage());
             }
-            
-            // Crear venta
-            VentaControlada vc = new VentaControlada(
-                Date.from(fechaVenta.atStartOfDay(ZoneId.systemDefault()).toInstant()), 
-                precio * cantidad);
-            ventas.add(vc);
-            
-            // Crear factura
-            facturas.add(new Factura(medNombre, medCientifico, cantidad, 
-                                  Date.from(fechaVenta.atStartOfDay(ZoneId.systemDefault()).toInstant())));
-        }
-        
-        // Almohadillas Sanitarias (10 facturas)
-        for (int i = 1; i <= 10; i++) {
-            LocalDate fechaVenta;
-            if (i <= 2) fechaVenta = fecha1;
-            else if (i <= 4) fechaVenta = fecha2;
-            else if (i <= 6) fechaVenta = fecha3;
-            else if (i <= 8) fechaVenta = fecha4;
-            else fechaVenta = fecha5;
-            
-            double precioUnit = 8.50;
-            int cantidad = (i % 5) + 1; // 1-5 paquetes
-            
-            // Crear venta
-            AlmohadillasSanitarias as = new AlmohadillasSanitarias(
-                precioUnit, cantidad, 
-                Date.from(fechaVenta.atStartOfDay(ZoneId.systemDefault()).toInstant()));
-            ventas.add(as);
-            
-            // Crear factura
-            facturas.add(new Factura(
-                "Almohadillas Sanitarias", 
-                "ALM-001", 
-                cantidad, 
-                Date.from(fechaVenta.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+            ventas.add(venta);
         }
     }
 
-    // Métodos de consulta
-    public List<Paciente> obtenerPacientes() 
-    {
+    private void crearVentasConPrescripcion(List<Medicamento> medicamentos, int cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            LocalDate fechaVenta = LocalDate.of(2025, 1, 1).plusDays(i % 175);
+            LocalDate fechaCompra = fechaVenta.minusDays(1 + (i % 7));
+            Medicamento m = medicamentos.get(i % medicamentos.size());
+            double importeTotal = m.getPrecio() * (1 + (i % 3));
+            VentaConPrescripcion venta = new VentaConPrescripcion(
+                java.sql.Date.valueOf(fechaVenta), 
+                importeTotal
+            );
+            try {
+                venta.setFechaDeCompra(java.sql.Date.valueOf(fechaCompra)); 
+            } catch (Exception e) {
+                System.err.println("Error al crear venta con prescripción: " + e.getMessage());
+            }
+            ventas.add(venta);
+            facturas.add(new Factura(
+                m.getNomComun(),
+                m.getNomCientifico(),
+                1 + (i % 3),
+                java.sql.Date.valueOf(fechaVenta) 
+            ));
+        }
+    }
+
+    private void crearVentasControladas(List<Medicamento> medicamentos, int cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            LocalDate fechaVenta = LocalDate.of(2025, 1, 1).plusDays(i % 175);
+            MedicamentoControlado mc = (MedicamentoControlado) medicamentos.get(i % medicamentos.size());
+            double importeTotal = mc.getPrecio() * (1 + (i % 2));
+            VentaControlada venta = new VentaControlada(
+                java.sql.Date.valueOf(fechaVenta), 
+                importeTotal
+            );
+            ventas.add(venta);
+            mc.setCantDispensadaMensual(mc.getCantDispensadaMensual() + (1 + (i % 2)));
+            facturas.add(new Factura(
+                mc.getNomComun(),
+                mc.getNomCientifico(),
+                1 + (i % 2),
+                java.sql.Date.valueOf(fechaVenta) 
+            ));
+        }
+    }
+
+    private void crearVentasAlmohadillas(int cantidad) {
+        for (int i = 0; i < cantidad; i++) {
+            LocalDate fechaVenta = LocalDate.of(2025, 1, 1).plusDays(i % 175);
+            double precioUnit = 8.50;
+            int cant = 5 + (i % 6);
+            double importeTotal = precioUnit * cant;
+            AlmohadillasSanitarias venta = new AlmohadillasSanitarias(
+                precioUnit,
+                cant,
+                java.sql.Date.valueOf(fechaVenta) 
+            );
+            ventas.add(venta);
+            facturas.add(new Factura(
+                "Almohadillas Sanitarias",
+                "ALM-001",
+                cant,
+                java.sql.Date.valueOf(fechaVenta) 
+            ));
+        }
+    }
+
+    // Métodos de acceso
+    public List<Paciente> obtenerPacientes() {
         return new ArrayList<Paciente>(pacientes.values());
     }
 
-    public List<Medicamento> obtenerMedicamentos() 
-    {
+    public List<Medicamento> obtenerMedicamentos() {
         return new ArrayList<Medicamento>(medicamentos.values());
     }
 
-    public List<Venta> obtenerVentas() 
-    {
+    public List<Venta> obtenerVentas() {
         return new ArrayList<Venta>(ventas);
     }
 
-    public List<Factura> obtenerFacturas() 
-    {
+    public List<Factura> obtenerFacturas() {
         return new ArrayList<Factura>(facturas);
     }
 
+    public List<Tarjeton> obtenerTarjetones() {
+        return new ArrayList<Tarjeton>(tarjetones);
+    }
+
+    // Métodos de registro
     public void registrarPaciente(Paciente paciente) {
         pacientes.put(paciente.getCi(), paciente);
     }
@@ -404,5 +390,13 @@ public class BaseDeDatos {
 
     public void registrarVenta(Venta venta) {
         ventas.add(venta);
+    }
+
+    public void registrarFactura(Factura factura) {
+        facturas.add(factura);
+    }
+
+    public void registrarTarjeton(Tarjeton tarjeton) {
+        tarjetones.add(tarjeton);
     }
 }
