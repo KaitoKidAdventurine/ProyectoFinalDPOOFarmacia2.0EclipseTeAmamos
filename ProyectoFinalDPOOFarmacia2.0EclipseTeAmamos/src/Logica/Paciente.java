@@ -6,9 +6,7 @@ import java.util.List;
 
 import LogicaUtiles.Validaciones;
 
-
-public class Paciente 
-{
+public class Paciente {
     protected String nombre;
     protected String ci;
     protected String direccion;
@@ -18,50 +16,55 @@ public class Paciente
     protected List<Tarjeton> tarjetones;
     protected boolean esControlado;
 
-    // Constructor básico
-    public Paciente() {
-        this.tarjetones = new ArrayList<Tarjeton>();
-    }
-
-    // Constructor completo
-    public Paciente(String nombre, String ci, String direccion, Date fechaNacimiento, char genero) 
+    // Constructor por defecto
+    public Paciente() 
     {
-    	setNombre(nombre);
-    	setCi(ci);
-    	setDireccion(direccion);
-    	setFechaNacimiento(fechaNacimiento);
-    	setGenero(genero);
         this.tarjetones = new ArrayList<Tarjeton>();
         this.esControlado = false;
     }
 
-    // Métodos para manejar tarjetones
+    // Constructor completo
+    public Paciente(String nombre, String ci, String direccion, Date fechaNacimiento, char genero) {
+        setNombre(nombre);
+        setCi(ci);
+        setDireccion(direccion);
+        setFechaNacimiento(fechaNacimiento);
+        setGenero(genero);
+        this.tarjetones = new ArrayList<Tarjeton>();
+        this.esControlado = false;
+    }
+
+    // Método corregido para agregar tarjetones
     public void agregarTarjeton(Tarjeton tarjeton) {
         if (tarjeton == null) {
             throw new IllegalArgumentException("El tarjetón no puede ser nulo");
         }
-        if (tarjetones.size() >= 3) { // Límite de 3 tarjetones por paciente
-            throw new IllegalStateException("No se pueden agregar más tarjetones. Límite alcanzado");
+        if (this.tarjetones.size() >= 3) {
+            throw new IllegalStateException("No se pueden agregar más tarjetones. Límite alcanzado.");
         }
         this.tarjetones.add(tarjeton);
         this.esControlado = true;
     }
 
-    public List<Tarjeton> obtenerTarjetones() {
-        return new ArrayList<Tarjeton>(tarjetones); // Devuelve copia para proteger encapsulamiento
+    // Obtener tarjetones
+    public List<Tarjeton> obtenerTarjetones() 
+    {
+        return new ArrayList<Tarjeton>(tarjetones);
     }
 
+    // Remover tarjeton
     public boolean removerTarjeton(Tarjeton tarjeton) {
-        return tarjetones.remove(tarjeton);
+        return this.tarjetones.remove(tarjeton);
     }
 
-    // Getters y setters
+    // Getters y setters corregidos
     public String getNombre() {
         return nombre;
     }
 
     public void setNombre(String nombre) 
     {
+        
     	if(Validaciones.noEstaVacio(nombre))
 			if(Validaciones.noTieneNumeros(nombre))
 				if(Validaciones.noTieneCaracteresEsp(nombre))
@@ -72,72 +75,91 @@ public class Paciente
 				throw new IllegalArgumentException("El campo: nombre comun del medicamento, presenta números");
 		else
 			throw new IllegalArgumentException("El campo: nombre comun del medicamento, se encuentra vacío");
-        
+    
     }
 
-    public String getCi() 
-    {
+    public String getCi() {
         return ci;
     }
 
-    public void setCi(String ci) {
-        if (ci == null || ci.length() != 11) {
-            throw new IllegalArgumentException("El CI debe tener 11 dígitos");
+    public void setCi(String ci) 
+    {
+        if (ci == null || ci.length() != 11) 
+        {
+            throw new IllegalArgumentException("El CI debe tener exactamente 11 dígitos");
         }
         this.ci = ci;
     }
 
-    public String getDireccion() {
+    public String getDireccion() 
+    {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    public void setDireccion(String direccion) 
+    {
+        if (direccion == null || direccion.trim().isEmpty()) 
+        {
+            throw new IllegalArgumentException("La dirección no puede estar vacía");
+        }
         this.direccion = direccion;
     }
 
-    public Date getFechaNacimiento() {
+    public Date getFechaNacimiento() 
+    {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(Date fechaNacimiento) {
+    public void setFechaNacimiento(Date fechaNacimiento) 
+    {
+        if (fechaNacimiento == null) 
+        {
+            throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
+        }
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public char getGenero() {
+    public char getGenero() 
+    {
         return genero;
     }
 
-    public void setGenero(char genero) {
-        if (genero != 'M' && genero != 'F') {
-            throw new IllegalArgumentException("Género debe ser 'M' o 'F'");
+    public void setGenero(char genero) 
+    {
+        if (genero != 'M' && genero != 'm' && genero != 'F' && genero != 'f') 
+        {
+            throw new IllegalArgumentException("Género inválido: debe ser M o F");
         }
-        this.genero = genero;
+        this.genero = Character.toUpperCase(genero);
     }
 
-    public NucleoFamiliar getNucleo() {
+    public NucleoFamiliar getNucleo() 
+    {
         return nucleo;
     }
 
-    public void setNucleo(NucleoFamiliar nucleo) {
+    public void setNucleo(NucleoFamiliar nucleo) 
+    {
         this.nucleo = nucleo;
     }
 
-    public boolean esControlado() {
+    public boolean esControlado() 
+    {
         return esControlado;
     }
 
-    // Método para verificar si el paciente pertenece a un núcleo familiar
-    public boolean perteneceANucleo() {
+    public boolean perteneceANucleo() 
+    {
         return nucleo != null;
     }
 
     @Override
-    public String toString() {
+    public String toString() 
+    {
         return "Paciente{" +
                 "nombre='" + nombre + '\'' +
                 ", ci='" + ci + '\'' +
                 ", genero=" + genero +
-                ", esControlado=" + esControlado +
                 '}';
     }
 }

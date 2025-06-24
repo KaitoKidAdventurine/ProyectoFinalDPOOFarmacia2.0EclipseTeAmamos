@@ -8,9 +8,6 @@ public abstract class Venta
 	protected Date fechaVenta;
 	protected double importeTotal;
 	
-	
-	
-	
 	public Date getFechaVenta() 
 	{
 		
@@ -24,8 +21,8 @@ public abstract class Venta
 	
 	public void setFechaVenta(Date fechaVenta) 
 	{
-		if(Validaciones.noEstaVacio((java.sql.Date)fechaVenta))
-			if(Validaciones.noSePasaDeLaFechaDeHoy((java.sql.Date) fechaVenta))
+		if(Validaciones.noEstaVacio(fechaVenta))
+			if(Validaciones.noSePasaDeLaFechaDeHoy(fechaVenta))
 				this.fechaVenta = fechaVenta;
 			else
 				throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, la fecha sobrepasa de la fecha de hoy");
