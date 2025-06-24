@@ -31,6 +31,11 @@ public class Medicamento
 		return presentacion;
 	}
 
+	public double getPrecio() 
+	{
+		return precio;
+	}
+	
 	public String getTipo() 
 	{
 		return tipo;
@@ -139,14 +144,11 @@ public class Medicamento
 	{
 		if(Validaciones.noEstaVacio(fortalezaDelMed))
 			if(Validaciones.noTieneCaracteresEsp(fortalezaDelMed))
-				if(Validaciones.noTieneNumeros(fortalezaDelMed))
-					this.fortalezaDelMed = fortalezaDelMed;
-				else
-					throw new IllegalArgumentException("El campo: fortaleza de medicamento, presenta caracteres especiales");
+				this.fortalezaDelMed = fortalezaDelMed;
 			else
-				throw new IllegalArgumentException("El campo: tipo de medicamento, presenta números");
+				throw new IllegalArgumentException("El campo: fortaleza de medicamento, presenta caracteres especiales");
 		else
-			throw new IllegalArgumentException("El campo: tipo de medicamento, se encuentra vacío");
+			throw new IllegalArgumentException("El campo: fortaleza de medicamento, se encuentra vacío");
 
 
 	}
@@ -155,10 +157,7 @@ public class Medicamento
 	{
 		if(Validaciones.noEstaVacio(tempDeAlmac))
 			if(Validaciones.noTieneCaracteresEsp(tempDeAlmac))
-				if(Validaciones.tieneNumeros(tempDeAlmac))
-					this.tempDeAlmac = tempDeAlmac;
-				else
-					throw new IllegalArgumentException("El campo: temperatura de almacenamiento del medicamento, presenta letras");
+				this.tempDeAlmac = tempDeAlmac;	
 			else
 				throw new IllegalArgumentException("El campo: temperatura de almacenamiento del medicamento, presenta caracteres especiales");
 
@@ -182,10 +181,12 @@ public class Medicamento
 			throw new IllegalArgumentException("El campo: cantidad de medicamentos existentes, se encuentra vacío");
 	}
 
+	
+
 	public void setFechaDeProd(Date fechaDeProd) 
 	{
-		if(Validaciones.noEstaVacio((java.sql.Date)fechaDeProd))
-			if(Validaciones.sobrepasaDeLaFechaDeHoy((java.sql.Date)fechaDeProd))
+		if(Validaciones.noEstaVacio(fechaDeProd))
+			if(!Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeProd))
 				if(getFechaDeVenc() != null && fechaDeProd.after(getFechaDeVenc())) 
 					this.fechaDeProd = fechaDeProd;
 				else
@@ -196,11 +197,11 @@ public class Medicamento
 			throw new IllegalArgumentException("El campo: fecha de Producción del medicamento, se encuentra vacío");
 	}
 
-
+	// revisar 
 	public void setFechaDeVenc(Date fechaDeVenc) 
 	{
-		if(Validaciones.noEstaVacio((java.sql.Date)fechaDeVenc))
-			if(Validaciones.sobrepasaDeLaFechaDeHoy((java.sql.Date)fechaDeVenc))
+		if(Validaciones.noEstaVacio(fechaDeVenc))
+			if(!Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeVenc))
 				if(getFechaDeProd() != null && fechaDeVenc.before(getFechaDeProd())) 
 					this.fechaDeVenc = fechaDeVenc;
 				else
@@ -209,14 +210,6 @@ public class Medicamento
 				throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, la fecha sobrepasa de la fecha de hoy");
 		else
 			throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, se encuentra vacío");
-		
+
 	}
-
-	public Object getPrecio() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 }

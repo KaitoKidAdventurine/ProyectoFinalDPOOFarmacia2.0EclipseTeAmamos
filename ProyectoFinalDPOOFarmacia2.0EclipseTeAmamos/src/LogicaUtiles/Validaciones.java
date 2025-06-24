@@ -1,7 +1,7 @@
 package LogicaUtiles;
 import java.time.LocalDate;
 import java.time.Period;
-import java.sql.Date;
+import java.util.Date;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
@@ -147,7 +147,7 @@ public class Validaciones
 		// que no haya ningun caracter especial
 
 
-		return texto.matches("[a-zA-Z0-9·ÈÌÛ˙ ]+");
+		return texto.matches("[a-zA-Z0-9·ÈÌÛ˙¡…Õ”⁄Ò¸—‹ ]+");
 	}
 
 	public static boolean noTieneCaracteresEsp(double numero) 
@@ -156,7 +156,7 @@ public class Validaciones
 		// y revisa que el String no tenga ningun caracter especial
 
 		String texto = String.valueOf(numero);
-		return texto.matches("[a-zA-Z0-9]+");
+		return texto.matches("[0-9]+(\\.[0-9]+)?");
 	}
 
 	public static boolean noTieneCaracteresEsp(long numero) 
@@ -165,7 +165,7 @@ public class Validaciones
 		// y revisa que el String no tenga ningun caracter especial
 
 		String texto = String.valueOf(numero);
-		return texto.matches("[a-zA-Z0-9]+");
+		return texto.matches("[0-9]+");
 	}
 
 
@@ -211,9 +211,11 @@ public class Validaciones
 		// Resumen: Retorna true si la fecha no sobrepasa de la
 		// fecha de hoy, mientras que si hace lo contrario decuelve false.
 
+		// Obtener la fecha actual del sistema
+	    Date hoy = new Date();
 
-		LocalDate fechaConvertida = fecha.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		return fechaConvertida.isAfter(LocalDate.now());
+	    // Comparar si la fecha pasada es posterior a hoy
+	    return fecha.after(hoy);
 	}
 
 	public static boolean estaEntreLasDosFechas(Date inicio, Date fecha ,Date fin)

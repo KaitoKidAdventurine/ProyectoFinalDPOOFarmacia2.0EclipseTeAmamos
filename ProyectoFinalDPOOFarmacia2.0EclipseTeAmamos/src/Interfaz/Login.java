@@ -151,7 +151,8 @@ public class Login extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) 
 			{
-
+				Navegacion.registrar("Información" ,new Informacion());
+				Navegacion.irA("Información");
 			}
 		});
 		Informacion.setBounds(307, 415, 187, 47);
@@ -215,7 +216,8 @@ public class Login extends JFrame {
 			@Override
 			public void mouseExited(MouseEvent e) 
 			{
-				if(txtIngreseSuNombre.getText().isEmpty()){
+				if(txtIngreseSuNombre.getText().isEmpty())
+				{
 					txtIngreseSuNombre.setText("Ingrese su nombre de usuario");
 					txtIngreseSuNombre.setForeground(Color.GRAY);
                 }
