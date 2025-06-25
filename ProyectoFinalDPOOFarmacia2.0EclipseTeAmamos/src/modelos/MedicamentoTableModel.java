@@ -2,32 +2,57 @@ package modelos;
 
 import Logica.Medicamento;
 import Utiles.BaseDeDatos;
-
-import java.text.SimpleDateFormat;
+import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
-public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento> {
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    public MedicamentoTableModel() {
-        super(new String[]{"Nombre Común", "Nombre Científico", "Presentación", "Precio", 
-                         "Tipo", "Fortaleza", "Cantidad", "Temperatura Almacén", 
-                         "Fecha Producción", "Fecha Vencimiento"});
+public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento> 
+{
 
-    }
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    public void adicionar(Medicamento med) {
-        addRow(new Object[]{
-            med.getNomComun(),
-            med.getNomCientifico(),
-            med.getPresentacion(),
-            String.format("%.2f", med.getPrecio()),
-            med.getTipo(),
-            med.getFortalezaDelMed(),
-            med.getCantExis(),
-            String.format("%.1f°C", med.getTempDeAlmac()),
-            med.getFechaDeProd() != null ? dateFormat.format(med.getFechaDeProd()) : "",
-            med.getFechaDeVenc() != null ? dateFormat.format(med.getFechaDeVenc()) : ""
-        });
-    }
+	public MedicamentoTableModel() 
+	{
+		super(new String[] {
+				"Nombre Común", 
+				"Nombre Científico", 
+				"Presentación",
+				"Precio", 
+				"Tipo", 
+				"Fortaleza", 
+				"Temperatura Almacén",
+				"Cantidad Existente", 
+				"Fecha Producción", 
+				"Fecha Vencimiento"
+		});
+	}
+
+	public void adicionar(Medicamento med) 
+	{
+		Object[] fila = 
+			{
+				med.getNomComun(),
+				med.getNomCientifico(),
+				med.getPresentacion(),
+				String.format("%.2f", med.getPrecio()),
+				med.getTipo(),
+				med.getFortalezaDelMed(),
+				String.format("%.1f°C", med.getTempDeAlmac()),
+				med.getCantExis(),
+				med.getFechaDeProd(),
+				med.getFechaDeVenc()
+			};
+		this.addRow(fila);
+	}
+
+	public void cargar(List<Medicamento> listaMedicamentos) 
+	{
+		// Limpio las filas anteriores si ya había datos
+		setRowCount(0);
+
+		for (Medicamento med : listaMedicamentos) {
+			adicionar(med); 
+		}
+
+
+	}
 }

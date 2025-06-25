@@ -19,23 +19,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.Label;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
-import modelos.MedicamentoTableModel;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.JTextPane;
-
 public class PrincipalUsuario extends JFrame {
 
 	private JTabbedPane pestanas;
 	private JPanel contentPane;
 	private int posX;
 	private int posY;
-	private JTable tablaMedicamentos;
-	private MedicamentoTableModel tableModel;
 
 	/**
 	 * Launch the application.
@@ -285,7 +274,6 @@ public class PrincipalUsuario extends JFrame {
 		contentPane.add(pestanas);
 		
 		JPanel principal = new JPanel();
-		principal.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, principal, null);
 		principal.setLayout(null);
 		
@@ -299,47 +287,6 @@ public class PrincipalUsuario extends JFrame {
 		label_4.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		label_4.setBounds(12, 0, 205, 43);
 		panel.add(label_4);
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setLayout(null);
-		panel_3.setBorder(new CompoundBorder(new LineBorder(new Color(0, 100, 0), 3), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 255, 0))));
-		panel_3.setBackground(Color.WHITE);
-		panel_3.setBounds(12, 157, 439, 331);
-		principal.add(panel_3);
-		
-		JTextPane textPane = new JTextPane();
-		textPane.setText("En nuestro sistema de gesti\u00F3n de farmacia podr\u00E1:");
-		textPane.setFont(new Font("Times New Roman", Font.PLAIN, 28));
-		textPane.setBounds(12, 13, 392, 79);
-		panel_3.add(textPane);
-		
-		JTextPane textPane_1 = new JTextPane();
-		textPane_1.setToolTipText("");
-		textPane_1.setText("Realizar la compra de medicamentos por venta libre,venta de controlada(es necesario un tarjet\u00F3n) ,venta por prescripci\u00F3n (es necesaria una receta m\u00E9dica) y venta de almohadillas sanitarias ");
-		textPane_1.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		textPane_1.setBounds(12, 105, 381, 126);
-		panel_3.add(textPane_1);
-		
-		JLabel label_9 = new JLabel("___________________________");
-		label_9.setFont(new Font("Arial Black", Font.PLAIN, 47));
-		label_9.setBounds(0, 30, 536, 79);
-		panel_3.add(label_9);
-		
-		JLabel label_10 = new JLabel("___________________________");
-		label_10.setFont(new Font("Arial Black", Font.PLAIN, 47));
-		label_10.setBounds(0, 181, 536, 79);
-		panel_3.add(label_10);
-		
-		JTextPane textPane_2 = new JTextPane();
-		textPane_2.setText("Revisar los medicamentos disponibles en la farmacia");
-		textPane_2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-		textPane_2.setBounds(18, 260, 386, 58);
-		panel_3.add(textPane_2);
-		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setBounds(443, 104, 397, 411);
-		principal.add(lblNewLabel);
-		UtilesInterfaz.ajustarImagen(lblNewLabel, "src/imagenes/istockphoto-1240167813-612x612.jpg");
 		
 		JPanel comprar = new JPanel();
 		pestanas.addTab("New tab", null, comprar, null);
@@ -370,14 +317,5 @@ public class PrincipalUsuario extends JFrame {
 		label_7.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		label_7.setBounds(12, 0, 237, 43);
 		panel_2.add(label_7);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(27, 301, 819, 314);
-		medicamentos.add(scrollPane);
-		
-		tablaMedicamentos = new JTable();
-		scrollPane.setViewportView(tablaMedicamentos);
-		tableModel = new MedicamentoTableModel();
-		tablaMedicamentos.setModel(tableModel);
 	}
 }

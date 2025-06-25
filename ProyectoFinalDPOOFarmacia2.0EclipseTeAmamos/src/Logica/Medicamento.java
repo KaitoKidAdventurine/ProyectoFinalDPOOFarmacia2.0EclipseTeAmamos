@@ -1,4 +1,5 @@
 package Logica;
+import java.time.ZoneId;
 import java.util.Date;
 
 import LogicaUtiles.Validaciones;
@@ -16,6 +17,21 @@ public class Medicamento
 	protected Date fechaDeProd;
 	protected Date fechaDeVenc;
 
+	public Medicamento(String nomComun, String nomCientifico, String presentacion , double precio, String tipo, String fortalezaDelMed, double tempDeAlmac, long  cantExis, Date fechaDeProd, Date fechaDeVenc)
+	{
+		setNomComun(nomComun);
+		setNomCientifico(nomCientifico);
+		setPresentacion(presentacion);
+		setPrecio(precio);
+		setTipo(tipo);
+		setFortalezaDelMed(fortalezaDelMed);
+		setTempDeAlmac(tempDeAlmac);
+		setCantExis(cantExis);
+		setFechaDeProd(fechaDeProd);
+		setFechaDeVenc(fechaDeVenc);
+	}
+	
+	
 	public String getNomComun() 
 	{
 		return nomComun;
@@ -35,7 +51,7 @@ public class Medicamento
 	{
 		return precio;
 	}
-	
+
 	public String getTipo() 
 	{
 		return tipo;
@@ -83,8 +99,8 @@ public class Medicamento
 	public void setNomCientifico(String nomCientifico) 
 	{
 		if(Validaciones.noEstaVacio(nomCientifico))
-			if(Validaciones.noTieneCaracteresEsp(nomCientifico))
-				if(Validaciones.noTieneNumeros(nomCientifico))
+			if(Validaciones.noTieneNumeros(nomCientifico))
+				if(Validaciones.noTieneCaracteresEsp(nomCientifico))
 					this.nomCientifico = nomCientifico;
 				else
 					throw new IllegalArgumentException("El campo: nombre científico del medicamento, presenta caracteres especiales");
@@ -181,35 +197,28 @@ public class Medicamento
 			throw new IllegalArgumentException("El campo: cantidad de medicamentos existentes, se encuentra vacío");
 	}
 
-	
+
 
 	public void setFechaDeProd(Date fechaDeProd) 
 	{
 		if(Validaciones.noEstaVacio(fechaDeProd))
-			if(!Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeProd))
-				if(getFechaDeVenc() != null && fechaDeProd.after(getFechaDeVenc())) 
-					this.fechaDeProd = fechaDeProd;
-				else
-					throw new IllegalArgumentException("La fecha de producción no puede ser posterior a la fecha de vencimiento");
+			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeProd))
+				this.fechaDeProd = fechaDeProd;
 			else
 				throw new IllegalArgumentException("El campo: fecha de Producción del medicamento, la fecha sobrepasa de la fecha de hoy");
 		else
 			throw new IllegalArgumentException("El campo: fecha de Producción del medicamento, se encuentra vacío");
 	}
 
-	// revisar 
+
 	public void setFechaDeVenc(Date fechaDeVenc) 
 	{
 		if(Validaciones.noEstaVacio(fechaDeVenc))
-			if(!Validaciones.sobrepasaDeLaFechaDeHoy(fechaDeVenc))
-				if(getFechaDeProd() != null && fechaDeVenc.before(getFechaDeProd())) 
-					this.fechaDeVenc = fechaDeVenc;
-				else
-					throw new IllegalArgumentException("La fecha de vencimiento no puede ser antes de la fecha de produción");
+			if(Validaciones.esAntesDeLaFechaDeHoy(fechaDeVenc))
+				this.fechaDeVenc = fechaDeVenc;
 			else
 				throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, la fecha sobrepasa de la fecha de hoy");
 		else
 			throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, se encuentra vacío");
-
 	}
 }

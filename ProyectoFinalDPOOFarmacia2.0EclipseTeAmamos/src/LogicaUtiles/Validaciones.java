@@ -15,7 +15,6 @@ public class Validaciones
 		return texto != null && !texto.trim().isEmpty(); 
 	}
 
-	// falta hacer una para las direcciones que dara bateo si se pone #
 
 	public static boolean noTieneNumeros(String texto)
 	{
@@ -147,7 +146,7 @@ public class Validaciones
 		// que no haya ningun caracter especial
 
 
-		return texto.matches("[a-zA-Z0-9·ÈÌÛ˙¡…Õ”⁄Ò¸—‹ ]+");
+		return texto.matches("[a-zA-Z0-9·ÈÌÛ˙¡…Õ”⁄Ò¸—‹/ ]+");
 	}
 
 	public static boolean noTieneCaracteresEsp(double numero) 
@@ -193,31 +192,31 @@ public class Validaciones
 
 
 		Date fechaDeHoy = new Date(0);
-		return fecha.after(fechaDeHoy);
+		return fecha.before(fechaDeHoy);
 	}
 
 	public static boolean sobrepasaDeLaFechaDeHoy (Date fecha)
 	{
-		// Sino quieres leer todo esto te recomiendo el resumen...
-
-		//  Funcionalidad: Coge el dato: Date y lo transforma en una
-		// instancia de tiempo ( traducido que ahora el coge la hora
-		// exacta del sistema ejemplo la hora que tienes en la laptop),
-		// despues adquiere a traves del sistema en que zona horaria 
-		// se encuentra (Ejemplo: La hora de un sistema americano
-		// no tiene el mismo horario con un servidor de china), y para
-		// concluir convierte el dato en un tipo de dato LocalDate.
-
-		// Resumen: Retorna true si la fecha no sobrepasa de la
-		// fecha de hoy, mientras que si hace lo contrario decuelve false.
+		
+		// Funcionalidad: Retorna true si la fecha  sobrepasa de la
+		// fecha de hoy, mientras que si hace lo contrario decuelve true.
 
 		// Obtener la fecha actual del sistema
 	    Date hoy = new Date();
 
 	    // Comparar si la fecha pasada es posterior a hoy
-	    return fecha.after(hoy);
+	    return fecha.before(hoy);
 	}
-
+	
+	public static boolean esAntesDeLaFechaDeHoy (Date fecha)
+	{
+		// Funcionalidad: Devolvera true si es despues  de la fecha de hoy y devolvera false
+		// si es antes de la fecha de hoy 
+		
+		Date hoy = new Date();
+		return fecha.after(hoy);
+	}
+	
 	public static boolean estaEntreLasDosFechas(Date inicio, Date fecha ,Date fin)
 	{
 		// Funcionalidad: Revisa que la fecha este entre la fecha 

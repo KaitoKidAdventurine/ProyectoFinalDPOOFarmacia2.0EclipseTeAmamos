@@ -6,7 +6,7 @@ public class VentaLibre extends Venta
 {
 	private ArrayList <Medicamento> inventario;
 	
-	public VentaLibre(Date fechaVenta, double importeTotal) 
+	public VentaLibre(Date fechaVenta, double importeTotal, ArrayList <Medicamento> inventario) 
 	{
 		super((java.sql.Date) fechaVenta, importeTotal);
 		setInventario(inventario);

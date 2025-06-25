@@ -254,9 +254,9 @@ public class Login extends JFrame {
 			{
 				String usuarioIngresado = new String(txtIngreseSuNombre.getText());
 				String contrasenaIngresada = new String(passwordField.getPassword());
-				String contrasenaCorrectaParaAdmin = "1234"; 
+				String contrasenaCorrectaParaAdmin = "TeQueremosRodolfo"; 
 				String contrasenaCorrectaParaElPaciente = "12345678";
-				String nombreDelAdmin = "Admin";
+				String nombreDelAdmin = "OmarDavid";
 
 				if (nombreDelAdmin.equals(usuarioIngresado) && contrasenaCorrectaParaAdmin.equals(contrasenaIngresada)) 
 				{

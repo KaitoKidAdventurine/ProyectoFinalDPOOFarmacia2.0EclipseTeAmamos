@@ -66,7 +66,7 @@ public class Tarjeton implements ValidacionBool
 	public void setDireccionPaciente(String direccionPaciente) 
 	{
 		if(Validaciones.noEstaVacio(direccionPaciente))
-			if(Validaciones.noTieneCaracteresEsp(direccionPaciente))
+			if(Validaciones.direccion(direccionPaciente))
 				this.direccionPaciente = direccionPaciente;
 			else
 				throw new IllegalArgumentException("El campo: dirección, presenta caracteres especiales");
@@ -78,11 +78,8 @@ public class Tarjeton implements ValidacionBool
 	public void setFechaExpedicion(Date fechaExpedicion) 
 	{
 		if(Validaciones.noEstaVacio(fechaExpedicion))
-			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaExpedicion))
-				if(getFechaVencimiento() != null && fechaExpedicion.after(getFechaVencimiento())) 
+			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaExpedicion))			
 					this.fechaExpedicion = fechaExpedicion;
-				else
-					throw new IllegalArgumentException("La fecha de producción no puede ser posterior a la fecha de vencimiento");
 			else
 				throw new IllegalArgumentException("El campo: fecha de Producción del medicamento, la fecha sobrepasa de la fecha de hoy");
 		else
@@ -96,7 +93,7 @@ public class Tarjeton implements ValidacionBool
 	{
 		if(Validaciones.noEstaVacio(fechaVencimiento))
 			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaVencimiento))
-				if(getFechaExpedicion() != null && fechaVencimiento.before(getFechaExpedicion())) 
+				if(getFechaExpedicion() != null && fechaVencimiento.after(getFechaExpedicion())) 
 					this.fechaVencimiento = fechaVencimiento;
 				else
 					throw new IllegalArgumentException("La fecha de vencimiento no puede ser antes de la fecha de produción");
