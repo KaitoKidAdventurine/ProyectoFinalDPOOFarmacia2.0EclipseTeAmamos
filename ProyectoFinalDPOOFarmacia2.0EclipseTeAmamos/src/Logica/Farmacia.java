@@ -792,7 +792,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 			}
 
 
-			public ArrayList obtenerMedicamentoControlado()
+			public ArrayList<MedicamentoControlado> obtenerMedicamentoControlado()
 			{
 				return medicamentoControlado;
 			}

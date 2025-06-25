@@ -44,14 +44,5 @@ public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento
 		this.addRow(fila);
 	}
 
-	public void cargar(List<Medicamento> listaMedicamentos) 
-	{
-		// Limpio las filas anteriores si ya había datos
-		setRowCount(0);
 
-		for (Medicamento med : listaMedicamentos) 
-		{
-			adicionar(med); 
-		}
-	}
 }

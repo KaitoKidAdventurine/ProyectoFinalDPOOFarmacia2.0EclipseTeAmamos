@@ -11,6 +11,7 @@ import java.awt.Color;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 
+import Logica.Farmacia;
 import Utiles.UtilesInterfaz;
 
 import java.awt.Font;
@@ -19,12 +20,23 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.Label;
 
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+
+import modelos.MedicamentoTableModel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.JTextPane;
+
 public class PrincipalUsuario extends JFrame {
 
 	private JTabbedPane pestanas;
 	private JPanel contentPane;
 	private int posX;
 	private int posY;
+	private JTable tablaMedicamentos;
+	private MedicamentoTableModel medicamentoTableModel;
 
 	/**
 	 * Launch the application.
@@ -274,6 +286,7 @@ public class PrincipalUsuario extends JFrame {
 		contentPane.add(pestanas);
 		
 		JPanel principal = new JPanel();
+		principal.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, principal, null);
 		principal.setLayout(null);
 		
@@ -287,6 +300,57 @@ public class PrincipalUsuario extends JFrame {
 		label_4.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		label_4.setBounds(12, 0, 205, 43);
 		panel.add(label_4);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setBorder(new CompoundBorder(new LineBorder(new Color(0, 100, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
+		panel_3.setBackground(Color.WHITE);
+		panel_3.setBounds(27, 108, 424, 415);
+		principal.add(panel_3);
+		
+		JTextPane textPane_4 = new JTextPane();
+		textPane_4.setText("Cr\u00E9ditos:\r\n-Alison Hidalgo Guerra\r\nGitHub: AlisonH17\r\n-Eriet Dario Armas Gonz\u00E1lez \r\nGitHub: KaitoKidAdventurine");
+		textPane_4.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		textPane_4.setBounds(109, 291, 280, 111);
+		panel_3.add(textPane_4);
+		
+		JLabel label_11 = new JLabel("_____________");
+		label_11.setFont(new Font("Tahoma", Font.PLAIN, 69));
+		label_11.setBounds(0, -27, 511, 97);
+		panel_3.add(label_11);
+		
+		JLabel label_12 = new JLabel("_____________");
+		label_12.setFont(new Font("Tahoma", Font.PLAIN, 69));
+		label_12.setBounds(0, 83, 511, 97);
+		panel_3.add(label_12);
+		
+		JLabel label_13 = new JLabel("_____________");
+		label_13.setFont(new Font("Tahoma", Font.PLAIN, 69));
+		label_13.setBounds(0, 193, 511, 97);
+		panel_3.add(label_13);
+		
+		JTextPane textPane_1 = new JTextPane();
+		textPane_1.setText("En nuestro sistema podr\u00E1:");
+		textPane_1.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		textPane_1.setBounds(12, 13, 400, 66);
+		panel_3.add(textPane_1);
+		
+		JTextPane textPane_2 = new JTextPane();
+		textPane_2.setText("Realizar la compra de medicamentos por 3 Tipos de ventas y la compra de almohadillas sanitarias para las mujeres de su n\u00FAcleo familiar ");
+		textPane_2.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		textPane_2.setBounds(10, 71, 402, 80);
+		panel_3.add(textPane_2);
+		
+		JTextPane textPane_3 = new JTextPane();
+		textPane_3.setText("Consultar la disponibilidad de medicamentos para realizar la compra exitosa de ellos");
+		textPane_3.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		textPane_3.setBounds(10, 179, 347, 122);
+		panel_3.add(textPane_3);
+		
+		JLabel label_14 = new JLabel("");
+		label_14.setBounds(463, 81, 381, 490);
+		principal.add(label_14);
+		UtilesInterfaz.ajustarImagen(label_14, "src/imagenes/istockphoto-1240167813-612x612.jpg");
 		
 		JPanel comprar = new JPanel();
 		pestanas.addTab("New tab", null, comprar, null);
@@ -317,5 +381,43 @@ public class PrincipalUsuario extends JFrame {
 		label_7.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		label_7.setBounds(12, 0, 237, 43);
 		panel_2.add(label_7);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(12, 151, 851, 460);
+		medicamentos.add(scrollPane);
+		
+		tablaMedicamentos = new JTable();
+		scrollPane.setViewportView(tablaMedicamentos);
+		
+		// INICIALIZAR MODELO DE TABLA (ya está)
+				medicamentoTableModel = new MedicamentoTableModel();
+
+				// ASIGNAR MODELO A LA TABLA
+				tablaMedicamentos.setModel(medicamentoTableModel);
+				tablaMedicamentos.setRowHeight(28);
+				
+				JLabel label_9 = new JLabel("_________");
+				label_9.setFont(new Font("Tahoma", Font.PLAIN, 99));
+				label_9.setForeground(new Color(0, 255, 0));
+				label_9.setBounds(0, 0, 494, 165);
+				medicamentos.add(label_9);
+				
+				JLabel label_10 = new JLabel("_________");
+				label_10.setForeground(Color.GREEN);
+				label_10.setFont(new Font("Tahoma", Font.PLAIN, 99));
+				label_10.setBounds(398, 0, 494, 165);
+				medicamentos.add(label_10);
+				
+				JLabel lblMedicamentosDisponibles = new JLabel("Medicamentos Disponibles");
+				lblMedicamentosDisponibles.setFont(new Font("Tahoma", Font.BOLD, 25));
+				lblMedicamentosDisponibles.setBounds(244, 70, 368, 43);
+				medicamentos.add(lblMedicamentosDisponibles);
+				
+
+				// CARGAR DATOS DESDE LA FARMACIA
+				Farmacia.obtenerInstancia().inicializarDatosPrueba();
+
+				// LLENAR EL MODELO CON LOS DATOS
+				medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().obtenerMedicamentos());
 	}
 }
