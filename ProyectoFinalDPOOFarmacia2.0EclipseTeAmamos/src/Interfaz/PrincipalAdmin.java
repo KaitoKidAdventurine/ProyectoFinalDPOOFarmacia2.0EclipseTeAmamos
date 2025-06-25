@@ -159,9 +159,11 @@ public class PrincipalAdmin extends JFrame
 
 		final JLabel cruz = new JLabel("");
 		cruz.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		cruz.addMouseListener(new MouseAdapter() {
+		cruz.addMouseListener(new MouseAdapter() 
+		{
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent arg0) 
+			{
 				System.exit(0);
 			}
 			@Override
@@ -203,18 +205,22 @@ public class PrincipalAdmin extends JFrame
 
 		final JPanel panel1 = new JPanel();
 		panel1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panel1.addMouseListener(new MouseAdapter() {
+		panel1.addMouseListener(new MouseAdapter() 
+		{
 			@Override
-			public void mouseEntered(MouseEvent e) {
+			public void mouseEntered(MouseEvent e) 
+			{
 				panel1.setBackground(new Color (0,237,21));
 
 			}
 			@Override
-			public void mouseExited(MouseEvent e) {
+			public void mouseExited(MouseEvent e) 
+			{
 				panel1.setBackground(new Color (12,184,47));
 			}
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent arg0) 
+			{
 				pestanas.setSelectedIndex(0);
 			}
 		});
@@ -224,9 +230,11 @@ public class PrincipalAdmin extends JFrame
 		panel1.setLayout(null);
 
 		JLabel lblInicio = new JLabel("PRINCIPAL");
-		lblInicio.addMouseListener(new MouseAdapter() {
+		lblInicio.addMouseListener(new MouseAdapter() 
+		{
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent arg0) 
+			{
 				pestanas.setSelectedIndex(0);
 			}
 		});

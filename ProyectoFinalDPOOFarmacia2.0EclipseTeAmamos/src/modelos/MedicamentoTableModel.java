@@ -1,6 +1,11 @@
 package modelos;
 
 import Logica.Medicamento;
+<<<<<<< HEAD
+=======
+import Logica.Farmacia;
+import javax.swing.table.DefaultTableModel;
+>>>>>>> ea75d882883702650dac455ba7fa7ae8f09f9179
 import java.util.List;
 
 public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento> 
@@ -47,10 +52,9 @@ public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento
 		// Limpio las filas anteriores si ya había datos
 		setRowCount(0);
 
-		for (Medicamento med : listaMedicamentos) {
+		for (Medicamento med : listaMedicamentos) 
+		{
 			adicionar(med); 
 		}
-
-
 	}
 }
