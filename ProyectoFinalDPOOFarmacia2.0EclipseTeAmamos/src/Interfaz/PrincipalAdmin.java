@@ -2,9 +2,14 @@ package Interfaz;
 
 import Logica.Farmacia;
 import Logica.Medicamento;
+import LogicaUtiles.Porcentaje;
 import LogicaUtiles.VentaDeMedicamentos;
+import modelos.AlmohadillasNecesariasTableModel;
+import modelos.ComparacionVentasTableModel;
 import modelos.MedicamentoTableModel;
+import modelos.MedicamentosMasVendidosTableModel;
 import modelos.ModeloPrincipalTableModel;
+import modelos.TarjetonesIncumplidosTableModel;
 
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -100,6 +105,14 @@ public class PrincipalAdmin extends JFrame
 	private JTextField textCantidad;
 	private JTextField textFechaProduccion;
 	private JTextField textFechaVencimiento;
+	private JTable tablaMasVendidos;
+	private MedicamentosMasVendidosTableModel medicamentosMasVendidosModel;
+	private JTable tablaAlmohadillas;
+	private AlmohadillasNecesariasTableModel modelAlmohadillas;
+	private JTable tablaComparacionVentas;
+	private ComparacionVentasTableModel comparacionVentasModel;
+	private JTable tablaTarjetones;
+	private TarjetonesIncumplidosTableModel tarjetonesModel;
 
 	/**
 	 * Launch the application.
@@ -133,8 +146,7 @@ public class PrincipalAdmin extends JFrame
 	    textFortaleza.setText("");
 	    textTemperatura.setText("");
 	    textCantidad.setText("");
-	    txtFechaProduccion.setText("dd/mm/aaaa");
-	    txtFechaVencimiento.setText("dd/mm/aaaa");
+
 	}
 
 	/**
@@ -1442,7 +1454,21 @@ public class PrincipalAdmin extends JFrame
 		lblTopMedicamentos.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTopMedicamentos.setBounds(79, 0, 200, 57);
 		panel_4.add(lblTopMedicamentos);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(59, 218, 800, 381);
+		reporte1.add(scrollPane_1);
+		
+		tablaMasVendidos = new JTable();
+		scrollPane_1.setViewportView(tablaMasVendidos);
+		// Inicializar modelo
+		medicamentosMasVendidosModel = new MedicamentosMasVendidosTableModel();
+		tablaMasVendidos.setModel(medicamentosMasVendidosModel);
+		tablaMasVendidos.setRowHeight(28);
 
+		// Cargar datos
+		List<VentaDeMedicamentos> masVendidos = Farmacia.obtenerInstancia().medicamentosMasVendidos();
+		medicamentosMasVendidosModel.actualizar(masVendidos);
 
 		Panel reporte2 = new Panel();
 		reporte2.setBackground(Color.WHITE);
@@ -1473,11 +1499,23 @@ public class PrincipalAdmin extends JFrame
 		lblAlmohadillasSanitarias_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblAlmohadillasSanitarias_1.setBounds(72, 0, 307, 57);
 		panel_5.add(lblAlmohadillasSanitarias_1);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(49, 286, 846, 125);
+		reporte2.add(scrollPane_2);
+		
+		tablaAlmohadillas = new JTable();
+		scrollPane_2.setViewportView(tablaAlmohadillas);
 
-		JLabel lblNewLabel_3 = new JLabel("New label");
-		lblNewLabel_3.setBounds(312, 0, 122, 57);
-		panel_5.add(lblNewLabel_3);
+		// Obtener datos
+		long necesarias = Farmacia.obtenerInstancia().cantDeAlmohadillasNecesarias();
+		long stock = Farmacia.obtenerInstancia().getCantidadDeAlmohadillasSanitarias();
 
+		// Configurar modelo
+		AlmohadillasNecesariasTableModel modelAlmohadillas = new AlmohadillasNecesariasTableModel(necesarias, stock);
+		tablaAlmohadillas.setModel(modelAlmohadillas);
+		tablaAlmohadillas.setRowHeight(48);
+		
 		Panel reporte3 = new Panel();
 		reporte3.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, reporte3, null);
@@ -1507,11 +1545,21 @@ public class PrincipalAdmin extends JFrame
 		lblTopVentas_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTopVentas_1.setBounds(76, 0, 200, 57);
 		panel_6.add(lblTopVentas_1);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(37, 219, 799, 331);
+		reporte3.add(scrollPane_3);
+		
+		tablaComparacionVentas = new JTable();
+		scrollPane_3.setViewportView(tablaComparacionVentas);
+		
+		// Inicializar modelo
+		comparacionVentasModel = new ComparacionVentasTableModel();
+		tablaComparacionVentas.setModel(comparacionVentasModel); 
+		tablaComparacionVentas.setRowHeight(28);
 
-		JLabel lblNewLabel_4 = new JLabel("New label");
-		lblNewLabel_4.setBounds(290, 17, 69, 20);
-		panel_6.add(lblNewLabel_4);
-
+		// Cargar datos
+		comparacionVentasModel.cargarPorcentajes(Farmacia.obtenerInstancia().comparacionDeVentasMensuales());
 		Panel reporte4 = new Panel();
 		reporte4.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, reporte4, null);
@@ -1540,13 +1588,17 @@ public class PrincipalAdmin extends JFrame
 		lblActivos_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblActivos_1.setBounds(76, 0, 200, 57);
 		panel_7.add(lblActivos_1);
-
-		JLabel lblNewLabel_5 = new JLabel("New label"); 
-		lblNewLabel_5.setBounds(307, 16, 69, 20); 
-		panel_7.add(lblNewLabel_5);
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(111, 210, 781, 299);
+		reporte4.add(scrollPane_4);
+		
+		tablaTarjetones = new JTable();
+		scrollPane_4.setViewportView(tablaTarjetones);
+		tarjetonesModel = new TarjetonesIncumplidosTableModel();
+		tablaTarjetones.setModel(tarjetonesModel);
+		tarjetonesModel.actualizar(Farmacia.obtenerInstancia().registroDeIncumplimiento());
 		
 		
 	}
-
-
 }
