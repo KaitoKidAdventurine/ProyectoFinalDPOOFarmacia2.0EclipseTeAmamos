@@ -92,15 +92,13 @@ public class Tarjeton implements ValidacionBool
 	public void setFechaVencimiento(Date fechaVencimiento) 
 	{
 		if(Validaciones.noEstaVacio(fechaVencimiento))
-			if(Validaciones.sobrepasaDeLaFechaDeHoy(fechaVencimiento))
+			
 				if(getFechaExpedicion() != null && fechaVencimiento.after(getFechaExpedicion())) 
 					this.fechaVencimiento = fechaVencimiento;
 				else
 					throw new IllegalArgumentException("La fecha de vencimiento no puede ser antes de la fecha de produción");
 			else
-				throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, la fecha sobrepasa de la fecha de hoy");
-		else
-			throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, se encuentra vacío");
+				throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, se encuentra vacío");
 		
 		
 	}

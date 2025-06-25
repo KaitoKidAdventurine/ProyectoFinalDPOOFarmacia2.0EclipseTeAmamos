@@ -533,35 +533,51 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 			// inicializador de tarjetones
 			public void inicializarTarjetones() 
 			{
-				for (int i = 0; i < 15; i++) 
-				{
-					Paciente p = pacientes.get(i);
-					int numTarjetones = 1 + (i % 3);
-					for (int j = 0; j < numTarjetones; j++) 
-					{
-						LocalDate fechaExp = LocalDate.of(2024, 1 + (i % 12), 1 + (j * 10));
-						LocalDate fechaVenc = fechaExp.plusMonths(6);
+				// Nota: Esta es la fecha de hoy Esto se cambiara mas alante para que se pueda actualizar sola
+			    LocalDate HOY = LocalDate.of(2025, 6, 25); 
 
+			    for (int i = 0; i < 15; i++) {
+			        Paciente p = pacientes.get(i);
+			        int numTarjetones = 1 + (i % 3);
 
-						int numMedicamentos = 1 + (j % 3);
-						ArrayList<MedicamentoControlado> medsControlados = new ArrayList<MedicamentoControlado>();
+			        for (int j = 0; j < numTarjetones; j++) 
+			        {
+			            // 1 de cada 3 tarjetones sera desactivado para darle variedad a los datos
+			            boolean estaVencido = j % 3 == 0;
 
-						for (int k = 0; k < numMedicamentos && k < obtenerMedicamentoControlado().size(); k++) 
-						{
-							medsControlados.add((MedicamentoControlado) obtenerMedicamentoControlado().get(k));
-						}
-						Tarjeton t = new Tarjeton
-								(
-										p.getNombre(),
-										p.getDireccion(),
-										java.sql.Date.valueOf(fechaExp), 
-										java.sql.Date.valueOf(fechaVenc), 
-										medsControlados
-										);
-						tarjetones.add(t);
-						p.agregarTarjeton(t);
-					}
-				}
+			            LocalDate fechaExp;
+			            if (estaVencido) {
+			                // Tarjetón vencido: fecha de expiración antes del HOY
+			                fechaExp = HOY.minusMonths(2 + j); // Hace unos meses
+			            } 
+			            
+			            else 
+			            {
+			                // Tarjetón en vigencia ponemos la fecha normal
+			                fechaExp = LocalDate.of(2024, 1 + (i % 12), 1 + (j * 10));
+			            }
+
+			            LocalDate fechaVenc = fechaExp.plusMonths(6);
+
+			            int numMedicamentos = 1 + (j % 3);
+			            ArrayList<MedicamentoControlado> medsControlados = new ArrayList<>();
+
+			            for (int k = 0; k < numMedicamentos && k < obtenerMedicamentoControlado().size(); k++) {
+			                medsControlados.add((MedicamentoControlado) obtenerMedicamentoControlado().get(k));
+			            }
+			            
+			            Tarjeton t = new Tarjeton(
+			                    p.getNombre(),
+			                    p.getDireccion(),
+			                    java.sql.Date.valueOf(fechaExp),
+			                    java.sql.Date.valueOf(fechaVenc),
+			                    medsControlados
+			            );
+
+			            tarjetones.add(t);
+			            p.agregarTarjeton(t);
+			        }
+			    }
 			}
 
 			public void generarFacturasDesdeVentas() 
