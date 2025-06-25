@@ -64,7 +64,7 @@ public class Informacion extends JFrame
 		
 		JLabel lblContrasennaDeAdmin = new JLabel("Contrasenna de admin: TeQueremosRodolfo");
 		lblContrasennaDeAdmin.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblContrasennaDeAdmin.setBounds(29, 119, 390, 20);
+		lblContrasennaDeAdmin.setBounds(29, 119, 433, 32);
 		contentPanel.add(lblContrasennaDeAdmin);
 		
 		JLabel lblElUsuarioDe = new JLabel("El usuario normal puedes colocar cualquier nombre: ");

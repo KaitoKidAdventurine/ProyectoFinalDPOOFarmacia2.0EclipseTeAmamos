@@ -33,8 +33,10 @@ public class VentaDeMedicamentos
 
 	public void setCantidadVendida(int cantidadVendida) 
 	{
-		
-		this.cantidadVendida = cantidadVendida;
+		if(Validaciones.noEstaVacio(cantidadVendida))
+			this.cantidadVendida = cantidadVendida;
+		else
+			throw new IllegalArgumentException("El campo: cantidad de medicamentos, se encuentra vacío");
 	}
 }
 

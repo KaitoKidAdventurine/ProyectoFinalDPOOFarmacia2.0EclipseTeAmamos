@@ -109,7 +109,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	// Metodos del primer reporte 
 	public ArrayList<VentaDeMedicamentos> buscarOrdenDeAccion()
 	{
-		VentaDeMedicamentos venta = null;
+		VentaDeMedicamentos venta= new VentaDeMedicamentos();
 		ArrayList<VentaDeMedicamentos> ventas = new ArrayList<VentaDeMedicamentos>();
 		for(Medicamento m: medicamentos)
 		{
@@ -510,9 +510,9 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						,patologia, cantAsigMensual, cantDispensadaMensual);
 				registrarMedicamentoControlado(m);
 			}
-			
-			
-			
+
+
+
 
 			// Inicializar MEdicamentos
 			public void agregarMedicamento(String nomComun, String nomCientifico, String presentacion,
@@ -524,8 +524,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 				Medicamento m = new Medicamento(nomComun,nomCientifico, presentacion, precio, tipo, fortaleza, tempAlmac, cantExis, utilFechaProd , utilFechaVenc);
 				medicamentos.add(m);
 			}
-			
-			
+
+
 
 			// inicializador de tarjetones
 			public void inicializarTarjetones() 
@@ -561,60 +561,52 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 				}
 			}
 
-/*
-			
-			
 			public void generarFacturasDesdeVentas() 
 			{
-			    for (Venta venta : historialVentas) 
-			    {
-			        String nombreMedicamento = "";
-			        String codigoMedicamento = "";
-			        int cantidadVendida = 1;
-			        Date fechaCompra = venta.getFechaVenta();
+				for (Venta venta : historialVentas) 
+				{
+					String nombreMedicamento = "";
+					String codigoMedicamento = "";
+					int cantidadVendida = 1;
+					Date fechaCompra = venta.getFechaVenta();
 
-			        if (venta instanceof VentaLibre) 
-			        {
-			            VentaLibre vl = (VentaLibre) venta;
-			            for (Medicamento m : vl.getInventario()) 
-			            {
-			                nombreMedicamento = m.getNomComun();
-			                codigoMedicamento = m.getNomCientifico();
-			                cantidadVendida = vl.getInventario().size(); 
-			                facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
-			            }
-			        } 
-			        
-			        else if (venta instanceof VentaConPrescripcion) 
-			        {
-			            VentaConPrescripcion vcp = (VentaConPrescripcion) venta;
-			            nombreMedicamento = vcp.getMedicamento().getNomComun(); 
-			            codigoMedicamento = vcp.getMedicamento().getNomCientifico();
-			            cantidadVendida = 1; // Puedes ajustar si hay cantidad variable
-			            facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
-			        } 
-			        
-			        else if (venta instanceof VentaControlada) 
-			        {
-			            VentaControlada vc = (VentaControlada) venta;
-			            nombreMedicamento = vc.getMedicamento().getNomComun(); 
-			            codigoMedicamento = vc.getMedicamento().getNomCientifico();
-			            cantidadVendida = 1;
-			            facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
-			        } 
-			        
-			        else if (venta instanceof AlmohadillasSanitarias) 
-			        {
-			            AlmohadillasSanitarias alm = (AlmohadillasSanitarias) venta;
-			            nombreMedicamento = "Almohadillas Sanitarias";
-			            codigoMedicamento = "ALM-001";
-			            cantidadVendida = alm.getCant();
-			            facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
-			        }
-			    }
-			    System.out.println("Se generaron " + facturas.size() + " facturas desde el historial de ventas.");
+					if (venta instanceof VentaLibre) 
+					{
+						nombreMedicamento = ((VentaLibre) venta).getNombreDelMed();
+						codigoMedicamento = ((VentaLibre) venta).getCodigoDelMed();
+						cantidadVendida = ((VentaLibre) venta).getCantMedVendidos(); 
+						facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
+					} 
+
+					else if (venta instanceof VentaConPrescripcion) 
+					{
+						
+						nombreMedicamento = ((VentaConPrescripcion) venta).getNombreDelMed(); 
+						codigoMedicamento = ((VentaConPrescripcion) venta).getCodigoDelMed();
+						cantidadVendida = ((VentaConPrescripcion) venta).getCantMedVendidos();
+						facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
+					} 
+
+					else if (venta instanceof VentaControlada) 
+					{
+						nombreMedicamento = ((VentaControlada) venta).getNombreDelMed(); 
+						codigoMedicamento = ((VentaControlada) venta).getCodigoDelMed();
+						cantidadVendida = ((VentaControlada) venta).getCantMedVendidos();
+						facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
+					} 
+
+					else if (venta instanceof AlmohadillasSanitarias) 
+					{
+						AlmohadillasSanitarias alm = (AlmohadillasSanitarias) venta;
+						nombreMedicamento = "Almohadillas Sanitarias";
+						codigoMedicamento = "ALM-001";
+						cantidadVendida = alm.getCant();
+						facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
+					}
+				}
+				System.out.println("Se generaron " + facturas.size() + " facturas desde el historial de ventas.");
 			}
- */
+
 
 			public void agregarPaciente(String nombre, String ci, char genero, LocalDate fechaNac, String direccion) 
 			{
@@ -632,57 +624,57 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 			public void inicializarVentasLibres() 
 			{
 				// Ventas con prescripción - 40 ejemplos
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 3, 1), 25.0, LocalDate.of(2025, 1, 1));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 2), 30.0, LocalDate.of(2025, 1, 1));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 3), 28.5, LocalDate.of(2025, 1, 2));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 4), 32.75, LocalDate.of(2025, 1, 2));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 5), 40.0, LocalDate.of(2025, 1, 3));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 6), 22.0, LocalDate.of(2025, 1, 4));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 7), 35.0, LocalDate.of(2025, 1, 4));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 8), 45.0, LocalDate.of(2025, 1, 5));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 9), 30.0, LocalDate.of(2025, 1, 5));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 10), 28.0, LocalDate.of(2025, 1, 6));
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 3, 1), 25.0, LocalDate.of(2025, 1, 1), "Omeprazol", "Inhibidor de bomba", 20 );
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 2), 30.0, LocalDate.of(2025, 1, 1),"Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 3), 28.5, LocalDate.of(2025, 1, 2),"Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 4), 32.75, LocalDate.of(2025, 1, 2),"Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 5), 40.0, LocalDate.of(2025, 1, 3), "Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 6), 22.0, LocalDate.of(2025, 1, 4), "Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 7), 35.0, LocalDate.of(2025, 1, 4), "Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 8), 45.0, LocalDate.of(2025, 1, 5), "Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 9), 30.0, LocalDate.of(2025, 1, 5), "Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 10), 28.0, LocalDate.of(2025, 1, 6), "Omeprazol", "Inhibidor de bomba", 20);
 
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 11), 32.0, LocalDate.of(2025, 1, 6));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 12), 37.0, LocalDate.of(2025, 1, 7));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 13), 41.0, LocalDate.of(2025, 1, 7));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 14), 29.0, LocalDate.of(2025, 1, 8));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 15), 33.0, LocalDate.of(2025, 1, 8));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 16), 36.0, LocalDate.of(2025, 1, 9));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 17), 42.0, LocalDate.of(2025, 1, 9));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 18), 26.0, LocalDate.of(2025, 1, 10));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 19), 34.0, LocalDate.of(2025, 1, 10));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 20), 39.0, LocalDate.of(2025, 1, 11));
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 11), 32.0, LocalDate.of(2025, 1, 6),"Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 12), 37.0, LocalDate.of(2025, 1, 7), "Omeprazol", "Inhibidor de bomba", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 13), 41.0, LocalDate.of(2025, 1, 7), "Metformina", "Glifage", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 14), 29.0, LocalDate.of(2025, 1, 8), "Metformina", "Glifage", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 15), 33.0, LocalDate.of(2025, 1, 8), "Metformina", "Glifage", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 16), 36.0, LocalDate.of(2025, 1, 9), "Metformina", "Glifage", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 17), 42.0, LocalDate.of(2025, 1, 9), "Metformina", "Glifage", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 18), 26.0, LocalDate.of(2025, 1, 10), "Metformina", "Glifage", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 19), 34.0, LocalDate.of(2025, 1, 10), "Metformina", "Glifage", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 20), 39.0, LocalDate.of(2025, 1, 11), "Metformina", "Glifage", 20);
 
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 21), 27.0, LocalDate.of(2025, 1, 11));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 22), 31.0, LocalDate.of(2025, 1, 12));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 23), 38.0, LocalDate.of(2025, 1, 12));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 24), 43.0, LocalDate.of(2025, 1, 13));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 25), 33.0, LocalDate.of(2025, 1, 13));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 26), 29.0, LocalDate.of(2025, 1, 14));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 27), 35.0, LocalDate.of(2025, 1, 14));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 28), 40.0, LocalDate.of(2025, 1, 15));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 29), 31.0, LocalDate.of(2025, 1, 15));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 30), 36.0, LocalDate.of(2025, 1, 16));
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 21), 27.0, LocalDate.of(2025, 1, 11), "Metformina", "Glifage", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 22), 31.0, LocalDate.of(2025, 1, 12), "Metformina", "Glifage", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 23), 38.0, LocalDate.of(2025, 1, 12), "Simvastatina", "Estatinas", 40);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 24), 43.0, LocalDate.of(2025, 1, 13), "Simvastatina", "Estatinas", 40);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 25), 33.0, LocalDate.of(2025, 1, 13), "Simvastatina", "Estatinas", 40);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 26), 29.0, LocalDate.of(2025, 1, 14), "Simvastatina", "Estatinas", 40);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 27), 35.0, LocalDate.of(2025, 1, 14), "Amoxilina", "Penicilina", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 28), 40.0, LocalDate.of(2025, 1, 15), "Amoxilina", "Penicilina", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 29), 31.0, LocalDate.of(2025, 1, 15), "Amoxilina", "Penicilina", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 30), 36.0, LocalDate.of(2025, 1, 16), "Amoxilina", "Penicilina", 20);
 
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 31), 44.0, LocalDate.of(2025, 1, 16));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 1), 25.0, LocalDate.of(2025, 1, 17));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 2), 30.0, LocalDate.of(2025, 1, 17));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 3), 28.0, LocalDate.of(2025, 1, 18));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 4), 32.0, LocalDate.of(2025, 1, 18));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 5), 37.0, LocalDate.of(2025, 1, 19));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 6), 42.0, LocalDate.of(2025, 1, 19));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 7), 34.0, LocalDate.of(2025, 1, 20));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 8), 39.0, LocalDate.of(2025, 1, 20));
-				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 9), 27.0, LocalDate.of(2025, 1, 21));
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 31), 44.0, LocalDate.of(2025, 1, 16), "Amoxilina", "Penicilina", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 1), 25.0, LocalDate.of(2025, 1, 17), "Atorvastatina", "Lipitor", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 2), 30.0, LocalDate.of(2025, 1, 17), "Atorvastatina", "Lipitor", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 3), 28.0, LocalDate.of(2025, 1, 18), "Atorvastatina", "Lipitor", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 4), 32.0, LocalDate.of(2025, 1, 18), "Atorvastatina", "Lipitor", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 5), 37.0, LocalDate.of(2025, 1, 19), "Dipirona", "Metamizol", 40);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 6), 42.0, LocalDate.of(2025, 1, 19), "Naproxeno", "Antiinflamatorio", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 7), 34.0, LocalDate.of(2025, 1, 20), "Dipirona", "Metamizol", 40);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 8), 39.0, LocalDate.of(2025, 1, 20), "Naproxeno", "Antiinflamatorio", 20);
+				Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 9), 27.0, LocalDate.of(2025, 1, 21), "Naproxeno", "Antiinflamatorio", 20);
 			}
 
-			public void agregarVentaConPrescripcion(LocalDate date, double importe, LocalDate dateDos)
+			public void agregarVentaConPrescripcion(LocalDate date, double importe, LocalDate dateDos, String nombreDelMed,String codigoDelMed, int cantMedVendidos)
 			{
 				Date fechaVenta = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
 				Date fechaDeCompra = Date.from(dateDos.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-				VentaConPrescripcion m = new VentaConPrescripcion(fechaVenta, importe, fechaDeCompra);
+				VentaConPrescripcion m = new VentaConPrescripcion(fechaVenta, importe, fechaDeCompra, nombreDelMed, codigoDelMed, cantMedVendidos);
 
 				historialVentas.add(m);
 			}
@@ -691,49 +683,49 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 			public void inicializarVentaLibre()
 			{
 
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 3, 1), 20.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 4, 2), 15.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 3), 18.5);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 4), 22.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 5), 10.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 6), 17.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 7), 25.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 8), 12.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 9), 14.5);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 10), 19.0);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 3, 1), 20.0, "Paracetamol", "Acetaminofén", 15);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 4, 2), 15.0, "Paracetamol", "Acetaminofén", 30 );
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 3), 18.5, "Paracetamol", "Acetaminofén", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 4), 22.0, "Paracetamol", "Acetaminofén", 15);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 5), 10.0, "Paracetamol", "Acetaminofén", 10);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 6), 17.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 7), 25.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 8), 12.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 9), 14.5, "Ibuprofeno", "Ácido Ibuprofénico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 10), 19.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
 
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 11), 21.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 12), 16.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 13), 23.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 14), 11.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 15), 13.5);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 16), 18.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 17), 24.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 18), 15.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 19), 19.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 20), 20.0);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 11), 21.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 12), 16.0,"Ibuprofeno", "Ácido Ibuprofénico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 13), 23.0,"Ibuprofeno", "Ácido Ibuprofénico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 14), 11.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 15), 13.5, "Aspirina", "Ácido Acetilsalicílico", 30);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 16), 18.0, "Aspirina", "Ácido Acetilsalicílico", 30);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 17), 24.0, "Aspirina", "Ácido Acetilsalicílico", 30);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 18), 15.0, "Aspirina", "Ácido Acetilsalicílico", 15);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 19), 19.0, "Aspirina", "Ácido Acetilsalicílico", 25);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 20), 20.0, "Loratadina", "Antihistamínico", 20);
 
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 21), 22.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 22), 17.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 23), 14.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 24), 18.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 25), 23.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 26), 20.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 27), 15.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 28), 19.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 29), 16.0);
-				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 30), 21.0);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 21), 22.0, "Loratadina", "Antihistamínico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 22), 17.0, "Loratadina", "Antihistamínico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 23), 14.0, "Loratadina", "Antihistamínico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 24), 18.0, "Loratadina", "Antihistamínico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 25), 23.0, "Loratadina", "Antihistamínico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 26), 20.0, "Loratadina", "Antihistamínico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 27), 15.0, "Loratadina", "Antihistamínico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 28), 19.0, "Loratadina", "Antihistamínico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 29), 16.0, "Loratadina", "Antihistamínico", 20);
+				Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 30), 21.0, "Loratadina", "Antihistamínico", 20);
 
 			}
-			
-			
-			public void agregarVentaLibre(LocalDate fecha, double importe)
+
+
+			public void agregarVentaLibre(LocalDate fecha, double importe,String nombreDelMed,String codigoDelMed, int cantMedVendidos)
 			{
 				Date fechaDeCompra = Date.from(fecha.atStartOfDay(ZoneId.systemDefault()).toInstant());
-				VentaLibre vl = new VentaLibre(fechaDeCompra, importe);
+				VentaLibre vl = new VentaLibre(fechaDeCompra, importe, nombreDelMed, codigoDelMed, cantMedVendidos);
 				historialVentas.add(vl);
 			}
-			
+
 			public void inicializarAlmohadillas() 
 			{
 
@@ -762,33 +754,34 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 
 			public void inicializarVentaControlada()
 			{
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 6, 1), 50.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 2), 60.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 3), 55.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 4), 65.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 5), 70.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 6), 48.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 7), 52.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 8), 58.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 9), 63.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 10), 54.0);
-				
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 11), 56.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 12), 59.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 13), 62.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 14), 67.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 15), 61.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 16), 53.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 17), 57.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 18), 64.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 19), 68.0);
-				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 20), 69.0);	
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 6, 1), 50.0, "Tramadol","Tramadol Clorhidrato", 30);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 2), 60.0, "Tramadol","Tramadol Clorhidrato", 30);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 3), 55.0, "Tramadol","Tramadol Clorhidrato", 30);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 4), 65.0, "Tramadol","Tramadol Clorhidrato", 30);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 5), 70.0, "Tramadol","Tramadol Clorhidrato", 30);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 6), 48.0, "Tramadol","Tramadol Clorhidrato", 30);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 7), 52.0, "Tramadol","Tramadol Clorhidrato", 30);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 8), 58.0, "Tramadol","Tramadol Clorhidrato", 30);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 9), 63.0, "Alprazolam", "Alprazolam", 20);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 10), 54.0, "Alprazolam", "Alprazolam", 20) ;
+
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 11), 56.0, "Alprazolam", "Alprazolam", 20);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 12), 59.0, "Alprazolam", "Alprazolam", 20);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 13), 62.0, "Alprazolam", "Alprazolam", 20);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 14), 67.0, "Alprazolam", "Alprazolam", 20);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 15), 61.0, "Alprazolam", "Alprazolam", 20);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 16), 53.0, "Clonazepam", "Clonazepam", 40);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 17), 57.0,  "Clonazepam", "Clonazepam", 40);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 18), 64.0, "Clonazepam", "Clonazepam", 40);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 19), 68.0, "Clonazepam", "Clonazepam", 40);
+				Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 20), 69.0, "Ritalina", "Metilfenidato", 30);	
 			}
-			
-			public void agregarVentaControlada(LocalDate fecha, double importe)
+
+			public void agregarVentaControlada(LocalDate fecha, double importe,String nombreDelMed,String codigoDelMed, int cantMedVendidos)
 			{
 				Date fechaDeCompra = Date.from(fecha.atStartOfDay(ZoneId.systemDefault()).toInstant());
-				VentaControlada vc = new VentaControlada(fechaDeCompra, importe);
+				VentaControlada vc = new VentaControlada(fechaDeCompra, importe, nombreDelMed, codigoDelMed, cantMedVendidos);
+				historialVentas.add(vc);
 			}
 
 
@@ -1137,7 +1130,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 				inicializarVentasLibres();
 				inicializarAlmohadillas();
 				inicializarVentasLibres();
-				//inicializarVentasYFacturas();
+				generarFacturasDesdeVentas();
 			}
 
 

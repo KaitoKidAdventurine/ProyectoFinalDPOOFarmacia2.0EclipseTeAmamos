@@ -9,13 +9,48 @@ import LogicaUtiles.Validaciones;
 public class VentaConPrescripcion extends Venta
 {
 	private Date fechaDeCompra;
+	private String nombreDelMed;
+	private String codigoDelMed;
+	private int cantMedVendidos;
 
 
+	public String getNombreDelMed() 
+	{
+		return nombreDelMed;
+	}
 
-	public VentaConPrescripcion(Date fechaVenta, double importeTotal, Date fechaDeCompraDos)
+	public void setNombreDelMed(String nombreDelMed) 
+	{
+		this.nombreDelMed = nombreDelMed;
+	}
+
+	public String getCodigoDelMed() 
+	{
+		return codigoDelMed;
+	}
+
+	public void setCodigoDelMed(String codigoDelMed) 
+	{
+		this.codigoDelMed = codigoDelMed;
+	}
+
+	public int getCantMedVendidos() 
+	{
+		return cantMedVendidos;
+	}
+
+	public void setCantMedVendidos(int cantMedVendidos) 
+	{
+		this.cantMedVendidos = cantMedVendidos;
+	}
+
+	public VentaConPrescripcion(Date fechaVenta, double importeTotal, Date fechaDeCompraDos,String nombreDelMed,String codigoDelMed, int cantMedVendidos)
 	{ 
 		super((java.util.Date)fechaVenta, importeTotal);
 		setFechaDeCompra((java.util.Date)fechaDeCompraDos);
+		setCantMedVendidos(cantMedVendidos);
+		setCodigoDelMed(codigoDelMed) ;
+		setNombreDelMed(nombreDelMed);
 	}
 
 	public Date getFechaDeCompra() 

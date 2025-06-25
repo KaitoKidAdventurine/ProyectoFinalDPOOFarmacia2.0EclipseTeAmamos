@@ -8,9 +8,7 @@ public abstract class Venta
 {
 	protected Date fechaVenta;
 	protected double importeTotal;
-	protected String nombreDelMed;
-	protected String codigoDelMed;
-	protected int cantMedVendidos;
+
 	
 	public Date getFechaVenta() 
 	{
@@ -22,7 +20,7 @@ public abstract class Venta
 	{
 		return importeTotal;
 	}
-	
+
 	public void setFechaVenta(Date fechaVenta) 
 	{
 		if(Validaciones.noEstaVacio(fechaVenta))
