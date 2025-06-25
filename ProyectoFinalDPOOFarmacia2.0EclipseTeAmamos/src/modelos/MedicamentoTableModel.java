@@ -1,7 +1,7 @@
 package modelos;
 
 import Logica.Medicamento;
-import Utiles.BaseDeDatos;
+import Logica.Farmacia;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
@@ -49,10 +49,9 @@ public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento
 		// Limpio las filas anteriores si ya había datos
 		setRowCount(0);
 
-		for (Medicamento med : listaMedicamentos) {
+		for (Medicamento med : listaMedicamentos) 
+		{
 			adicionar(med); 
 		}
-
-
 	}
 }

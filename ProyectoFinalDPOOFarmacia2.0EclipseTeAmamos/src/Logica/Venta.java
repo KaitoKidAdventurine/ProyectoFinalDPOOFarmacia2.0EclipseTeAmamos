@@ -1,12 +1,16 @@
 package Logica;
 import Interfaces_Enum.Facturar;
 import LogicaUtiles.Validaciones;
+
 import java.util.Date;
 
 public abstract class Venta
 {
 	protected Date fechaVenta;
 	protected double importeTotal;
+	protected String nombreDelMed;
+	protected String codigoDelMed;
+	protected int cantMedVendidos;
 	
 	public Date getFechaVenta() 
 	{
@@ -22,7 +26,7 @@ public abstract class Venta
 	public void setFechaVenta(Date fechaVenta) 
 	{
 		if(Validaciones.noEstaVacio(fechaVenta))
-			if(Validaciones.noSePasaDeLaFechaDeHoy(fechaVenta))
+			if(!Validaciones.noSePasaDeLaFechaDeHoy(fechaVenta))
 				this.fechaVenta = fechaVenta;
 			else
 				throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, la fecha sobrepasa de la fecha de hoy");
@@ -35,7 +39,7 @@ public abstract class Venta
 	{
 		if(Validaciones.noEstaVacio(importeTotal))
 			if(Validaciones.noTieneCaracteresEsp(importeTotal))
-				if(Validaciones.tieneNumeros(importeTotal))
+				if(!Validaciones.tieneNumeros(importeTotal))
 					this.importeTotal = importeTotal;
 				else
 					throw new IllegalArgumentException("El campo: importe total de las almohadillas, presenta letras");
@@ -50,7 +54,8 @@ public abstract class Venta
 	
 	public Venta(Date fechaVenta2, double importeTotal)
 	{
-		
+		setFechaVenta(fechaVenta2);
+		setImporteTotal(importeTotal);
 	}	
 
 }
