@@ -1,4 +1,4 @@
-package inicializacion;
+/*package inicializacion;
 
 import java.awt.EventQueue;
 import java.util.Locale;
@@ -53,4 +53,4 @@ public class Main {
             }
         }).start();
     }
-}
+}*/
