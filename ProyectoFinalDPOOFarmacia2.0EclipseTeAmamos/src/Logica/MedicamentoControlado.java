@@ -1,6 +1,7 @@
 package Logica;
 
 import java.util.Date;
+
 import Logica.Medicamento;
 import LogicaUtiles.Validaciones;
 
@@ -11,9 +12,9 @@ public class MedicamentoControlado extends Medicamento
 	private long cantDispensadaMensual;
 
 	public MedicamentoControlado(String nomComun, String nomCientifico, String presentacion , double precio, String tipo, String fortalezaDelMed, double tempDeAlmac, long  cantExis, Date fechaDeProd, Date fechaDeVenc, 
-			String patologia, long cantAsigMensual, long cantDispensadaMensual)
+			String codigo ,String patologia, long cantAsigMensual, long cantDispensadaMensual)
 	{
-		super(nomComun, nomCientifico, presentacion , precio, tipo, fortalezaDelMed, tempDeAlmac, cantExis, fechaDeProd, fechaDeVenc);
+		super(nomComun, nomCientifico, presentacion , precio, tipo, fortalezaDelMed, tempDeAlmac, cantExis, fechaDeProd, fechaDeVenc, codigo);
 		setPatologia(patologia);
 		setCantAsigMensual(cantAsigMensual);
 		setCantDispensadaMensual(cantDispensadaMensual); 

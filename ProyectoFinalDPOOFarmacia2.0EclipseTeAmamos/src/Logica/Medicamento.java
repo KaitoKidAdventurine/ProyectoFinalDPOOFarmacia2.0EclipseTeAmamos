@@ -16,8 +16,10 @@ public class Medicamento
 	protected long  cantExis;
 	protected Date fechaDeProd;
 	protected Date fechaDeVenc;
-
-	public Medicamento(String nomComun, String nomCientifico, String presentacion , double precio, String tipo, String fortalezaDelMed, double tempDeAlmac, long  cantExis, Date fechaDeProd, Date fechaDeVenc)
+	protected String codigo;
+	public Medicamento(String nomComun, String nomCientifico, String presentacion , 
+			double precio, String tipo, String fortalezaDelMed, double tempDeAlmac, 
+			long  cantExis, Date fechaDeProd, Date fechaDeVenc, String codigo)
 	{
 		setNomComun(nomComun);
 		setNomCientifico(nomCientifico);
@@ -29,9 +31,26 @@ public class Medicamento
 		setCantExis(cantExis);
 		setFechaDeProd(fechaDeProd);
 		setFechaDeVenc(fechaDeVenc);
+		setCodigo(codigo);
 	}
 	
 	
+	public String getCodigo() 
+	{
+		return codigo;
+	}
+
+
+	public void setCodigo(String codigo) 
+	{
+		if(Validaciones.noEstaVacio(codigo))
+			
+			this.codigo = codigo;
+		else
+			throw new IllegalArgumentException("El campo: codigo del medicamento, se encuentra vacío");
+	}
+
+
 	public String getNomComun() 
 	{
 		return nomComun;
