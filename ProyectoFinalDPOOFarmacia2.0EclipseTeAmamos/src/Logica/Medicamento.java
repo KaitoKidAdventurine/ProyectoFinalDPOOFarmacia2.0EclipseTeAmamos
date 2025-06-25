@@ -16,8 +16,7 @@ public class Medicamento
 	protected long  cantExis;
 	protected Date fechaDeProd;
 	protected Date fechaDeVenc;
-	protected String codigo; // Campo que representa el código del medicamento
-	
+
 	public Medicamento(String nomComun, String nomCientifico, String presentacion , double precio, String tipo, String fortalezaDelMed, double tempDeAlmac, long  cantExis, Date fechaDeProd, Date fechaDeVenc)
 	{
 		setNomComun(nomComun);
@@ -30,7 +29,6 @@ public class Medicamento
 		setCantExis(cantExis);
 		setFechaDeProd(fechaDeProd);
 		setFechaDeVenc(fechaDeVenc);
-		this.codigo = getCodigo(); // Método que puedes crear
 	}
 	
 	
@@ -82,10 +80,6 @@ public class Medicamento
 	public Date getFechaDeVenc() 
 	{
 		return fechaDeVenc;
-	}
-	
-	public String getCodigo() {
-	    return codigo;
 	}
 
 	public void setNomComun(String nomComun) 

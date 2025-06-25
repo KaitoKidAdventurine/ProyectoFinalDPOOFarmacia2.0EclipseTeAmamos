@@ -8,9 +8,34 @@ public class NucleoFamiliar
 {
 	private String id;
 	private String direccion;
-	private ArrayList<Paciente> mujeres;
+	private ArrayList <Paciente> mujeres;
+	private ArrayList <Paciente> hombres;
 	private Paciente jefe;
 	private boolean compraron;
+	
+	public ArrayList<Paciente> getHombres() 
+	{
+		return hombres;
+	}
+
+	public void setHombres(ArrayList<Paciente> hombres) 
+	{
+		if(Validaciones.sonHombres(hombres))
+			this.hombres = hombres;
+		else
+			throw new IllegalArgumentException("El campo: lista de hombres, se encuentra con mujeres");
+	}
+
+	public NucleoFamiliar(String id, String direccion, ArrayList <Paciente> mujeres, 
+			ArrayList <Paciente> hombres, Paciente jefe, boolean compraron)
+	{
+		setId(id); 
+		setDireccion(direccion);
+		setMujeres(mujeres); 
+		setHombres(hombres);
+		setJefe(jefe);
+		setCompraron(compraron);
+	}
 	
 	public boolean getCompraron() 
 	{
@@ -27,7 +52,7 @@ public class NucleoFamiliar
 		
 		return id;
 	}
-	// implementar
+	
 	public void setId(String id) 
 	{
 		if(Validaciones.noEstaVacio(id))
