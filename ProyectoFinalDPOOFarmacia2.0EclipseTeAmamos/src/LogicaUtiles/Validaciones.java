@@ -252,13 +252,30 @@ public class Validaciones
 			int numero = Character.getNumericValue(penultimoDigito);
 			if(numero % 2 == 0)
 				salida = false;
-
 		}
 
 		return salida;
 	}
 
 
+	public static boolean sonHombres(ArrayList<Paciente> hombres)
+	{
+		boolean salida = true;
+
+		for(int i = 0; i < hombres.size() && salida == true; i++)
+		{
+			Paciente pacienteX = hombres.get(i);
+			String carnet = pacienteX.getNombre();
+			char penultimoDigito = carnet.charAt(10);
+			int numero = Character.getNumericValue(penultimoDigito);
+			if(numero % 2 != 0)
+				salida = false;
+		}
+
+		return salida;
+	}
+	
+	
 	public static boolean validarCI(String ci) 
 	{
 		// Funcionalidad: 
