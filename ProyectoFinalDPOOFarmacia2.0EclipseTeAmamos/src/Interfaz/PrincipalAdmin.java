@@ -3,7 +3,6 @@ package Interfaz;
 import Logica.Farmacia;
 import Logica.Medicamento;
 import LogicaUtiles.VentaDeMedicamentos;
-import Utiles.BaseDeDatos;
 import modelos.MedicamentoTableModel;
 import modelos.ModeloPrincipalTableModel;
 import javax.swing.table.DefaultTableModel;
@@ -121,7 +120,6 @@ public class PrincipalAdmin extends JFrame
 		
 		tablaMedicamentos = new JTable();
 	    scrollPane = new JScrollPane();
-	    cargarTablaMedicamentos();
 	    
 		// Centrar la ventana en la pantalla
 		
@@ -878,11 +876,6 @@ public class PrincipalAdmin extends JFrame
 		lblNewLabel_5.setBounds(307, 16, 69, 20); 
 		panel_7.add(lblNewLabel_5);
 	}
-
-
-
-
-
 
 
 	// Método para cargar los datos

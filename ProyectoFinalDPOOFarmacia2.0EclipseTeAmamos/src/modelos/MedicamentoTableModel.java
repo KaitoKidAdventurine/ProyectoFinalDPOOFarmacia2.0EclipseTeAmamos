@@ -1,8 +1,6 @@
 package modelos;
 
 import Logica.Medicamento;
-import Utiles.BaseDeDatos;
-import javax.swing.table.DefaultTableModel;
 import java.util.List;
 
 public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento> 

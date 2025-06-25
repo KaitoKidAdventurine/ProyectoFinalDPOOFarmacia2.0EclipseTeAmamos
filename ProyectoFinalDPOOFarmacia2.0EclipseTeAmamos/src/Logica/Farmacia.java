@@ -163,11 +163,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		return cantidad;
 	}
 	
-	
-	
-	
-	
-	
 
 	// metodos del tercer reporte
 	public Porcentaje calcularValor()
@@ -505,8 +500,10 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	{
 		Date utilFechaProd = Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		Date utilFechaVenc = Date.from(fechaVenc.atStartOfDay(ZoneId.systemDefault()).toInstant());
-		MedicamentoControlado m = new MedicamentoControlado(nomComun,nomCientifico, presentacion, precio, tipo, fortaleza, tempAlmac, cantExis, utilFechaProd , utilFechaVenc
-				,patologia, cantAsigMensual, cantDispensadaMensual);
+		MedicamentoControlado m = new MedicamentoControlado(nomComun,nomCientifico, 
+				presentacion, precio, tipo, fortaleza, tempAlmac, 
+				cantExis, utilFechaProd , utilFechaVenc,patologia, 
+				cantAsigMensual, cantDispensadaMensual);
 		registrarMedicamentoControlado(m);
 	}
 	
@@ -517,7 +514,9 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	{
 		Date utilFechaProd = Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		Date utilFechaVenc = Date.from(fechaVenc.atStartOfDay(ZoneId.systemDefault()).toInstant());
-		Medicamento m = new Medicamento(nomComun,nomCientifico, presentacion, precio, tipo, fortaleza, tempAlmac, cantExis, utilFechaProd , utilFechaVenc);
+		Medicamento m = new Medicamento(nomComun,nomCientifico, 
+				presentacion, precio, tipo, fortaleza, tempAlmac, 
+				cantExis, utilFechaProd , utilFechaVenc);
 		medicamentos.add(m);
 	}
 	
