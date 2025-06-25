@@ -120,7 +120,6 @@ public class PrincipalAdmin extends JFrame
 		
 		tablaMedicamentos = new JTable();
 	    scrollPane = new JScrollPane();
-	    cargarTablaMedicamentos();
 	    
 		// Centrar la ventana en la pantalla
 		
@@ -885,11 +884,6 @@ public class PrincipalAdmin extends JFrame
 		lblNewLabel_5.setBounds(307, 16, 69, 20); 
 		panel_7.add(lblNewLabel_5);
 	}
-
-
-
-
-
 
 
 	// Método para cargar los datos
