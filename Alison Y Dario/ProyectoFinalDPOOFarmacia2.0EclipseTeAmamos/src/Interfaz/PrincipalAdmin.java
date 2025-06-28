@@ -157,6 +157,7 @@ public class PrincipalAdmin extends JFrame
 		textFortaleza.setText("");
 		textTemperatura.setText("");
 		textCantidad.setText("");
+		>>>>>>> 03f9524e3c78cf5e09fdce0425a676bc764d658e
 	}
 
 	/**
@@ -182,7 +183,6 @@ public class PrincipalAdmin extends JFrame
 
 
 		JPanel barraSuperior = new JPanel();
-		barraSuperior.setBorder(new LineBorder(new Color(0, 0, 0), 4));
 		barraSuperior.addMouseMotionListener(new MouseMotionAdapter() 
 		{
 			@Override
@@ -208,8 +208,8 @@ public class PrincipalAdmin extends JFrame
 		});
 
 
-		barraSuperior.setBackground(new Color(0, 255, 127));
-		barraSuperior.setBounds(-15, -12, 1346, 76);
+		barraSuperior.setBackground(new Color(8,117,30));
+		barraSuperior.setBounds(0, 0, 1302, 64);
 		contentPane.add(barraSuperior);
 		barraSuperior.setLayout(null);
 
@@ -231,7 +231,7 @@ public class PrincipalAdmin extends JFrame
 				UtilesInterfaz.ajustarImagen(cruz, "src/iconos/exit0.png");
 			}
 		});
-		cruz.setBounds(1228, 13, 77, 58);
+		cruz.setBounds(1225, 0, 77, 58);
 		barraSuperior.add(cruz);
 		UtilesInterfaz.ajustarImagen(cruz, "src/iconos/exit0.png");
 
@@ -243,18 +243,18 @@ public class PrincipalAdmin extends JFrame
 				setState(JFrame.ICONIFIED);
 			}
 		});
-		minimizar.setBounds(1152, 13, 77, 58);
+		minimizar.setBounds(1149, 0, 77, 58);
 		barraSuperior.add(minimizar);
 		UtilesInterfaz.ajustarImagen(minimizar, "src/iconos/minimize0.png");
 
 		JLabel lblNewLabel_1 = new JLabel("Sistema de Gesti\u00F3n de Procesos en las Farmacia");
 		lblNewLabel_1.setForeground(Color.BLACK);
 		lblNewLabel_1.setFont(new Font("Times New Roman", Font.BOLD, 30));
-		lblNewLabel_1.setBounds(26, 18, 681, 45);
+		lblNewLabel_1.setBounds(12, 13, 681, 45);
 		barraSuperior.add(lblNewLabel_1);
 
 		JPanel menu = new JPanel();
-		menu.setBackground(new Color(152, 251, 152));
+		menu.setBackground(new Color (12,184,47));
 		menu.setBounds(0, 57, 294, 660);
 		contentPane.add(menu);
 		menu.setLayout(null);
@@ -266,13 +266,13 @@ public class PrincipalAdmin extends JFrame
 			@Override
 			public void mouseEntered(MouseEvent e) 
 			{
-				panel1.setBackground(new Color(75, 255, 112));
+				panel1.setBackground(new Color (0,237,21));
 
 			}
 			@Override
 			public void mouseExited(MouseEvent e) 
 			{
-				panel1.setBackground(new Color(152, 251, 152));
+				panel1.setBackground(new Color (12,184,47));
 			}
 			@Override
 			public void mouseClicked(MouseEvent arg0) 
@@ -280,7 +280,7 @@ public class PrincipalAdmin extends JFrame
 				pestanas.setSelectedIndex(0);
 			}
 		});
-		panel1.setBackground(new Color(152, 251, 152));
+		panel1.setBackground(new Color (12,184,47));
 		panel1.setBounds(0, 147, 294, 68);
 		menu.add(panel1);
 		panel1.setLayout(null);
@@ -312,16 +312,16 @@ public class PrincipalAdmin extends JFrame
 
 		final JPanel panel2 = new JPanel();
 		panel2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		panel2.setBackground(new Color(152, 251, 152));
+		panel2.setBackground(new Color(2,184,47));
 		panel2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panel2.setBackground(new Color(75, 255, 112));
+				panel2.setBackground(new Color(0,237,21));
 
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panel2.setBackground(new Color(152, 251, 152));
+				panel2.setBackground(new Color(2,184,47));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -335,7 +335,7 @@ public class PrincipalAdmin extends JFrame
 		JLabel lblComprar = new JLabel("COMPRAR");
 		lblComprar.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent ae) {
 				pestanas.setSelectedIndex(1);
 			}
 		});
@@ -360,18 +360,18 @@ public class PrincipalAdmin extends JFrame
 		panel3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panel3.setBackground(new Color(75, 255, 112));
+				panel3.setBackground(new Color(0,237,21));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panel3.setBackground(new Color(152, 251, 152));
+				panel3.setBackground(new Color(2,184,47));
 			}
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent arg0) {
 				pestanas.setSelectedIndex(2);
 			}
 		});
-		panel3.setBackground(new Color(152, 251, 152));
+		panel3.setBackground(new Color(2,184,47));
 		panel3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panel3.setBounds(0, 295, 294, 68);
 		menu.add(panel3);
@@ -404,19 +404,19 @@ public class PrincipalAdmin extends JFrame
 		panel4.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		panel4.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				panel4.setBackground(new Color(75, 255, 112));
+			public void mouseEntered(MouseEvent arg0) {
+				panel4.setBackground(new Color(0,237,21));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panel4.setBackground(new Color(152, 251, 152));
+				panel4.setBackground(new Color(2,184,47));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(3);
 			}
 		});
-		panel4.setBackground(new Color(152, 251, 152));
+		panel4.setBackground(new Color(2,184,47));
 		panel4.setBounds(0, 370, 294, 68);
 		menu.add(panel4);
 		panel4.setLayout(null);
@@ -468,7 +468,7 @@ public class PrincipalAdmin extends JFrame
 		principal.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(75, 255, 112));
+		panel.setBackground(Color.GREEN);
 		panel.setBounds(0, 0, 1016, 43);
 		principal.add(panel);
 		panel.setLayout(null);
@@ -545,7 +545,7 @@ public class PrincipalAdmin extends JFrame
 		comprar.setLayout(null);
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(new Color(75, 255, 112));
+		panel_3.setBackground(Color.GREEN);
 		panel_3.setBounds(0, 0, 1029, 43);
 		comprar.add(panel_3);
 		panel_3.setLayout(null);
@@ -561,34 +561,28 @@ public class PrincipalAdmin extends JFrame
 		comprar.add(lblElijaComoDesea);
 
 		Label label_7 = new Label("_______________________________________________________________________");
-		label_7.setForeground(new Color(75, 255, 112));
+		label_7.setForeground(Color.GREEN);
 		label_7.setFont(new Font("Arial Black", Font.BOLD, 50));
 		label_7.setBounds(0, 37, 1005, 79);
 		comprar.add(label_7);
 
 		JPanel compra1 = new JPanel();
 		compra1.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		compra1.setBackground(new Color(150, 255, 147));
-		compra1.setBounds(96, 128, 353, 200);
+		compra1.setBackground(new Color(116,255,78));
+		compra1.setBounds(333, 133, 353, 200);
 		comprar.add(compra1);
-		
-		JPanel panel_14 = new JPanel();
-		panel_14.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		panel_14.setBackground(new Color(150, 255, 147));
-		panel_14.setBounds(96, 369, 353, 200);
-		comprar.add(panel_14);
-		
-		JPanel panel_15 = new JPanel();
-		panel_15.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		panel_15.setBackground(new Color(150, 255, 147));
-		panel_15.setBounds(544, 128, 353, 200);
-		comprar.add(panel_15);
-		
-		JPanel panel_16 = new JPanel();
-		panel_16.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		panel_16.setBackground(new Color(150, 255, 147));
-		panel_16.setBounds(544, 369, 353, 200);
-		comprar.add(panel_16);
+
+		JPanel compra2 = new JPanel();
+		compra2.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
+		compra2.setBackground(new Color(116,255,78));
+		compra2.setBounds(96, 373, 353, 200);
+		comprar.add(compra2);
+
+		JPanel compra3 = new JPanel();
+		compra3.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
+		compra3.setBackground(new Color(116,255,78));
+		compra3.setBounds(589, 373, 353, 200);
+		comprar.add(compra3);
 
 		// INICIALIZAR MODELO DE TABLA (ya está)
 		medicamentoTableModel = new MedicamentoTableModel();
@@ -619,7 +613,7 @@ public class PrincipalAdmin extends JFrame
 
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 0, 1029, 43);
-		panel_1.setBackground(new Color(75, 255, 112));
+		panel_1.setBackground(Color.GREEN);
 		medicamentos.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -699,320 +693,320 @@ public class PrincipalAdmin extends JFrame
 		panel_11.add(txtpnSinOrdenar);
 
 		JLabel label_8 = new JLabel("|");
-		label_8.setForeground(new Color(75, 255, 112));
+		label_8.setForeground(Color.GREEN);
 		label_8.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_8.setBounds(208, -1, 56, 148);
 		medicamentos.add(label_8);
 
 		JLabel label_9 = new JLabel("|");
-		label_9.setForeground(new Color(75, 255, 112));
+		label_9.setForeground(Color.GREEN);
 		label_9.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_9.setBounds(208, 77, 56, 148);
 		medicamentos.add(label_9);
 
 		JLabel label_10 = new JLabel("|");
-		label_10.setForeground(new Color(75, 255, 112));
+		label_10.setForeground(Color.GREEN);
 		label_10.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_10.setBounds(208, 160, 56, 148);
 		medicamentos.add(label_10);
 
 		JLabel label_11 = new JLabel("|");
-		label_11.setForeground(new Color(75, 255, 112));
+		label_11.setForeground(Color.GREEN);
 		label_11.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_11.setBounds(208, 236, 56, 148);
 		medicamentos.add(label_11);
 
 		JLabel label_12 = new JLabel("-");
-		label_12.setForeground(new Color(75, 255, 112));
+		label_12.setForeground(Color.GREEN);
 		label_12.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_12.setBounds(0, 311, 56, 120);
 		medicamentos.add(label_12);
 
 		JLabel label_13 = new JLabel("-");
-		label_13.setForeground(new Color(75, 255, 112));
+		label_13.setForeground(Color.GREEN);
 		label_13.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_13.setBounds(22, 311, 56, 120);
 		medicamentos.add(label_13);
 
 		JLabel label_14 = new JLabel("-");
-		label_14.setForeground(new Color(75, 255, 112));
+		label_14.setForeground(Color.GREEN);
 		label_14.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_14.setBounds(41, 311, 56, 120);
 		medicamentos.add(label_14);
 
 		JLabel label_15 = new JLabel("-");
-		label_15.setForeground(new Color(75, 255, 112));
+		label_15.setForeground(Color.GREEN);
 		label_15.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_15.setBounds(68, 311, 56, 120);
 		medicamentos.add(label_15);
 
 		JLabel label_16 = new JLabel("-");
-		label_16.setForeground(new Color(75, 255, 112));
+		label_16.setForeground(Color.GREEN);
 		label_16.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_16.setBounds(90, 311, 56, 120);
 		medicamentos.add(label_16);
 
 		JLabel label_17 = new JLabel("-");
-		label_17.setForeground(new Color(75, 255, 112));
+		label_17.setForeground(Color.GREEN);
 		label_17.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_17.setBounds(115, 311, 56, 120);
 		medicamentos.add(label_17);
 
 		JLabel label_18 = new JLabel("-");
-		label_18.setForeground(new Color(75, 255, 112));
+		label_18.setForeground(Color.GREEN);
 		label_18.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_18.setBounds(136, 311, 56, 120);
 		medicamentos.add(label_18);
 
 		JLabel label_19 = new JLabel("-");
-		label_19.setForeground(new Color(75, 255, 112));
+		label_19.setForeground(Color.GREEN);
 		label_19.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_19.setBounds(155, 311, 56, 120);
 		medicamentos.add(label_19);
 
 		JLabel label_20 = new JLabel("-");
-		label_20.setForeground(new Color(75, 255, 112));
+		label_20.setForeground(Color.GREEN);
 		label_20.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_20.setBounds(183, 311, 56, 120);
 		medicamentos.add(label_20);
 
 		JLabel label_21 = new JLabel("-");
-		label_21.setForeground(new Color(75, 255, 112));
+		label_21.setForeground(Color.GREEN);
 		label_21.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_21.setBounds(208, 311, 56, 120);
 		medicamentos.add(label_21);
 
 		JLabel label_22 = new JLabel("-");
-		label_22.setForeground(new Color(75, 255, 112));
+		label_22.setForeground(Color.GREEN);
 		label_22.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_22.setBounds(218, 311, 56, 120);
 		medicamentos.add(label_22);
 
 		JLabel label_23 = new JLabel("-");
-		label_23.setForeground(new Color(75, 255, 112));
+		label_23.setForeground(Color.GREEN);
 		label_23.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_23.setBounds(238, 311, 56, 120);
 		medicamentos.add(label_23);
 
 		JLabel label_24 = new JLabel("-");
-		label_24.setForeground(new Color(75, 255, 112));
+		label_24.setForeground(Color.GREEN);
 		label_24.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_24.setBounds(261, 311, 56, 120);
 		medicamentos.add(label_24);
 
 		JLabel label_25 = new JLabel("-");
-		label_25.setForeground(new Color(75, 255, 112));
+		label_25.setForeground(Color.GREEN);
 		label_25.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_25.setBounds(276, 311, 56, 120);
 		medicamentos.add(label_25);
 
 		JLabel label_26 = new JLabel("-");
-		label_26.setForeground(new Color(75, 255, 112));
+		label_26.setForeground(Color.GREEN);
 		label_26.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_26.setBounds(306, 311, 56, 120);
 		medicamentos.add(label_26);
 
 		JLabel label_27 = new JLabel("-");
-		label_27.setForeground(new Color(75, 255, 112));
+		label_27.setForeground(Color.GREEN);
 		label_27.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_27.setBounds(326, 311, 56, 120);
 		medicamentos.add(label_27);
 
 		JLabel label_28 = new JLabel("-");
-		label_28.setForeground(new Color(75, 255, 112));
+		label_28.setForeground(Color.GREEN);
 		label_28.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_28.setBounds(344, 311, 56, 120);
 		medicamentos.add(label_28);
 
 		JLabel label_29 = new JLabel("-");
-		label_29.setForeground(new Color(75, 255, 112));
+		label_29.setForeground(Color.GREEN);
 		label_29.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_29.setBounds(276, 311, 56, 120);
 		medicamentos.add(label_29);
 
 		JLabel label_30 = new JLabel("-");
-		label_30.setForeground(new Color(75, 255, 112));
+		label_30.setForeground(Color.GREEN);
 		label_30.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_30.setBounds(287, 311, 56, 120);
 		medicamentos.add(label_30);
 
 		JLabel label_31 = new JLabel("-");
-		label_31.setForeground(new Color(75, 255, 112));
+		label_31.setForeground(Color.GREEN);
 		label_31.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_31.setBounds(977, 311, 56, 120);
 		medicamentos.add(label_31);
 
 		JLabel label_32 = new JLabel("-");
-		label_32.setForeground(new Color(75, 255, 112));
+		label_32.setForeground(Color.GREEN);
 		label_32.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_32.setBounds(355, 311, 56, 120);
 		medicamentos.add(label_32);
 
 		JLabel label_33 = new JLabel("-");
-		label_33.setForeground(new Color(75, 255, 112));
+		label_33.setForeground(Color.GREEN);
 		label_33.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_33.setBounds(374, 311, 56, 120);
 		medicamentos.add(label_33);
 
 		JLabel label_34 = new JLabel("-");
-		label_34.setForeground(new Color(75, 255, 112));
+		label_34.setForeground(Color.GREEN);
 		label_34.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_34.setBounds(399, 311, 56, 120);
 		medicamentos.add(label_34);
 
 		JLabel label_35 = new JLabel("-");
-		label_35.setForeground(new Color(75, 255, 112));
+		label_35.setForeground(Color.GREEN);
 		label_35.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_35.setBounds(423, 311, 56, 120);
 		medicamentos.add(label_35);
 
 		JLabel label_36 = new JLabel("-");
-		label_36.setForeground(new Color(75, 255, 112));
+		label_36.setForeground(Color.GREEN);
 		label_36.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_36.setBounds(451, 311, 56, 120);
 		medicamentos.add(label_36);
 
 		JLabel label_37 = new JLabel("-");
-		label_37.setForeground(new Color(75, 255, 112));
+		label_37.setForeground(Color.GREEN);
 		label_37.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_37.setBounds(467, 311, 56, 120);
 		medicamentos.add(label_37);
 
 		JLabel label_38 = new JLabel("-");
-		label_38.setForeground(new Color(75, 255, 112));
+		label_38.setForeground(Color.GREEN);
 		label_38.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_38.setBounds(491, 311, 56, 120);
 		medicamentos.add(label_38);
 
 		JLabel label_39 = new JLabel("-");
-		label_39.setForeground(new Color(75, 255, 112));
+		label_39.setForeground(Color.GREEN);
 		label_39.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_39.setBounds(519, 311, 56, 120);
 		medicamentos.add(label_39);
 
 		JLabel label_40 = new JLabel("-");
-		label_40.setForeground(new Color(75, 255, 112));
+		label_40.setForeground(Color.GREEN);
 		label_40.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_40.setBounds(547, 311, 56, 120);
 		medicamentos.add(label_40);
 
 		JLabel label_41 = new JLabel("-");
-		label_41.setForeground(new Color(75, 255, 112));
+		label_41.setForeground(Color.GREEN);
 		label_41.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_41.setBounds(574, 311, 56, 120);
 		medicamentos.add(label_41);
 
 		JLabel label_42 = new JLabel("-");
-		label_42.setForeground(new Color(75, 255, 112));
+		label_42.setForeground(Color.GREEN);
 		label_42.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_42.setBounds(602, 311, 56, 120);
 		medicamentos.add(label_42);
 
 		JLabel label_43 = new JLabel("-");
-		label_43.setForeground(new Color(75, 255, 112));
+		label_43.setForeground(Color.GREEN);
 		label_43.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_43.setBounds(627, 311, 56, 120);
 		medicamentos.add(label_43);
 
 		JLabel label_44 = new JLabel("-");
-		label_44.setForeground(new Color(75, 255, 112));
+		label_44.setForeground(Color.GREEN);
 		label_44.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_44.setBounds(655, 311, 56, 120);
 		medicamentos.add(label_44);
 
 		JLabel label_45 = new JLabel("-");
-		label_45.setForeground(new Color(75, 255, 112));
+		label_45.setForeground(Color.GREEN);
 		label_45.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_45.setBounds(681, 311, 56, 120);
 		medicamentos.add(label_45);
 
 		JLabel label_46 = new JLabel("-");
 		label_46.setBackground(new Color(204, 255, 204));
-		label_46.setForeground(new Color(75, 255, 112));
+		label_46.setForeground(Color.GREEN);
 		label_46.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_46.setBounds(708, 311, 56, 120);
 		medicamentos.add(label_46);
 
 		JLabel label_47 = new JLabel("-");
-		label_47.setForeground(new Color(75, 255, 112));
+		label_47.setForeground(Color.GREEN);
 		label_47.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_47.setBounds(734, 311, 56, 120);
 		medicamentos.add(label_47);
 
 		JLabel label_48 = new JLabel("-");
-		label_48.setForeground(new Color(75, 255, 112));
+		label_48.setForeground(Color.GREEN);
 		label_48.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_48.setBounds(760, 311, 56, 120);
 		medicamentos.add(label_48);
 
 		JLabel label_49 = new JLabel("-");
-		label_49.setForeground(new Color(75, 255, 112));
+		label_49.setForeground(Color.GREEN);
 		label_49.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_49.setBounds(789, 311, 56, 120);
 		medicamentos.add(label_49);
 
 		JLabel label_50 = new JLabel("-");
-		label_50.setForeground(new Color(75, 255, 112));
+		label_50.setForeground(Color.GREEN);
 		label_50.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_50.setBounds(811, 311, 56, 120);
 		medicamentos.add(label_50);
 
 		JLabel label_51 = new JLabel("-");
-		label_51.setForeground(new Color(75, 255, 112));
+		label_51.setForeground(Color.GREEN);
 		label_51.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_51.setBounds(841, 311, 56, 120);
 		medicamentos.add(label_51);
 
 		JLabel label_52 = new JLabel("-");
-		label_52.setForeground(new Color(75, 255, 112));
+		label_52.setForeground(Color.GREEN);
 		label_52.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_52.setBounds(857, 311, 56, 120);
 		medicamentos.add(label_52);
 
 		JLabel label_53 = new JLabel("-");
-		label_53.setForeground(new Color(75, 255, 112));
+		label_53.setForeground(Color.GREEN);
 		label_53.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_53.setBounds(879, 311, 56, 120);
 		medicamentos.add(label_53);
 
 		JLabel label_54 = new JLabel("-");
-		label_54.setForeground(new Color(75, 255, 112));
+		label_54.setForeground(Color.GREEN);
 		label_54.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_54.setBounds(909, 311, 56, 120);
 		medicamentos.add(label_54);
 
 		JLabel label_55 = new JLabel("-");
-		label_55.setForeground(new Color(75, 255, 112));
+		label_55.setForeground(Color.GREEN);
 		label_55.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_55.setBounds(925, 311, 56, 120);
 		medicamentos.add(label_55);
 
 		JLabel label_56 = new JLabel("-");
-		label_56.setForeground(new Color(75, 255, 112));
+		label_56.setForeground(Color.GREEN);
 		label_56.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_56.setBounds(949, 311, 56, 120);
 		medicamentos.add(label_56);
 
 		JLabel label_57 = new JLabel("-");
-		label_57.setForeground(new Color(75, 255, 112));
+		label_57.setForeground(Color.GREEN);
 		label_57.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_57.setBounds(893, 311, 56, 120);
 		medicamentos.add(label_57);
 
 		JLabel label_58 = new JLabel("-");
-		label_58.setForeground(new Color(75, 255, 112));
+		label_58.setForeground(Color.GREEN);
 		label_58.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_58.setBounds(825, 311, 56, 120);
 		medicamentos.add(label_58);
 
 		JLabel label_59 = new JLabel("-");
-		label_59.setForeground(new Color(75, 255, 112));
+		label_59.setForeground(Color.GREEN);
 		label_59.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_59.setBounds(776, 311, 56, 120);
 		medicamentos.add(label_59);
 
 		JLabel label_60 = new JLabel("|");
-		label_60.setForeground(new Color(75, 255, 112));
+		label_60.setForeground(Color.GREEN);
 		label_60.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_60.setBounds(208, 249, 56, 148);
 		medicamentos.add(label_60);
@@ -1376,7 +1370,7 @@ public class PrincipalAdmin extends JFrame
 		});
 		repor3.setOpaque(true);
 		repor3.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		repor3.setBackground(new Color(150, 255, 147));
+		repor3.setBackground(new Color(116,255,78));
 		repor3.setBounds(78, 403, 381, 216);
 		reportes.add(repor3);
 
@@ -1393,7 +1387,7 @@ public class PrincipalAdmin extends JFrame
 			}
 		});
 		repor2.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		repor2.setBackground(new Color(150, 255, 147));
+		repor2.setBackground(new Color(116,255,78));
 		repor2.setOpaque(true);
 		repor2.setBounds(520, 161, 381, 216);
 		reportes.add(repor2);
@@ -1417,7 +1411,7 @@ public class PrincipalAdmin extends JFrame
 		});
 		repor1.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
 		repor1.setOpaque(true);
-		repor1.setBackground(new Color(150, 255, 147));
+		repor1.setBackground(new Color(116,255,78));
 		repor1.setBounds(78, 161, 381, 216);
 		reportes.add(repor1);
 
@@ -1428,7 +1422,7 @@ public class PrincipalAdmin extends JFrame
 		reportes.add(lblElijaUnReporte);
 
 		JPanel panel_2 = new JPanel();
-		panel_2.setBackground(new Color(75, 255, 112));
+		panel_2.setBackground(Color.GREEN);
 		panel_2.setBounds(0, 0, 1029, 43);
 		reportes.add(panel_2);
 		panel_2.setLayout(null);
@@ -1440,7 +1434,7 @@ public class PrincipalAdmin extends JFrame
 
 		Label label_3 = new Label("_______________________________________________________________________");
 		label_3.setFont(new Font("Arial Black", Font.BOLD, 50));
-		label_3.setForeground(new Color(75, 255, 112));
+		label_3.setForeground(Color.GREEN);
 		label_3.setBounds(0, 49, 1005, 79);
 		reportes.add(label_3);
 
@@ -1452,7 +1446,7 @@ public class PrincipalAdmin extends JFrame
 			}
 		});
 		repor4.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		repor4.setBackground(new Color(150, 255, 147));
+		repor4.setBackground(new Color(116,255,78));
 		repor4.setOpaque(true);
 		repor4.setBounds(520, 403, 381, 216);
 		reportes.add(repor4);
@@ -1471,7 +1465,7 @@ public class PrincipalAdmin extends JFrame
 
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(new Color(75, 255, 112));
+		panel_4.setBackground(Color.GREEN);
 		panel_4.setBounds(0, 0, 1015, 57);
 		reporte1.add(panel_4);
 		panel_4.setLayout(null);
@@ -1515,7 +1509,7 @@ public class PrincipalAdmin extends JFrame
 		reporte2.setLayout(null);
 
 		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(new Color(75, 255, 112));
+		panel_5.setBackground(Color.GREEN);
 		panel_5.setBounds(0, 0, 1015, 57);
 		reporte2.add(panel_5);
 		panel_5.setLayout(null);
@@ -1561,7 +1555,7 @@ public class PrincipalAdmin extends JFrame
 		reporte3.setLayout(null);
 
 		JPanel panel_6 = new JPanel();
-		panel_6.setBackground(new Color(75, 255, 112));
+		panel_6.setBackground(Color.GREEN);
 		panel_6.setBounds(0, 0, 1015, 57);
 		reporte3.add(panel_6);
 		panel_6.setLayout(null);
@@ -1605,7 +1599,7 @@ public class PrincipalAdmin extends JFrame
 		reporte4.setLayout(null);
 
 		JPanel panel_7 = new JPanel();
-		panel_7.setBackground(new Color(75, 255, 112));
+		panel_7.setBackground(Color.GREEN);
 		panel_7.setBounds(0, 0, 1015, 57);
 		reporte4.add(panel_7);
 		panel_7.setLayout(null);

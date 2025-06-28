@@ -82,6 +82,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	public long cantDeAlmohadillasNecesarias()
 	{
 		long cantidad = calcularCantidad();
+		if(cantidad < 0)
+			cantidad = -cantidad;
 		return cantidad;
 
 	}
@@ -333,7 +335,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 				return nombres;
 			}
 
-
+			 
 
 			// metodos del cuarto reporte
 
@@ -341,7 +343,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 			{
 				ArrayList<Tarjeton> tarjetonesInactivos = new ArrayList<Tarjeton>();
 				for(Tarjeton t: tarjetones)
-					if(!t.validacion(t.getFechaExpedicion(), t.getFechaVencimiento()))
+					if(t.validacion(t.getFechaExpedicion(), t.getFechaVencimiento()))
 						tarjetonesInactivos.add(t);
 
 				return tarjetonesInactivos;
@@ -560,7 +562,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 			            LocalDate fechaVenc = fechaExp.plusMonths(6);
 
 			            int numMedicamentos = 1 + (j % 3);
-			            ArrayList<MedicamentoControlado> medsControlados = new ArrayList<MedicamentoControlado>();
+			            ArrayList<MedicamentoControlado> medsControlados = new ArrayList<>();
 
 			            for (int k = 0; k < numMedicamentos && k < obtenerMedicamentoControlado().size(); k++) {
 			                medsControlados.add((MedicamentoControlado) obtenerMedicamentoControlado().get(k));
@@ -1825,10 +1827,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 			   
 			}
 
-			private void agregarNucleoFamiliar(
-					Logica.NucleoFamiliar nucleoFamiliar) {
-				// TODO Auto-generated method stub
-				
-			}
+			
 			
 }

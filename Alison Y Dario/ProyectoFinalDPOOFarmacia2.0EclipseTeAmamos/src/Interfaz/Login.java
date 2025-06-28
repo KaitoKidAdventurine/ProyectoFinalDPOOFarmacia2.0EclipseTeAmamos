@@ -1,11 +1,13 @@
 package Interfaz;
 
 import java.awt.EventQueue;
+import java.awt.Image;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 
 import java.awt.Font;
 
@@ -15,18 +17,14 @@ import java.awt.SystemColor;
 
 import javax.swing.border.BevelBorder;
 import javax.swing.JPasswordField;
-
 import java.awt.Color;
 import java.awt.Cursor;
 
 import javax.swing.border.LineBorder;
 
 
-
 import Utiles.Navegacion;
 
-
-import Utiles.UtilesInterfaz;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -34,10 +32,6 @@ import java.awt.event.MouseMotionAdapter;
 
 public class Login extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtIngreseSuNombre;
 	private JPasswordField passwordField;
@@ -108,28 +102,28 @@ public class Login extends JFrame {
 		final JLabel cruz = new JLabel("");
 		cruz.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent arg0) {
 				System.exit(0);
 			}
 			@Override
-			public void mouseEntered(MouseEvent e) {
-				UtilesInterfaz.ajustarImagen(cruz, "src/iconos/exit1.png");
+			public void mouseEntered(MouseEvent arg0) {
+				ajustarImagen(cruz, "src/iconos/exit1.png");
 			}
 
 			@Override
-			public void mouseExited(MouseEvent e) {
-				UtilesInterfaz.ajustarImagen(cruz, "src/iconos/exit0.png");
+			public void mouseExited(MouseEvent arg0) {
+				ajustarImagen(cruz, "src/iconos/exit0.png");
 			}
 		});
 		cruz.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		cruz.setBounds(721, 13, 40, 37);
 		barra.add(cruz);
-		UtilesInterfaz.ajustarImagen(cruz, "src/iconos/exit0.png");
+		this.ajustarImagen(cruz, "src/iconos/exit0.png");
 
 		JLabel minimizar = new JLabel("");
 		minimizar.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(MouseEvent arg0) {
 				setState(JFrame.ICONIFIED);
 			}
 		});
@@ -137,7 +131,7 @@ public class Login extends JFrame {
 		minimizar.setBounds(681, 13, 40, 37);
 		barra.add(minimizar);
 		this.setLocationRelativeTo(null);
-		UtilesInterfaz.ajustarImagen(minimizar, "src/iconos/minimize0.png");
+		this.ajustarImagen(minimizar, "src/iconos/minimize0.png");
 
 		JLabel encabezado = new JLabel("Gesti\u00F3n de procesos en las farmacias ");
 		encabezado.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -157,8 +151,8 @@ public class Login extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) 
 			{
-				Navegacion.registrarJDialog("Informacion", new Informacion ());
-				Navegacion.irADialog("Informacion");
+				Navegacion.registrar("Información" ,new Informacion());
+				Navegacion.irA("Información");
 			}
 		});
 		Informacion.setBounds(307, 415, 187, 47);
@@ -261,21 +255,20 @@ public class Login extends JFrame {
 				String usuarioIngresado = new String(txtIngreseSuNombre.getText());
 				String contrasenaIngresada = new String(passwordField.getPassword());
 				String contrasenaCorrectaParaAdmin = "1234"; 
-				String contrasenaCorrectaParaElPaciente = "1234";
+				String contrasenaCorrectaParaElPaciente = "12345678";
 				String nombreDelAdmin = "Admin";
-				String nombreDelUsuario = "User";
 
 				if (nombreDelAdmin.equals(usuarioIngresado) && contrasenaCorrectaParaAdmin.equals(contrasenaIngresada)) 
 				{
-					JOptionPane.showMessageDialog(null, "Acceso permitido. Bienvenido , administrador.");
+					JOptionPane.showMessageDialog(null, "Acceso permitido. Bienvenido administrador");
 					Navegacion.registrar("Principal Admin" ,new PrincipalAdmin());
 					Navegacion.irA("Principal Admin");
 					dispose();
 				} 
 
-				else if(nombreDelUsuario.equals(usuarioIngresado) && contrasenaCorrectaParaElPaciente.equals(contrasenaIngresada))
+				else if(contrasenaIngresada.equals(contrasenaCorrectaParaElPaciente))
 				{
-					JOptionPane.showMessageDialog(null, "Acceso permitido.Bienvenido al sistema.");
+					JOptionPane.showMessageDialog(null, "Acceso permitido.");
 					Navegacion.registrar("Principal Usuario" ,new PrincipalUsuario());
 					Navegacion.irA("Principal Usuario");
 					dispose();
@@ -303,7 +296,32 @@ public class Login extends JFrame {
 		fondo_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		fondo_1.setBounds(0, 35, 761, 456);
 		contentPane.add(fondo_1);
-		UtilesInterfaz.ajustarImagen(fondo_1, "src/imagenes/fondo con logo del minsap.png");
+		this.ajustarImagen(fondo_1, "src/imagenes/fondo con logo del minsap.png");
 		this.setLocationRelativeTo(null);
 	}
+
+	
+	public void ajustarImagen(JLabel lbl, String ruta) {
+        try {
+            // Cargar la imagen original
+            ImageIcon imagenOriginal = new ImageIcon(ruta);
+            
+            // Escalar la imagen al tamaño del JLabel manteniendo calidad
+            Image imagenEscalada = imagenOriginal.getImage().getScaledInstance(
+                lbl.getWidth(), 
+                lbl.getHeight(),
+                Image.SCALE_SMOOTH); // Usar SCALE_SMOOTH para mejor calidad
+            
+            // Crear nuevo ImageIcon y asignar al JLabel
+            ImageIcon icono = new ImageIcon(imagenEscalada);
+            lbl.setIcon(icono);
+            
+            // Forzar actualización
+            lbl.revalidate();
+            lbl.repaint();
+        } catch (Exception e) {
+            System.err.println("Error al cargar la imagen: " + e.getMessage());
+            // Puedes mostrar un mensaje de error o una imagen por defecto aquí
+        }
+    }
 }
