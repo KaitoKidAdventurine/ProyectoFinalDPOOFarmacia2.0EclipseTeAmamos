@@ -1,13 +1,9 @@
 package Interfaz;
 
-import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.Window;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
@@ -16,7 +12,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 
 import Logica.Farmacia;
-import Utiles.Navegacion;
 import Utiles.UtilesInterfaz;
 
 import java.awt.Font;
@@ -29,7 +24,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import modelos.MedicamentoTableModel;
-
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
@@ -76,7 +70,7 @@ public class PrincipalUsuario extends JFrame {
 	    this.setLocationRelativeTo(null);
 		
 		JPanel menu = new JPanel();
-		menu.setBackground(new Color(152, 251, 152));
+		menu.setBackground(new Color (12,184,47));
 		menu.setBounds(0, 55, 281, 641);
 		contentPane.add(menu);
 		menu.setLayout(null);
@@ -96,19 +90,19 @@ public class PrincipalUsuario extends JFrame {
 		panel1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panel1.setBackground(new Color(75, 255, 112));
+				panel1.setBackground(new Color (0,237,21));
 				
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panel1.setBackground(new Color(152, 251, 152));
+				panel1.setBackground(new Color (12,184,47));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(0);
 			}
 		});
-		panel1.setBackground(new Color(152, 251, 152));
+		panel1.setBackground(new Color(12, 184, 47));
 		panel1.setBounds(-13, 162, 294, 68);
 		menu.add(panel1);
 		
@@ -139,19 +133,19 @@ public class PrincipalUsuario extends JFrame {
 		panel2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panel2.setBackground(new Color(75, 255, 112));
+				panel2.setBackground(new Color(0,237,21));
 				
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panel2.setBackground(new Color(152, 251, 152));
+				panel2.setBackground(new Color(2,184,47));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(1);
 			}
 		});
-		panel2.setBackground(new Color(152, 251, 152));
+		panel2.setBackground(new Color(2, 184, 47));
 		panel2.setBounds(-13, 232, 294, 68);
 		menu.add(panel2);
 		
@@ -183,18 +177,18 @@ public class PrincipalUsuario extends JFrame {
 		panel3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				panel3.setBackground(new Color(75, 255, 112));
+				panel3.setBackground(new Color(0,237,21));
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
-				panel3.setBackground(new Color(152, 251, 152));
+				panel3.setBackground(new Color(2,184,47));
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(2);
 			}
 		});
-		panel3.setBackground(new Color(152, 251, 152));
+		panel3.setBackground(new Color(2, 184, 47));
 		panel3.setBounds(-13, 302, 294, 68);
 		menu.add(panel3);
 		
@@ -225,128 +219,7 @@ public class PrincipalUsuario extends JFrame {
 		label_8.setBounds(0, 347, 294, 47);
 		menu.add(label_8);
 		
-		final JPanel panel_8 = new JPanel();
-		panel_8.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				panel_8.setBackground(new Color(75, 255, 112));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				panel_8.setBackground(new Color(152, 251, 152));
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-		panel_8.setBackground(new Color(152, 251, 152));
-		panel_8.setBounds(0, 412, 281, 68);
-		menu.add(panel_8);
-		panel_8.setLayout(null);
-		
-		JLabel lblRegistrarse = new JLabel("REGISTRARSE");
-		lblRegistrarse.setFont(new Font("Times New Roman", Font.BOLD, 26));
-		lblRegistrarse.setBounds(65, 13, 191, 42);
-		panel_8.add(lblRegistrarse);
-		
-		JLabel iconoRegistrarse = new JLabel("");
-		iconoRegistrarse.setBounds(12, 13, 41, 42);
-		panel_8.add(iconoRegistrarse);
-		UtilesInterfaz.ajustarImagen(iconoRegistrarse, "src/iconos/usuario(1).png");
-		
-		final JPanel panel_9 = new JPanel();
-		panel_9.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				panel_9.setBackground(new Color(75, 255, 112));
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				panel_9.setBackground(new Color(152, 251, 152));
-			}
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// Obtener el JFrame/JDialog padre del componente que disparó el evento
-			    Window ventanaPadre = SwingUtilities.getWindowAncestor((Component) e.getSource());
-			    
-			    int opcion = JOptionPane.showConfirmDialog(
-			        ventanaPadre, // Usamos la ventana padre obtenida
-			        "¿Estás seguro de cerrar sesión?",
-			        "Confirmar",
-			        JOptionPane.YES_NO_OPTION
-			    );
-
-			    if (opcion == JOptionPane.YES_OPTION) {
-			        ventanaPadre.dispose(); // Cierra la ventana actual
-			        
-			        // Regresar al login
-			        Navegacion.registrar("Login", new Login());
-			        Navegacion.irA("Login");
-			    }
-			}
-		});
-		panel_9.setBackground(new Color(152, 251, 152));
-		panel_9.setBounds(0, 484, 281, 68);
-		menu.add(panel_9);
-		panel_9.setLayout(null);
-		
-		
-		JLabel label_15 = new JLabel("CERRAR SESI\u00D3N");
-		label_15.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// Obtener el JFrame/JDialog padre del componente que disparó el evento
-			    Window ventanaPadre = SwingUtilities.getWindowAncestor((Component) e.getSource());
-			    
-			    int opcion = JOptionPane.showConfirmDialog(
-			        ventanaPadre, // Usamos la ventana padre obtenida
-			        "¿Estás seguro de cerrar sesión?",
-			        "Confirmar",
-			        JOptionPane.YES_NO_OPTION
-			    );
-
-			    if (opcion == JOptionPane.YES_OPTION) {
-			        ventanaPadre.dispose(); // Cierra la ventana actual
-			        
-			        // Regresar al login
-			        Navegacion.registrar("Login", new Login());
-			        Navegacion.irA("Login");
-			    }
-			}
-		});
-		label_15.setFont(new Font("Times New Roman", Font.BOLD, 26));
-		label_15.setBounds(63, 13, 218, 49);
-		panel_9.add(label_15);
-		
-		JLabel iconoCerrarSesion = new JLabel("");
-		iconoCerrarSesion.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// Obtener el JFrame/JDialog padre del componente que disparó el evento
-			    Window ventanaPadre = SwingUtilities.getWindowAncestor((Component) e.getSource());
-			    
-			    int opcion = JOptionPane.showConfirmDialog(
-			        ventanaPadre, // Usamos la ventana padre obtenida
-			        "¿Estás seguro de cerrar sesión?",
-			        "Confirmar",
-			        JOptionPane.YES_NO_OPTION
-			    );
-
-			    if (opcion == JOptionPane.YES_OPTION) {
-			        ventanaPadre.dispose(); // Cierra la ventana actual
-			        
-			        // Regresar al login
-			        Navegacion.registrar("Login", new Login());
-			        Navegacion.irA("Login");
-			    }
-			}
-		});
-		iconoCerrarSesion.setBounds(12, 13, 41, 42);
-		panel_9.add(iconoCerrarSesion);
-		UtilesInterfaz.ajustarImagen(iconoCerrarSesion, "src/iconos/cierre-de-sesion-de-usuario.png");
-		
 		JPanel barraSuperior = new JPanel();
-		barraSuperior.setBorder(new LineBorder(new Color(0, 0, 0), 4));
 		
 		barraSuperior.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
@@ -367,8 +240,8 @@ public class PrincipalUsuario extends JFrame {
                 posY = e.getY();
 			}
 		});
-		barraSuperior.setBackground(new Color(0, 255, 127));
-		barraSuperior.setBounds(-14, -11, 1189, 67);
+		barraSuperior.setBackground(new Color(8,117,30));
+		barraSuperior.setBounds(0, 0, 1159, 56);
 		contentPane.add(barraSuperior);
 		barraSuperior.setLayout(null);
 		
@@ -387,7 +260,7 @@ public class PrincipalUsuario extends JFrame {
 				UtilesInterfaz.ajustarImagen(cruz, "src/iconos/exit0.png");
 			}
 		});
-		cruz.setBounds(1086, 13, 78, 56);
+		cruz.setBounds(1081, 0, 78, 56);
 		barraSuperior.add(cruz);
 		UtilesInterfaz.ajustarImagen(cruz, "src/iconos/exit0.png");
 		
@@ -398,14 +271,14 @@ public class PrincipalUsuario extends JFrame {
 				setState(JFrame.ICONIFIED);
 			}
 		});
-		minimizar.setBounds(1021, 13, 78, 56);
+		minimizar.setBounds(1015, 0, 78, 56);
 		barraSuperior.add(minimizar);
 		UtilesInterfaz.ajustarImagen(minimizar, "src/iconos/minimize0.png");
 		
 		JLabel label_2 = new JLabel("Sistema de Gesti\u00F3n de Procesos en las Farmacia");
 		label_2.setForeground(Color.BLACK);
 		label_2.setFont(new Font("Times New Roman", Font.BOLD, 30));
-		label_2.setBounds(27, 24, 681, 45);
+		label_2.setBounds(12, 11, 681, 45);
 		barraSuperior.add(label_2);
 		
 		this.pestanas = new JTabbedPane(JTabbedPane.TOP);
@@ -419,7 +292,7 @@ public class PrincipalUsuario extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBackground(new Color(75, 255, 112));
+		panel.setBackground(Color.GREEN);
 		panel.setBounds(0, 0, 875, 43);
 		principal.add(panel);
 		
@@ -480,13 +353,12 @@ public class PrincipalUsuario extends JFrame {
 		UtilesInterfaz.ajustarImagen(label_14, "src/imagenes/istockphoto-1240167813-612x612.jpg");
 		
 		JPanel comprar = new JPanel();
-		comprar.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, comprar, null);
 		comprar.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
-		panel_1.setBackground(new Color(75, 255, 112));
+		panel_1.setBackground(Color.GREEN);
 		panel_1.setBounds(0, 0, 875, 43);
 		comprar.add(panel_1);
 		
@@ -495,37 +367,13 @@ public class PrincipalUsuario extends JFrame {
 		label_6.setBounds(12, 0, 144, 43);
 		panel_1.add(label_6);
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		panel_4.setBackground(new Color(150, 255, 147));
-		panel_4.setBounds(45, 103, 353, 200);
-		comprar.add(panel_4);
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		panel_5.setBackground(new Color(150, 255, 147));
-		panel_5.setBounds(472, 103, 353, 200);
-		comprar.add(panel_5);
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		panel_6.setBackground(new Color(150, 255, 147));
-		panel_6.setBounds(45, 351, 353, 200);
-		comprar.add(panel_6);
-		
-		JPanel panel_7 = new JPanel();
-		panel_7.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
-		panel_7.setBackground(new Color(150, 255, 147));
-		panel_7.setBounds(472, 351, 353, 200);
-		comprar.add(panel_7);
-		
 		JPanel medicamentos = new JPanel();
 		pestanas.addTab("New tab", null, medicamentos, null);
 		medicamentos.setLayout(null);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
-		panel_2.setBackground(new Color(75, 255, 112));
+		panel_2.setBackground(Color.GREEN);
 		panel_2.setBounds(0, 0, 875, 43);
 		medicamentos.add(panel_2);
 		
@@ -550,12 +398,12 @@ public class PrincipalUsuario extends JFrame {
 				
 				JLabel label_9 = new JLabel("_________");
 				label_9.setFont(new Font("Tahoma", Font.PLAIN, 99));
-				label_9.setForeground(new Color(75, 255, 112));
+				label_9.setForeground(new Color(0, 255, 0));
 				label_9.setBounds(0, 0, 494, 165);
 				medicamentos.add(label_9);
 				
 				JLabel label_10 = new JLabel("_________");
-				label_10.setForeground(new Color(75, 255, 112));
+				label_10.setForeground(Color.GREEN);
 				label_10.setFont(new Font("Tahoma", Font.PLAIN, 99));
 				label_10.setBounds(398, 0, 494, 165);
 				medicamentos.add(label_10);

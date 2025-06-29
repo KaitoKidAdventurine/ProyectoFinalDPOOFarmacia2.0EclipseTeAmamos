@@ -273,35 +273,15 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						this.facturas = facturas;
 					}
 
-					public ArrayList<Medicamento> getMedicamentos() {
+					public ArrayList<Medicamento> getMedicamentos() 
+					{
 						return medicamentos;
 					}
 
-					public void setMedicamentos(ArrayList<Medicamento> medicamentos) {
+					public void setMedicamentos(ArrayList<Medicamento> medicamentos) 
+					{
 						this.medicamentos = medicamentos;
 					}
-
-					public long getCantidadDeAlmohadillasSanitarias() 
-					{
-						return cantidadDeAlmohadillasSanitarias;
-					}
-
-					public void setCantidadDeAlmohadillasSanitarias(long cantidadDeAlmohadillasSanitarias) 
-					{
-						this.cantidadDeAlmohadillasSanitarias = cantidadDeAlmohadillasSanitarias;
-					}
-
-					public long cantidadDeAlmohadillas()
-					{
-						long cantidad = 0;
-						for(Venta v: historialVentas)
-							if(v instanceof AlmohadillasSanitarias)
-								cantidad += ((AlmohadillasSanitarias) v).getCant();
-
-						return cantidad;
-
-					}
-
 
 
 					public double calcularTotal() 
@@ -372,7 +352,16 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						return importeTotalDeMedVentaLibre;
 					}
 
-
+					public long getCantidadDeAlmohadillasSanitarias()
+					{
+						return cantidadDeAlmohadillasSanitarias;
+					}
+					
+					public void setCantidadDeAlmohadillasSanitarias(long cantidadDeAlmohadillasSanitarias)
+					{
+						this.cantidadDeAlmohadillasSanitarias = cantidadDeAlmohadillasSanitarias;
+					}
+					
 					public ArrayList<Venta> getHistorialVentas() 
 					{
 						return historialVentas;
@@ -493,7 +482,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								int numMedicamentos = 1 + (j % 3);
 								ArrayList<MedicamentoControlado> medsControlados = new ArrayList<>();
 
-								for (int k = 0; k < numMedicamentos && k < obtenerMedicamentoControlado().size(); k++) {
+								for (int k = 0; k < numMedicamentos && k < obtenerMedicamentoControlado().size(); k++) 
+								{
 									medsControlados.add((MedicamentoControlado) obtenerMedicamentoControlado().get(k));
 								}
 
@@ -504,7 +494,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 										java.sql.Date.valueOf(fechaVenc),
 										medsControlados
 										);
-
+								
 								tarjetones.add(t);
 								p.agregarTarjeton(t);
 							}
@@ -1735,6 +1725,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 												obtenerPacientePorNombre("Valeria López Méndez"),
 												false
 								);
+					}
+
+					@Override
+					public long cantidadDeAlmohadillas() 
+					{
+						return getCantidadDeAlmohadillasSanitarias();
 					}
 
 										

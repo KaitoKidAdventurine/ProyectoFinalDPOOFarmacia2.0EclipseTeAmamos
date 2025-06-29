@@ -8,14 +8,10 @@ public class AlmohadillasNecesariasTableModel extends DefaultTableModel {
     private long cantidadNecesaria;
     private long stockActual;
 
-    
-    public AlmohadillasNecesariasTableModel(long cantidadNecesaria, long stockActual) 
-    {
-    	
-    	super(new Object[][] 
-    	{
+    public AlmohadillasNecesariasTableModel(long cantidadNecesaria, long stockActual) {
+        super(new Object[][] {
             {"Cantidad Necesaria", cantidadNecesaria},
-            {"Cantidad Actual: ", stockActual}
+            {"Cantidad Actual", stockActual}
         }, 
         new String[] {"Concepto", "Cantidad"});
         
@@ -24,8 +20,7 @@ public class AlmohadillasNecesariasTableModel extends DefaultTableModel {
     }
 
     @Override
-    public boolean isCellEditable(int row, int column) 
-    {
+    public boolean isCellEditable(int row, int column) {
         return false;
     }
 }

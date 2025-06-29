@@ -1,36 +1,41 @@
 package Interfaz;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
+
 import java.awt.Font;
+
+import javax.swing.border.LineBorder;
+
 import java.awt.Color;
 
-public class Informacion extends JFrame 
-{
+import javax.swing.JTextPane;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.MatteBorder;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class Informacion extends JDialog {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) 
-	{
-		try 
-		{
+	public static void main(String[] args) {
+		try {
 			Informacion dialog = new Informacion();
-			dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
-		} 
-		
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -38,48 +43,47 @@ public class Informacion extends JFrame
 	/**
 	 * Create the dialog.
 	 */
-	public Informacion() 
-	{
-		setBounds(100, 100, 702, 393);
+	public Informacion() {
+		setUndecorated(true);
+		setBounds(100, 100, 476, 352);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPanel.setBackground(Color.WHITE);
+		contentPanel.setBorder(new LineBorder(new Color(152, 251, 152), 3));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
+	    // Centrar la ventana en la pantalla
+	    this.setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
-		panel.setForeground(Color.GREEN);
-		panel.setBounds(0, 0, 680, 47);
+		panel.setFocusable(false);
+		panel.setFocusTraversalKeysEnabled(false);
+		panel.setEnabled(false);
+		panel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+			}
+		});
+		panel.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(152, 251, 152), 2)));
+		panel.setBounds(146, 258, 174, 59);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblInformacion = new JLabel("  Informaci\u00F3n");
-		lblInformacion.setFont(new Font("Tahoma", Font.PLAIN, 24));
-		lblInformacion.setBounds(246, 0, 172, 47);
-		panel.add(lblInformacion);
+		JLabel lblRegresarAlLogin = new JLabel("Regresar al Login");
+		lblRegresarAlLogin.setFont(new Font("Tahoma", Font.BOLD, 17));
+		lblRegresarAlLogin.setBounds(12, 13, 150, 33);
+		panel.add(lblRegresarAlLogin);
 		
-		JLabel lblNewLabel = new JLabel("Usuario de Admin: OmarDavid");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblNewLabel.setBounds(29, 63, 312, 40);
-		contentPanel.add(lblNewLabel);
+		JTextPane txtpnParaIniciarSesion = new JTextPane();
+		txtpnParaIniciarSesion.setEditable(false);
+		txtpnParaIniciarSesion.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		txtpnParaIniciarSesion.setText("Para iniciar sesion en el programa utilice los siguientes usuarios de prueba :\r\n\r\n-Administrador:                 -Usuario\r\nNombre: Admin                Nombre : User\r\nContrase\u00F1a:1234               Contrase\u00F1a : 1234\r\n");
+		txtpnParaIniciarSesion.setBounds(12, 54, 443, 181);
+		contentPanel.add(txtpnParaIniciarSesion);
 		
-		JLabel lblContrasennaDeAdmin = new JLabel("Contrasenna de admin: TeQueremosRodolfo");
-		lblContrasennaDeAdmin.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblContrasennaDeAdmin.setBounds(29, 119, 433, 32);
-		contentPanel.add(lblContrasennaDeAdmin);
-		
-		JLabel lblElUsuarioDe = new JLabel("El usuario normal puedes colocar cualquier nombre: ");
-		lblElUsuarioDe.setFont(new Font("Tahoma", Font.BOLD, 22));
-		lblElUsuarioDe.setBounds(26, 167, 665, 30);
-		contentPanel.add(lblElUsuarioDe);
-		
-		JLabel lblContrasennaDeUsuario = new JLabel("Contrasenna de Usuario: 12345678");
-		lblContrasennaDeUsuario.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblContrasennaDeUsuario.setBounds(25, 269, 344, 34);
-		contentPanel.add(lblContrasennaDeUsuario);
-		
-		JLabel lblEjemploOmarSonia = new JLabel("Ejemplo: Omar, Sonia, Rodolfo.");
-		lblEjemploOmarSonia.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblEjemploOmarSonia.setBounds(29, 213, 322, 40);
-		contentPanel.add(lblEjemploOmarSonia);
+		JLabel lblInformacinDeUsuarios = new JLabel("Informaci\u00F3n de Usuarios de Prueba");
+		lblInformacinDeUsuarios.setFont(new Font("Tahoma", Font.BOLD, 21));
+		lblInformacinDeUsuarios.setBounds(47, 13, 378, 39);
+		contentPanel.add(lblInformacinDeUsuarios);
 	}
 }
