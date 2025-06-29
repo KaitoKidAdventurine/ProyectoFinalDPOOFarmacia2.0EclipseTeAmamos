@@ -247,16 +247,20 @@ public class Validaciones
 		for(int i = 0; i < mujeres.size() && salida == true; i++)
 		{
 			Paciente pacienteX = mujeres.get(i);
-			String carnet = pacienteX.getNombre();
-			char penultimoDigito = carnet.charAt(10);
-			int numero = Character.getNumericValue(penultimoDigito);
-			if(numero % 2 == 0)
+			
+			String carnet = pacienteX.getCi();
+			int numero = Character.getNumericValue(carnet.charAt(9));
+			
+			// par es hombre "77020545628"
+			if(numero % 2 == 0) 
 				salida = false;
 		}
 
 		return salida;
 	}
 
+	
+	
 
 	public static boolean sonHombres(ArrayList<Paciente> hombres)
 	{
@@ -265,13 +269,15 @@ public class Validaciones
 		for(int i = 0; i < hombres.size() && salida == true; i++)
 		{
 			Paciente pacienteX = hombres.get(i);
-			String carnet = pacienteX.getNombre();
-			char penultimoDigito = carnet.charAt(10);
-			int numero = Character.getNumericValue(penultimoDigito);
+			String carnet = pacienteX.getCi();
+			int numero = Character.getNumericValue(carnet.charAt(9));
+			
+			// impar es mujer 
 			if(numero % 2 != 0)
+			{
 				salida = false;
+			}
 		}
-
 		return salida;
 	}
 	
@@ -306,12 +312,16 @@ public class Validaciones
 	{
 		String fechaStr = ci.substring(0, 6);
 		char digitoSiglo = ci.charAt(6);
-		// resumem extraigo todos los datos de anno, siglo, mes, dia.
+		
+		// Extrae todos los datos de anno, siglo, mes, dia.
+		
 		int anno = extraerAnno(fechaStr);
 		int mes = extraerMes(fechaStr);
 		int dia = extraerDia(fechaStr);
 		int siglo = determinarSiglo(digitoSiglo);
-
+		
+		
+		// Con los datos obtenidos verifica si esos datos son validos.
 		return crearFechaValidada(anno, mes, dia, siglo);
 	}
 
@@ -335,6 +345,7 @@ public class Validaciones
 	// Determinación del siglo
 	private static int determinarSiglo(char digitoSiglo) 
 	{
+		
 		switch (digitoSiglo) 
 		{
 		case '0': case '1': case '2': case '3': case '4': case '5':
@@ -366,7 +377,8 @@ public class Validaciones
 			throw new IllegalArgumentException("Fecha inválida: " + dia + "/" + mes + "/" + annoCompleto);
 		}
 	}
-
+	
+	// Puse minimo 120 annos como el maximo de tiempo que una persona puede vivir.
 	private static void validarAnnoMinimo(int annoCompleto) 
 	{
 		if (annoCompleto < 1905) 
@@ -374,7 +386,8 @@ public class Validaciones
 			throw new IllegalArgumentException("No se acepta un año menor de 1905");
 		}
 	}
-
+	
+	// Valida que la fecha no pueda ser posterior a hoy
 	private static void validarFechaNoFutura(LocalDate fecha) 
 	{
 		if (fecha.isAfter(LocalDate.now())) 
@@ -386,6 +399,7 @@ public class Validaciones
 	// Validación de edad
 	private static void validarEdad(LocalDate fechaNacimiento) 
 	{
+		
 		Period periodo = Period.between(fechaNacimiento, LocalDate.now());
 		if (periodo.getYears() > 120) 
 		{

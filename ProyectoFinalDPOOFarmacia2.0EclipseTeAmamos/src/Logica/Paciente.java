@@ -88,7 +88,9 @@ public class Paciente {
         {
             throw new IllegalArgumentException("El CI debe tener exactamente 11 dígitos");
         }
-        this.ci = ci;
+        
+        if(Validaciones.validarCI(ci))
+        	this.ci = ci;
     }
 
     public String getDireccion() 

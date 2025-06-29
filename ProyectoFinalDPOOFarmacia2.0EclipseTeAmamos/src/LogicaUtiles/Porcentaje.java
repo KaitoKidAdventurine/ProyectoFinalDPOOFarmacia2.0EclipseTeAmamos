@@ -25,7 +25,7 @@ public class Porcentaje
 		this.nombre = nombre;
 	}
 	
-	public Porcentaje(double porcentaje, String nombre)
+	public Porcentaje (double porcentaje, String nombre)
 	{
 		setNombre(nombre);
 		setPorcentaje(porcentaje);

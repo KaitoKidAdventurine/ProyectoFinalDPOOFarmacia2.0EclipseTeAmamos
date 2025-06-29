@@ -1,4 +1,6 @@
 package modelos;
+import java.util.ArrayList;
+
 import LogicaUtiles.Porcentaje;
 
 public class ComparacionVentasTableModel extends ModeloPrincipalTableModel<Object[]> {
@@ -14,11 +16,11 @@ public class ComparacionVentasTableModel extends ModeloPrincipalTableModel<Objec
         // No se usa en este caso particular
     }
 
-    public void cargarPorcentajes(Porcentaje porcentaje) {
+    public void cargarPorcentajes(ArrayList<Porcentaje> porcentaje) {
         this.eliminarFilas();
-        this.addRow(new Object[]{"Almohadillas Sanitarias", String.format("%.2f%%", porcentaje.getPorcentaje())});
-        this.addRow(new Object[]{"Medicamentos con Prescripción", String.format("%.2f%%", porcentaje.getPorcentaje())});
-        this.addRow(new Object[]{"Medicamentos Controlados", String.format("%.2f%%", porcentaje.getPorcentaje())});
-        this.addRow(new Object[]{"Medicamentos de Venta Libre", String.format("%.2f%%", porcentaje.getPorcentaje())});
+        for (Porcentaje p : porcentaje) 
+        {
+            this.addRow(new Object[]{p.getNombre(), String.format("%.2f%%", p.getPorcentaje())});
+        }
     }
 }

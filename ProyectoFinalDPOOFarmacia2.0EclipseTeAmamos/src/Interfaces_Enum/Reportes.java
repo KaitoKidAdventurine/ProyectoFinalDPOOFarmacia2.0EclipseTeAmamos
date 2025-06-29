@@ -10,7 +10,7 @@ public interface Reportes
 {
 	public ArrayList<VentaDeMedicamentos> medicamentosMasVendidos();
 	public long cantDeAlmohadillasNecesarias();
-	public Porcentaje comparacionDeVentasMensuales();
+	public ArrayList<Porcentaje> comparacionDeVentasMensuales();
 	public ArrayList<Tarjeton> registroDeIncumplimiento();
 
 }
