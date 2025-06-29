@@ -1,9 +1,13 @@
 package Interfaz;
 
+import java.awt.Component;
 import java.awt.EventQueue;
+import java.awt.Window;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.Color;
@@ -12,6 +16,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 
 import Logica.Farmacia;
+import Utiles.Navegacion;
 import Utiles.UtilesInterfaz;
 
 import java.awt.Font;
@@ -24,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import modelos.MedicamentoTableModel;
+
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
@@ -218,6 +224,126 @@ public class PrincipalUsuario extends JFrame {
 		label_8.setFont(new Font("Arial Black", Font.BOLD, 29));
 		label_8.setBounds(0, 347, 294, 47);
 		menu.add(label_8);
+		
+		final JPanel panel_8 = new JPanel();
+		panel_8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panel_8.setBackground(new Color(75, 255, 112));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panel_8.setBackground(new Color(152, 251, 152));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+		panel_8.setBackground(new Color(152, 251, 152));
+		panel_8.setBounds(0, 412, 281, 68);
+		menu.add(panel_8);
+		panel_8.setLayout(null);
+		
+		JLabel lblRegistrarse = new JLabel("REGISTRARSE");
+		lblRegistrarse.setFont(new Font("Times New Roman", Font.BOLD, 26));
+		lblRegistrarse.setBounds(65, 13, 191, 42);
+		panel_8.add(lblRegistrarse);
+		
+		JLabel iconoRegistrarse = new JLabel("");
+		iconoRegistrarse.setBounds(12, 13, 41, 42);
+		panel_8.add(iconoRegistrarse);
+		UtilesInterfaz.ajustarImagen(iconoRegistrarse, "src/iconos/usuario(1).png");
+		
+		final JPanel panel_9 = new JPanel();
+		panel_9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				panel_9.setBackground(new Color(75, 255, 112));
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				panel_9.setBackground(new Color(152, 251, 152));
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Obtener el JFrame/JDialog padre del componente que disparó el evento
+			    Window ventanaPadre = SwingUtilities.getWindowAncestor((Component) e.getSource());
+			    
+			    int opcion = JOptionPane.showConfirmDialog(
+			        ventanaPadre, // Usamos la ventana padre obtenida
+			        "¿Estás seguro de cerrar sesión?",
+			        "Confirmar",
+			        JOptionPane.YES_NO_OPTION
+			    );
+
+			    if (opcion == JOptionPane.YES_OPTION) {
+			        ventanaPadre.dispose(); // Cierra la ventana actual
+			        
+			        // Regresar al login
+			        Navegacion.registrar("Login", new Login());
+			        Navegacion.irA("Login");
+			    }
+			}
+		});
+		panel_9.setBackground(new Color(152, 251, 152));
+		panel_9.setBounds(0, 484, 281, 68);
+		menu.add(panel_9);
+		panel_9.setLayout(null);
+		
+		
+		JLabel label_15 = new JLabel("CERRAR SESI\u00D3N");
+		label_15.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Obtener el JFrame/JDialog padre del componente que disparó el evento
+			    Window ventanaPadre = SwingUtilities.getWindowAncestor((Component) e.getSource());
+			    
+			    int opcion = JOptionPane.showConfirmDialog(
+			        ventanaPadre, // Usamos la ventana padre obtenida
+			        "¿Estás seguro de cerrar sesión?",
+			        "Confirmar",
+			        JOptionPane.YES_NO_OPTION
+			    );
+
+			    if (opcion == JOptionPane.YES_OPTION) {
+			        ventanaPadre.dispose(); // Cierra la ventana actual
+			        
+			        // Regresar al login
+			        Navegacion.registrar("Login", new Login());
+			        Navegacion.irA("Login");
+			    }
+			}
+		});
+		label_15.setFont(new Font("Times New Roman", Font.BOLD, 26));
+		label_15.setBounds(63, 13, 218, 49);
+		panel_9.add(label_15);
+		
+		JLabel iconoCerrarSesion = new JLabel("");
+		iconoCerrarSesion.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Obtener el JFrame/JDialog padre del componente que disparó el evento
+			    Window ventanaPadre = SwingUtilities.getWindowAncestor((Component) e.getSource());
+			    
+			    int opcion = JOptionPane.showConfirmDialog(
+			        ventanaPadre, // Usamos la ventana padre obtenida
+			        "¿Estás seguro de cerrar sesión?",
+			        "Confirmar",
+			        JOptionPane.YES_NO_OPTION
+			    );
+
+			    if (opcion == JOptionPane.YES_OPTION) {
+			        ventanaPadre.dispose(); // Cierra la ventana actual
+			        
+			        // Regresar al login
+			        Navegacion.registrar("Login", new Login());
+			        Navegacion.irA("Login");
+			    }
+			}
+		});
+		iconoCerrarSesion.setBounds(12, 13, 41, 42);
+		panel_9.add(iconoCerrarSesion);
+		UtilesInterfaz.ajustarImagen(iconoCerrarSesion, "src/iconos/cierre-de-sesion-de-usuario.png");
 		
 		JPanel barraSuperior = new JPanel();
 		barraSuperior.setBorder(new LineBorder(new Color(0, 0, 0), 4));
