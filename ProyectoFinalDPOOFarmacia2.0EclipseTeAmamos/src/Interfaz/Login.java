@@ -260,11 +260,12 @@ public class Login extends JFrame {
 			{
 				String usuarioIngresado = new String(txtIngreseSuNombre.getText());
 				String contrasenaIngresada = new String(passwordField.getPassword());
+
 				String contrasenaCorrectaParaAdmin = "1234"; 
 				String contrasenaCorrectaParaElPaciente = "1234";
 				String nombreDelAdmin = "Admin";
 				String nombreDelUsuario = "User";
-
+				
 				if (nombreDelAdmin.equals(usuarioIngresado) && contrasenaCorrectaParaAdmin.equals(contrasenaIngresada)) 
 				{
 					JOptionPane.showMessageDialog(null, "Acceso permitido. Bienvenido , administrador.");

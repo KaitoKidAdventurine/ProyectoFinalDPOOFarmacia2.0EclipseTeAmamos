@@ -877,6 +877,7 @@ public class PrincipalAdmin extends JFrame
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(0, 0, 1029, 43);
 		panel_1.setBackground(new Color(75, 255, 112));
+
 		medicamentos.add(panel_1);
 		panel_1.setLayout(null);
 
@@ -962,6 +963,7 @@ public class PrincipalAdmin extends JFrame
 		medicamentos.add(label_8);
 
 		JLabel label_9 = new JLabel("|");
+		label_9.setForeground(Color.GREEN);
 		label_9.setForeground(new Color(75, 255, 112));
 		label_9.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_9.setBounds(208, 77, 56, 148);
@@ -974,7 +976,9 @@ public class PrincipalAdmin extends JFrame
 		medicamentos.add(label_10);
 
 		JLabel label_11 = new JLabel("|");
+
 		label_11.setForeground(new Color(75, 255, 112));
+
 		label_11.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_11.setBounds(208, 236, 56, 148);
 		medicamentos.add(label_11);
@@ -999,11 +1003,13 @@ public class PrincipalAdmin extends JFrame
 
 		JLabel label_15 = new JLabel("-");
 		label_15.setForeground(new Color(75, 255, 112));
+
 		label_15.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_15.setBounds(68, 311, 56, 120);
 		medicamentos.add(label_15);
 
 		JLabel label_16 = new JLabel("-");
+		label_16.setForeground(Color.GREEN);
 		label_16.setForeground(new Color(75, 255, 112));
 		label_16.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_16.setBounds(90, 311, 56, 120);
@@ -1059,6 +1065,7 @@ public class PrincipalAdmin extends JFrame
 
 		JLabel label_25 = new JLabel("-");
 		label_25.setForeground(new Color(75, 255, 112));
+
 		label_25.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_25.setBounds(276, 311, 56, 120);
 		medicamentos.add(label_25);
@@ -1213,7 +1220,6 @@ public class PrincipalAdmin extends JFrame
 		label_50.setFont(new Font("Arial Black", Font.BOLD, 99));
 		label_50.setBounds(811, 311, 56, 120);
 		medicamentos.add(label_50);
-
 		JLabel label_51 = new JLabel("-");
 		label_51.setForeground(new Color(75, 255, 112));
 		label_51.setFont(new Font("Arial Black", Font.BOLD, 99));

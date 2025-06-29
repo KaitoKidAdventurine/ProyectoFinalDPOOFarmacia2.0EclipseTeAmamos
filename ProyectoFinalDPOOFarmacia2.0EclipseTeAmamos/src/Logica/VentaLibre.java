@@ -30,7 +30,8 @@ public class VentaLibre extends Venta
 	{
 		this.codigoDelMed = codigoDelMed;
 	}
-	public int getCantMedVendidos() {
+	public int getCantMedVendidos() 
+	{
 		return cantMedVendidos;
 	}
 	public void setCantMedVendidos(int cantMedVendidos) 
