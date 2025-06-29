@@ -1825,10 +1825,20 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 			   
 			}
 
-			private void agregarNucleoFamiliar(
-					Logica.NucleoFamiliar nucleoFamiliar) {
+			private void agregarNucleoFamiliar(Logica.NucleoFamiliar nucleoFamiliar) {
 				// TODO Auto-generated method stub
 				
+			}
+			
+			//Listados para ComboBox
+			public ArrayList<Paciente> listadoPacientes(){
+				ArrayList<Paciente>listado = new ArrayList<Paciente>();
+				
+				for(Paciente p:pacientes){
+					listado.add(p.getNombre());
+				}
+				
+				return listado;
 			}
 			
 }

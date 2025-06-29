@@ -89,6 +89,8 @@ import javax.swing.JTextPane;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JComboBox;
+import javax.swing.UIManager;
 
 public class PrincipalAdmin extends JFrame 
 {
@@ -119,6 +121,10 @@ public class PrincipalAdmin extends JFrame
 	private JTable tablaTarjetones;
 	private TarjetonesIncumplidosTableModel tarjetonesModel;
 	private JTextField textcodigoDelMed;
+	private JTable tablaVentaLibre;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
 
 	/**
 	 * Launch the application.
@@ -600,6 +606,7 @@ public class PrincipalAdmin extends JFrame
 		UtilesInterfaz.ajustarImagen(iconoCerrarSesion, "src/iconos/cierre-de-sesion-de-usuario.png");
 
 		pestanas = new JTabbedPane(JTabbedPane.TOP);
+		pestanas.setBackground(Color.WHITE);
 		pestanas.setBounds(292, 33, 1010, 684);
 		contentPane.add(pestanas);
 
@@ -682,12 +689,13 @@ public class PrincipalAdmin extends JFrame
 		panel_13.add(txtpnCrditos);
 
 		JPanel comprar = new JPanel();
+		comprar.setBackground(Color.WHITE);
 		pestanas.addTab("", null, comprar, null);
 		comprar.setLayout(null);
 
 		JPanel panel_3 = new JPanel();
-		panel_3.setBackground(new Color(75, 255, 112));
 		panel_3.setBounds(0, 0, 1029, 43);
+		panel_3.setBackground(new Color(75, 255, 112));
 		comprar.add(panel_3);
 		panel_3.setLayout(null);
 
@@ -697,41 +705,149 @@ public class PrincipalAdmin extends JFrame
 		panel_3.add(lblNewLabel);
 
 		JLabel lblElijaComoDesea = new JLabel("Elija como desea realizar su compra");
-		lblElijaComoDesea.setFont(new Font("Times New Roman", Font.BOLD, 28));
 		lblElijaComoDesea.setBounds(10, 49, 477, 43);
+		lblElijaComoDesea.setFont(new Font("Times New Roman", Font.BOLD, 28));
 		comprar.add(lblElijaComoDesea);
 
 		Label label_7 = new Label("_______________________________________________________________________");
+		label_7.setBounds(0, 37, 1005, 79);
 		label_7.setForeground(new Color(75, 255, 112));
 		label_7.setFont(new Font("Arial Black", Font.BOLD, 50));
-		label_7.setBounds(0, 37, 1005, 79);
 		comprar.add(label_7);
 
 		JPanel compra_1 = new JPanel();
+		compra_1.setBounds(96, 128, 353, 200);
+		compra_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(8);
+			}
+		});
 		compra_1.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
 		compra_1.setBackground(new Color(150, 255, 147));
-		compra_1.setBounds(96, 128, 353, 200);
 		comprar.add(compra_1);
+		compra_1.setLayout(null);
+		
+		JLabel label_67 = new JLabel("_______________________");
+		label_67.setFont(new Font("Tahoma", Font.BOLD, 25));
+		label_67.setBounds(0, 13, 381, 50);
+		compra_1.add(label_67);
+		
+		JLabel lblVentaLibre_1 = new JLabel("Venta Libre");
+		lblVentaLibre_1.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblVentaLibre_1.setBounds(12, 13, 192, 43);
+		compra_1.add(lblVentaLibre_1);
+		
+		JLabel lblVentaDeMedicamentos = new JLabel("Venta de medicamentos que no requieren");
+		lblVentaDeMedicamentos.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblVentaDeMedicamentos.setBounds(10, 13, 402, 119);
+		compra_1.add(lblVentaDeMedicamentos);
+		
+		JLabel lblDeTarjetnO = new JLabel("de tarjet\u00F3n o receta m\u00E9dica");
+		lblDeTarjetnO.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblDeTarjetnO.setBounds(10, 82, 317, 22);
+		compra_1.add(lblDeTarjetnO);
 		
 		JPanel compra_3 = new JPanel();
+		compra_3.setBounds(96, 369, 353, 200);
+		compra_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(10);
+			}
+		});
 		compra_3.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
 		compra_3.setBackground(new Color(150, 255, 147));
-		compra_3.setBounds(96, 369, 353, 200);
 		comprar.add(compra_3);
+		compra_3.setLayout(null);
+		
+		JLabel label_69 = new JLabel("_______________________");
+		label_69.setFont(new Font("Tahoma", Font.BOLD, 25));
+		label_69.setBounds(0, 13, 381, 50);
+		compra_3.add(label_69);
+		
+		JLabel lblVentaMedicamentoControlado = new JLabel("Venta Medicamento Controlado");
+		lblVentaMedicamentoControlado.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblVentaMedicamentoControlado.setBounds(12, 13, 341, 43);
+		compra_3.add(lblVentaMedicamentoControlado);
+		
+		JLabel lblVentaDeMedicamentos_1 = new JLabel("Venta de medicamentos que requieren");
+		lblVentaDeMedicamentos_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblVentaDeMedicamentos_1.setBounds(10, 53, 331, 22);
+		compra_3.add(lblVentaDeMedicamentos_1);
+		
+		JLabel lblDeUnTarjetn = new JLabel("de un tarjet\u00F3n");
+		lblDeUnTarjetn.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblDeUnTarjetn.setBounds(10, 76, 210, 22);
+		compra_3.add(lblDeUnTarjetn);
 		
 		JPanel compra_2 = new JPanel();
+		compra_2.setBounds(544, 128, 353, 200);
+		compra_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(9);
+			}
+		});
 		compra_2.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
 		compra_2.setBackground(new Color(150, 255, 147));
-		compra_2.setBounds(544, 128, 353, 200);
 		comprar.add(compra_2);
+		compra_2.setLayout(null);
+		
+		JLabel label_68 = new JLabel("_______________________");
+		label_68.setFont(new Font("Tahoma", Font.BOLD, 25));
+		label_68.setBounds(0, 13, 381, 50);
+		compra_2.add(label_68);
+		
+		JLabel lblVentaAlmohadillasSanitarias = new JLabel("Venta Almohadillas Sanitarias");
+		lblVentaAlmohadillasSanitarias.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblVentaAlmohadillasSanitarias.setBounds(12, 13, 329, 43);
+		compra_2.add(lblVentaAlmohadillasSanitarias);
+		
+		JLabel lblVentaDeAlmohadillas = new JLabel("Venta de almohadillas sanitarias para");
+		lblVentaDeAlmohadillas.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblVentaDeAlmohadillas.setBounds(10, 57, 331, 29);
+		compra_2.add(lblVentaDeAlmohadillas);
+		
+		JLabel lblLasMujeresDel = new JLabel("las mujeres del n\u00FAcleo familiar");
+		lblLasMujeresDel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblLasMujeresDel.setBounds(10, 69, 316, 41);
+		compra_2.add(lblLasMujeresDel);
 		
 		JPanel compra_4 = new JPanel();
+		compra_4.setBounds(544, 369, 353, 200);
+		compra_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(11);
+			}
+		});
 		compra_4.setBorder(new CompoundBorder(new LineBorder(new Color(0, 255, 0), 2), new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0))));
 		compra_4.setBackground(new Color(150, 255, 147));
-		compra_4.setBounds(544, 369, 353, 200);
 		comprar.add(compra_4);
+		compra_4.setLayout(null);
+		
+		JLabel label_70 = new JLabel("_______________________");
+		label_70.setFont(new Font("Tahoma", Font.BOLD, 25));
+		label_70.setBounds(0, 13, 381, 50);
+		compra_4.add(label_70);
+		
+		JLabel lblVentaPrescripcinMdica = new JLabel("Venta Prescripci\u00F3n M\u00E9dica");
+		lblVentaPrescripcinMdica.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblVentaPrescripcinMdica.setBounds(12, 13, 329, 43);
+		compra_4.add(lblVentaPrescripcinMdica);
+		
+		JLabel lblVentaDeMedicamentos_2 = new JLabel("Venta de medicamentos que requieren");
+		lblVentaDeMedicamentos_2.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblVentaDeMedicamentos_2.setBounds(10, 58, 331, 22);
+		compra_4.add(lblVentaDeMedicamentos_2);
+		
+		JLabel lblDeUnaReceta = new JLabel("de una receta m\u00E9dica");
+		lblDeUnaReceta.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblDeUnaReceta.setBounds(10, 79, 314, 22);
+		compra_4.add(lblDeUnaReceta);
 
-		// INICIALIZAR MODELO DE TABLA (ya está)
+		// INICIALIZAR MODELO DE TABLA 
 		medicamentoTableModel = new MedicamentoTableModel();
 
 
@@ -1608,9 +1724,6 @@ public class PrincipalAdmin extends JFrame
 		reporte1.setLayout(null);
 
 
-		final Farmacia farmacia = Farmacia.obtenerInstancia();
-
-
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(new Color(75, 255, 112));
 		panel_4.setBounds(0, 0, 1015, 57);
@@ -1621,7 +1734,7 @@ public class PrincipalAdmin extends JFrame
 		regresar.addMouseListener(new MouseAdapter() 
 		{
 			@Override
-			public void mouseClicked(MouseEvent arg0) 
+			public void mouseClicked(MouseEvent e) 
 			{
 				pestanas.setSelectedIndex(3);
 			}
@@ -1786,16 +1899,226 @@ public class PrincipalAdmin extends JFrame
 		panel_7.add(lblNewLabel_5);
 		
 		JPanel VentaLibre = new JPanel();
+		VentaLibre.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, VentaLibre, null);
+		VentaLibre.setLayout(null);
+		
+		JScrollPane scrollPane_5 = new JScrollPane();
+		scrollPane_5.setBounds(38, 224, 941, 197);
+		VentaLibre.add(scrollPane_5);
+		
+		tablaVentaLibre = new JTable();
+		scrollPane_5.setViewportView(tablaVentaLibre);
+		
+		JPanel panel_17 = new JPanel();
+		panel_17.setLayout(null);
+		panel_17.setBackground(new Color(75, 255, 112));
+		panel_17.setBounds(0, 0, 1015, 57);
+		VentaLibre.add(panel_17);
+		
+		JLabel label_66 = new JLabel("");
+		label_66.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(1);
+			}
+		});
+		label_66.setBounds(12, 0, 57, 57);
+		panel_17.add(label_66);
+		UtilesInterfaz.ajustarImagen(label_66, "src/iconos/deshacer.png");
+		
+		JLabel lblVentaLibre = new JLabel("VENTA LIBRE");
+		lblVentaLibre.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblVentaLibre.setBounds(79, 0, 200, 57);
+		panel_17.add(lblVentaLibre);
+		
+		JLabel lblPaciente = new JLabel("Paciente :");
+		lblPaciente.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblPaciente.setBounds(56, 80, 123, 32);
+		VentaLibre.add(lblPaciente);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(191, 85, 213, 32);
+		VentaLibre.add(comboBox);
+		
+		JLabel lblMedicamento = new JLabel("Medicamento :");
+		lblMedicamento.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblMedicamento.setBounds(24, 132, 180, 32);
+		VentaLibre.add(lblMedicamento);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		comboBox_1.setBounds(191, 130, 213, 32);
+		VentaLibre.add(comboBox_1);
+		
+		JLabel lblCantidad = new JLabel("Cantidad :");
+		lblCantidad.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblCantidad.setBounds(435, 80, 128, 32);
+		VentaLibre.add(lblCantidad);
+		
+		JComboBox comboBox_2 = new JComboBox();
+		comboBox_2.setBounds(549, 80, 79, 32);
+		VentaLibre.add(comboBox_2);
+		
+		JButton btnAadirALa = new JButton("A\u00F1adir a la Compra");
+		btnAadirALa.setBorder(null);
+		btnAadirALa.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		btnAadirALa.setBounds(445, 123, 183, 41);
+		VentaLibre.add(btnAadirALa);
+		
+		JPanel panel_22 = new JPanel();
+		panel_22.setBackground(UIManager.getColor("Button.background"));
+		panel_22.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
+		panel_22.setBounds(22, 488, 507, 126);
+		VentaLibre.add(panel_22);
+		panel_22.setLayout(null);
+		
+		JLabel lblTotalAPagar = new JLabel("Total a Pagar :");
+		lblTotalAPagar.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblTotalAPagar.setBounds(12, 13, 133, 37);
+		panel_22.add(lblTotalAPagar);
+		
+		JLabel lblEfectivo = new JLabel("Efectivo :");
+		lblEfectivo.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblEfectivo.setBounds(12, 48, 122, 21);
+		panel_22.add(lblEfectivo);
+		
+		JLabel lblCambio = new JLabel("Cambio :");
+		lblCambio.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblCambio.setBounds(12, 74, 97, 27);
+		panel_22.add(lblCambio);
+		
+		textField = new JTextField();
+		textField.setBounds(130, 22, 148, 22);
+		panel_22.add(textField);
+		textField.setColumns(10);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(130, 49, 148, 22);
+		panel_22.add(textField_1);
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(130, 78, 148, 22);
+		panel_22.add(textField_2);
+		textField_2.setColumns(10);
+		
+		JButton btnCalcularCambio = new JButton("Calcular Cambio");
+		btnCalcularCambio.setBackground(UIManager.getColor("Button.light"));
+		btnCalcularCambio.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		btnCalcularCambio.setBounds(318, 36, 164, 44);
+		panel_22.add(btnCalcularCambio);
+		
+		JPanel panel_23 = new JPanel();
+		panel_23.setBackground(new Color(204, 255, 204));
+		panel_23.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(152, 251, 152), 2)));
+		panel_23.setBounds(593, 492, 241, 101);
+		VentaLibre.add(panel_23);
+		panel_23.setLayout(null);
+		
+		JLabel lblRealizarCompra = new JLabel("Realizar ");
+		lblRealizarCompra.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		lblRealizarCompra.setBounds(12, 0, 172, 80);
+		panel_23.add(lblRealizarCompra);
+		
+		JLabel label_72 = new JLabel("");
+		label_72.setBounds(151, 27, 65, 53);
+		panel_23.add(label_72);
+		UtilesInterfaz.ajustarImagen(label_72, "src/iconos/comprobacion-del-carrito-de-la-compra.png");
+		
+		JLabel lblCompra_1 = new JLabel("Compra");
+		lblCompra_1.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		lblCompra_1.setBounds(12, 27, 127, 93);
+		panel_23.add(lblCompra_1);
+		
+		JPanel panel_21 = new JPanel();
+		panel_21.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		panel_21.setBackground(UIManager.getColor("Button.background"));
+		panel_21.setBounds(12, 175, 981, 279);
+		VentaLibre.add(panel_21);
+		panel_21.setLayout(null);
+		
+		JLabel lblCompra = new JLabel("Compra");
+		lblCompra.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblCompra.setBounds(30, 13, 153, 29);
+		panel_21.add(lblCompra);
 		
 		JPanel VentaAlmohadillas = new JPanel();
 		pestanas.addTab("New tab", null, VentaAlmohadillas, null);
+		VentaAlmohadillas.setLayout(null);
+		
+		JPanel panel_18 = new JPanel();
+		panel_18.setLayout(null);
+		panel_18.setBackground(new Color(75, 255, 112));
+		panel_18.setBounds(0, 0, 1015, 57);
+		VentaAlmohadillas.add(panel_18);
+		
+		JLabel label_71 = new JLabel("");
+		label_71.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(1);
+			}
+		});
+		label_71.setBounds(12, 0, 57, 57);
+		panel_18.add(label_71);
+		UtilesInterfaz.ajustarImagen(label_71, "src/iconos/deshacer.png");
+		
+		JLabel lblVentaAlmohadillasSanitarias_1 = new JLabel("VENTA ALMOHADILLAS SANITARIAS");
+		lblVentaAlmohadillasSanitarias_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblVentaAlmohadillasSanitarias_1.setBounds(79, 0, 517, 57);
+		panel_18.add(lblVentaAlmohadillasSanitarias_1);
 		
 		JPanel VentaControlada = new JPanel();
 		pestanas.addTab("New tab", null, VentaControlada, null);
+		VentaControlada.setLayout(null);
+		
+		JPanel panel_19 = new JPanel();
+		panel_19.setLayout(null);
+		panel_19.setBackground(new Color(75, 255, 112));
+		panel_19.setBounds(0, 0, 1015, 57);
+		VentaControlada.add(panel_19);
+		
+		JLabel label_73 = new JLabel("");
+		label_73.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(1);
+			}
+		});
+		label_73.setBounds(12, 0, 57, 57);
+		panel_19.add(label_73);
+		UtilesInterfaz.ajustarImagen(label_73, "src/iconos/deshacer.png");
+		
+		JLabel lblVentaControlada = new JLabel("VENTA MEDICAMENTO CONTROLADO");
+		lblVentaControlada.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblVentaControlada.setBounds(79, 0, 447, 57);
+		panel_19.add(lblVentaControlada);
 		
 		JPanel VentaPrescripcion = new JPanel();
 		pestanas.addTab("New tab", null, VentaPrescripcion, null);
+		VentaPrescripcion.setLayout(null);
+		
+		JPanel panel_20 = new JPanel();
+		panel_20.setLayout(null);
+		panel_20.setBackground(new Color(75, 255, 112));
+		panel_20.setBounds(0, 0, 1015, 57);
+		VentaPrescripcion.add(panel_20);
+		
+		JLabel label_75 = new JLabel("");
+		label_75.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				pestanas.setSelectedIndex(1);
+			}
+		});
+		label_75.setBounds(12, 0, 57, 57);
+		panel_20.add(label_75);
+		UtilesInterfaz.ajustarImagen(label_75, "src/iconos/deshacer.png");
+		
+		JLabel lblVentaPrescripcion = new JLabel("VENTA PRESCRIPCION M\u00C9DICA");
+		lblVentaPrescripcion.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblVentaPrescripcion.setBounds(79, 0, 510, 57);
+		panel_20.add(lblVentaPrescripcion);
 		
 		JPanel usuarios = new JPanel();
 		pestanas.addTab("New tab", null, usuarios, null);
