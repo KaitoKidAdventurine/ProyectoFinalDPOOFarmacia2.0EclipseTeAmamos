@@ -145,6 +145,9 @@ public class PrincipalAdmin extends JFrame
 	private Map<String, Integer> cantidadesAcumuladas = new HashMap<>();
 	private boolean pacienteSeleccionado = false;
 	private boolean cambioCalculado = false;
+	private JComboBox<String> comboBoxPacientes;
+	private JComboBox<String> comboBoxMedicamentos;
+	private JComboBox <Integer>comboBoxCantidad;
 
 	/**
 	 * Launch the application.
@@ -187,22 +190,32 @@ public class PrincipalAdmin extends JFrame
 		textTemperatura.setText("");
 		textCantidad.setText("");
 	}
+	
 	private void actualizarTotal(JTextField txtTotal, ComprasTableModel comprasTableModel) {
 	    double total = 0.0;
 
-	    // Recorrer todas las filas del modelo de tabla
 	    for (int i = 0; i < comprasTableModel.getRowCount(); i++) {
-	        // Obtener el precio y la cantidad de cada fila
-	        double precio = (double) comprasTableModel.getValueAt(i, 2); // Columna "Precio"
-	        int cantidad = (int) comprasTableModel.getValueAt(i, 3); // Columna "Cantidad"
+	        double precioMedicamento = (double) comprasTableModel.getValueAt(i, 2);
+	        int cantidad = (int) comprasTableModel.getValueAt(i, 3);
 
-	        // Sumar el subtotal al total acumulado
-	        total += precio * cantidad;
+	        total += precioMedicamento * cantidad;
 	    }
 
-	    // Actualizar el campo de texto con el total calculado
-	    txtTotal.setText(String.format("%.2f", total)); // Formatear a dos decimales
+	    txtTotal.setText(String.format("%.2f", total)); // Actualizar el campo de texto con el total
 	}
+	
+	// Método para restar la cantidad eliminada del registro de cantidades acumuladas
+	private void restarCantidadAcumulada(String nombreMedicamento, int cantidadEliminada) {
+	    int cantidadAcumuladaActual = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
+	    int nuevaCantidadAcumulada = cantidadAcumuladaActual - cantidadEliminada;
+
+	    if (nuevaCantidadAcumulada <= 0) {
+	        cantidadesAcumuladas.remove(nombreMedicamento); // Eliminar si llega a cero
+	    } else {
+	        cantidadesAcumuladas.put(nombreMedicamento, nuevaCantidadAcumulada); // Actualizar
+	    }
+	}
+	
 	private boolean hayComprasEnLaTabla() {
 	    return comprasTableModel.getRowCount() > 0;
 	}
@@ -1986,7 +1999,7 @@ public class PrincipalAdmin extends JFrame
 	            int fila = tablaCompras.rowAtPoint(e.getPoint());
 	            int columna = tablaCompras.columnAtPoint(e.getPoint());
 
-	            if (columna == 5) { // Columna de acción
+	            if (columna == 5) { // Columna de acción ("Eliminar")
 	                int opcion = JOptionPane.showConfirmDialog(
 	                    null,
 	                    "¿Está seguro de que desea eliminar esta compra?",
@@ -1995,7 +2008,32 @@ public class PrincipalAdmin extends JFrame
 	                );
 
 	                if (opcion == JOptionPane.YES_OPTION) {
+	                    // Obtener los datos de la fila seleccionada
+	                    String nombreMedicamento = (String) comprasTableModel.getValueAt(fila, 1);
+	                    int cantidadEliminada = (int) comprasTableModel.getValueAt(fila, 3);
+
+	                    // Validar que la cantidad eliminada sea válida
+	                    if (cantidadEliminada <= 0) {
+	                        JOptionPane.showMessageDialog(null, 
+	                            "La cantidad eliminada debe ser mayor que cero.", 
+	                            "Error", JOptionPane.ERROR_MESSAGE);
+	                        return;
+	                    }
+
+	                    // Restar la cantidad eliminada del registro de cantidades acumuladas
+	                    int cantidadAcumuladaActual = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
+	                    int nuevaCantidadAcumulada = cantidadAcumuladaActual - cantidadEliminada;
+
+	                    if (nuevaCantidadAcumulada <= 0) {
+	                        cantidadesAcumuladas.remove(nombreMedicamento);
+	                    } else {
+	                        cantidadesAcumuladas.put(nombreMedicamento, nuevaCantidadAcumulada);
+	                    }
+
+	                    // Eliminar la fila del modelo de tabla
 	                    comprasTableModel.eliminarFila(fila);
+
+	                    // Recalcular el total acumulado
 	                    actualizarTotal(txtTotal, comprasTableModel);
 	                }
 	            }
@@ -2014,6 +2052,7 @@ public class PrincipalAdmin extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(1);
+				
 			}
 		});
 		label_66.setBounds(12, 0, 57, 57);
@@ -2155,9 +2194,9 @@ public class PrincipalAdmin extends JFrame
 		                    cantidadSeleccionada // Cantidad vendida
 		            );
 
-		            // Actualizar la cantidad acumulada en el mapa
-		            cantidadesAcumuladas.put(nombreMedicamento, cantidadTotal);
-
+		         // Actualizar el registro de cantidades acumuladas
+		            int cantidadAcumuladaActual = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
+		            cantidadesAcumuladas.put(nombreMedicamento, cantidadAcumuladaActual + cantidadSeleccionada);
 		            // Agregar la venta al modelo de la tabla
 		            comprasTableModel.adicionar(venta);
 
