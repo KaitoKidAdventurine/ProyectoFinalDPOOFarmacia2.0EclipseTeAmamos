@@ -356,12 +356,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					{
 						return cantidadDeAlmohadillasSanitarias;
 					}
-					
+
 					public void setCantidadDeAlmohadillasSanitarias(long cantidadDeAlmohadillasSanitarias)
 					{
 						this.cantidadDeAlmohadillasSanitarias = cantidadDeAlmohadillasSanitarias;
 					}
-					
+
 					public ArrayList<Venta> getHistorialVentas() 
 					{
 						return historialVentas;
@@ -494,7 +494,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 										java.sql.Date.valueOf(fechaVenc),
 										medsControlados
 										);
-								
+
 								tarjetones.add(t);
 								p.agregarTarjeton(t);
 							}
@@ -1113,13 +1113,13 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						throw new RuntimeException("Medicamento: " +nombre+ " no encontrado");
 					}
 
-					
+
 
 
 
 
 					public void agregarNucleoFamiliar(String id, String direccion, ArrayList <Paciente> hombres, 
-							 ArrayList <Paciente> mujeres, Paciente jefe, boolean compraron)
+							ArrayList <Paciente> mujeres, Paciente jefe, boolean compraron)
 					{
 						NucleoFamiliar m = new NucleoFamiliar( id, direccion, hombres, mujeres, jefe, compraron);
 						nucleos.add(m);
@@ -1171,7 +1171,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 												obtenerPacientePorNombre("Camila Ortiz Pérez"),
 												obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
 												)),
-										obtenerPacientePorNombre("Raúl Bermúdez Espinoza"),
+												obtenerPacientePorNombre("Raúl Bermúdez Espinoza"),
 												false
 								);
 
@@ -1732,644 +1732,88 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					{
 						return getCantidadDeAlmohadillasSanitarias();
 					}
+						
+//-------------------------------------------Listados para ComboBox-------------------------------------------------------------------
+					
+					// Método para obtener la lista de pacientes
+					public List<String> obtenerListaPacientes() {
+						List<String> listaPacientes = new ArrayList<>();
+						for (Paciente paciente : pacientes) {
+							listaPacientes.add(paciente.getNombre());
+						}
+						return listaPacientes;
+					}
 
-										
-					// En proceso de codificacion
-					/*
-			public void actualizarValores()
-			{
-				for(Medicamento m: medicamentos)
-					for(Facturas)
-			}
-<<<<<<< HEAD
-			*/
-			
-			
-			
-			
-			public void agregarNucleoFamiliar(String id, String direccion, ArrayList <Paciente> mujeres, 
-					ArrayList <Paciente> hombres, Paciente jefe, boolean compraron)
-			{
-				NucleoFamiliar m = new NucleoFamiliar( id, direccion, mujeres, hombres, jefe,compraron);
-				nucleos.add(m);
-			}
-			
-			public void inicializarNucleosFamiliares() 
-			{
+					// Método para obtener la lista de medicamentos
+					public List<String> obtenerListaMedicamentos() {
+						List<String> listaMedicamentos = new ArrayList<>();
+						for (Medicamento medicamento : medicamentos) {
+							listaMedicamentos.add(medicamento.getNomComun());
+						}
+						return listaMedicamentos;
+					}
+					
+					//Método para obtener la lista de medicamentos de venta libre 
+					public List<Medicamento> obtenerMedicamentosVentaLibre() {
+					    List<Medicamento> medicamentosVentaLibre = new ArrayList<>();
+					    for (Medicamento medicamento : medicamentos) {
+					        if ("Venta libre".equalsIgnoreCase(medicamento.getTipo())) {
+					            medicamentosVentaLibre.add(medicamento);
+					        }
+					    }
+					    return medicamentosVentaLibre;
+					}
 
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-001", 
-			            "Calle 23, #45",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Daniel Hernández López"),
-			                obtenerPacientePorNombre("Luis Quintero Torres")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Adriana Méndez Núñez")
-			            )),
-			            obtenerPacientePorNombre("Alejandro Bermúdez Cervantes"),
-			            false
-			        );
+					// Método para obtener la lista de medicamentos controlados
+					public List<String> obtenerListaMedicamentosControlados() {
+						List<String> listaMedControlados = new ArrayList<>();
+						for (MedicamentoControlado medicamento : medicamentoControlado) {
+							listaMedControlados.add(medicamento.getNomComun());
+						}
+						return listaMedControlados;
+					}
 
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-002", 
-			            "Calle 12, #34",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Héctor Méndez Pérez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Beatriz Núñez Ortiz"),
-			                obtenerPacientePorNombre("Elena Quintero Rojas")
-			            )),
-			            obtenerPacientePorNombre("Benjamín Delgado Espinoza"),
-			            false
-			        );
+					// Método para obtener la lista de tarjetones
+					public List<String> obtenerListaTarjetones() {
+						List<String> listaTarjetones = new ArrayList<>();
+						for (Tarjeton tarjeton : tarjetones) {
+							listaTarjetones.add(tarjeton.getNombre());
+						}
+						return listaTarjetones;
+					}
 
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			       
-			            "NUC-003", 
-			            "Calle 34, #56",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Raúl Bermúdez Espinoza")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Camila Ortiz Pérez"),
-			                obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
-			            )),
-			            obtenerPacientePorNombre("Carlos Fuentes Gutiérrez"),
-			            false
-			        );
+					// Método para obtener la lista de recetas
+					public List<String> obtenerListaRecetas() {
+						List<String> listaRecetas = new ArrayList<>();
+						for (Venta venta : historialVentas) {
+							if (venta instanceof VentaConPrescripcion) {
+								VentaConPrescripcion receta = (VentaConPrescripcion) venta;
+								listaRecetas.add(receta.getNombreDelMed());
+							}
+						}
+						return listaRecetas;
+					}
 
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-004", 
-			            "Calle 45, #78",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Bruno Gutiérrez Juárez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Diana Pérez Quintero")
-			            )),
-			            obtenerPacientePorNombre("Daniel Hernández López"),
-			            false
-			        );
-			   
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-005", 
-			            "Calle 56, #90",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Diego Hernández Katz")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Gabriela Sánchez Torres")
-			            )),
-			            obtenerPacientePorNombre("Emilio Juárez Méndez"),
-			            false
-			        );
-			  
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-006", 
-			            "Calle 67, #12",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Felipe Juárez Méndez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Karina Cervantes Delgado")
-			            )),
-			            obtenerPacientePorNombre("Fernando Katz Núñez"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-007", 
-			            "Calle 78, #34",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Javier Ortiz Rojas")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Laura Delgado Espinoza")
-			            )),
-			            obtenerPacientePorNombre("Gabriel López Ortiz"),
-			            false
-			        );
-			   
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-008", 
-			            "Calle 89, #56",
-			            new ArrayList<>(Arrays.asList(
-			                obtenerPacientePorNombre("Kevin Pérez Sánchez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Mariana Espinoza Fuentes")
-			            )),
-			            obtenerPacientePorNombre("Héctor Méndez Pérez"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			            "NUC-009", 
-			            "Calle 90, #78",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Manuel Rojas Aguilar")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Natalia Fuentes Gutiérrez")
-			            )),
-			            obtenerPacientePorNombre("Ignacio Núñez Quintero"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-010", 
-			            "Calle 11, #90",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Nicolás Sánchez Bermúdez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Olivia Gutiérrez Hernández")
-			            )),
-			            obtenerPacientePorNombre("Javier Ortiz Rojas"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-011", 
-			            "Calle 22, #13",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Oscar Torres Cervantes")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Patricia Hernández Ibarra")
-			            )),
-			            obtenerPacientePorNombre("Kevin Pérez Sánchez"),
-			            false
-			        );
-			   
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-012", 
-			            "Calle 33, #24",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Pablo Aguilar Delgado")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Raquel Ibarra Juárez")
-			            )),
-			            obtenerPacientePorNombre("Luis Quintero Torres"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-013", 
-			            "Calle 44, #35",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Raúl Bermúdez Espinoza")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Sofía Juárez Katz")
-			            )),
-			            obtenerPacientePorNombre("Manuel Rojas Aguilar"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-014", 
-			            "Calle 55, #46",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Sergio Cervantes Fuentes")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Tatiana Katz López")
-			            )),
-			            obtenerPacientePorNombre("Nicolás Sánchez Bermúdez"),
-			            false
-			        );
-			   
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-015", 
-			            "Calle 66, #57",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Tomás Delgado Gutiérrez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Valeria López Méndez")
-			            )),
-			            obtenerPacientePorNombre("Oscar Torres Cervantes"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-016", 
-			            "Calle 77, #68",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Víctor Espinoza Hernández")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Jimena Bermúdez Cervantes")
-			            )),
-			            obtenerPacientePorNombre("Pablo Aguilar Delgado"),
-			            false
-			        );
-			  
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-017", 
-			            "Calle 88, #79",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Adrián Fuentes Ibarra")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Helena Torres Aguilar")
-			            )),
-			            obtenerPacientePorNombre("Raúl Bermúdez Espinoza"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			       
-			            "NUC-018", 
-			            "Calle 99, #80",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Bruno Gutiérrez Juárez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Sofía Juárez Katz")
-			            )),
-			            obtenerPacientePorNombre("Sergio Cervantes Fuentes"),
-			            false
-			        );
-			    
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-019", 
-			            "Calle 10, #91",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Eduardo Ibarra López")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Beatriz Núñez Ortiz")
-			            )),
-			            obtenerPacientePorNombre("Tomás Delgado Gutiérrez"),
-			            false
-			        );
-			   
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-020", 
-			            "Calle 21, #02",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Fernando Katz Núñez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Tatiana Katz López")
-			            )),
-			            obtenerPacientePorNombre("Víctor Espinoza Hernández"),
-			            false
-			        );
-			   
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-021", 
-			            "Calle 32, #13",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Diego Hernández Katz")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Elena Quintero Rojas")
-			            )),
-			            obtenerPacientePorNombre("Adrián Fuentes Ibarra"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-022", 
-			            "Calle 43, #24",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Sergio Cervantes Fuentes")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Fernanda Rojas Sánchez")
-			            )),
-			            obtenerPacientePorNombre("Bruno Gutiérrez Juárez"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-023", 
-			            "Calle 54, #35",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Luis Quintero Torres")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Helena Torres Aguilar")
-			            )),
-			            obtenerPacientePorNombre("Diego Hernández Katz"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-024", 
-			            "Calle 65, #46",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Carlos Fuentes Gutiérrez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Sofía Juárez Katz")
-			            )),
-			            obtenerPacientePorNombre("Eduardo Ibarra López"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-025", 
-			            "Calle 76, #57",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Alejandro Bermúdez Cervantes")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Mariana Espinoza Fuentes")
-			            )),
-			            obtenerPacientePorNombre("Felipe Juárez Méndez"),
-			            false
-			        );
-			   
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-026", 
-			            "Calle 87, #68",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Gabriel López Ortiz")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Laura Delgado Espinoza")
-			            )),
-			            obtenerPacientePorNombre("Adriana Méndez Núñez"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			       
-			            "NUC-027", 
-			            "Calle 98, #79",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Javier Ortiz Rojas")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Camila Ortiz Pérez")
-			            )),
-			            obtenerPacientePorNombre("Beatriz Núñez Ortiz"),
-			            false
-			        );
-			   
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-028", 
-			            "Calle 09, #80",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Benjamín Delgado Espinoza")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
-			            )),
-			            obtenerPacientePorNombre("Camila Ortiz Pérez"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-029", 
-			            "Calle 20, #91",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Daniel Hernández López")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Diana Pérez Quintero")
-			            )),
-			            obtenerPacientePorNombre("Diana Pérez Quintero"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-030", 
-			            "Calle 31, #02",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Héctor Méndez Pérez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Elena Quintero Rojas")
-			            )),
-			            obtenerPacientePorNombre("Elena Quintero Rojas"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			       
-			            "NUC-031", 
-			            "Calle 42, #13",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Kevin Pérez Sánchez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Fernanda Rojas Sánchez")
-			            )),
-			            obtenerPacientePorNombre("Fernanda Rojas Sánchez"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-032", 
-			            "Calle 53, #24",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Oscar Torres Cervantes")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Gabriela Sánchez Torres")
-			            )),
-			            obtenerPacientePorNombre("Gabriela Sánchez Torres"),
-			            false
-			        );
-			  
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			       
-			            "NUC-033", 
-			            "Calle 64, #35",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Manuel Rojas Aguilar")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Helena Torres Aguilar")
-			            )),
-			            obtenerPacientePorNombre("Helena Torres Aguilar"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-034", 
-			            "Calle 75, #46",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Sergio Cervantes Fuentes")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
-			            )),
-			            obtenerPacientePorNombre("Isabel Aguilar Bermúdez"),
-			            false
-			        );
-			   
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-035", 
-			            "Calle 86, #57",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Ignacio Núñez Quintero")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Jimena Bermúdez Cervantes")
-			            )),
-			            obtenerPacientePorNombre("Jimena Bermúdez Cervantes"),
-			            false
-			        );
-			   
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-036", 
-			            "Calle 97, #68",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Alejandro Bermúdez Cervantes")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Karina Cervantes Delgado")
-			            )),
-			            obtenerPacientePorNombre("Karina Cervantes Delgado"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			       
-			            "NUC-037", 
-			            "Calle 08, #79",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Pablo Aguilar Delgado")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Laura Delgado Espinoza")
-			            )),
-			            obtenerPacientePorNombre("Laura Delgado Espinoza"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-038", 
-			            "Calle 19, #80",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Carlos Fuentes Gutiérrez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Mariana Espinoza Fuentes")
-			            )),
-			            obtenerPacientePorNombre("Mariana Espinoza Fuentes"),
-			            false
-			        );
-			    
-
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			        
-			            "NUC-039", 
-			            "Calle 30, #91",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Javier Ortiz Rojas")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Natalia Fuentes Gutiérrez")
-			            )),
-			            obtenerPacientePorNombre("Natalia Fuentes Gutiérrez"),
-			            false
-			        );
-			    
-			    Farmacia.obtenerInstancia().agregarNucleoFamiliar(
-			       
-			            "NUC-040", 
-			            "Calle 96, #57",
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Tomás Delgado Gutiérrez")
-			            )),
-			            new ArrayList<Paciente>(Arrays.asList(
-			                obtenerPacientePorNombre("Valeria López Méndez")
-			            )),
-			            obtenerPacientePorNombre("Valeria López Méndez"),
-			            false
-			        );
-			   
-			}
-
-			private void agregarNucleoFamiliar(Logica.NucleoFamiliar nucleoFamiliar) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			//Listados para ComboBox
-			public ArrayList<Paciente> listadoPacientes(){
-				ArrayList<Paciente>listado = new ArrayList<Paciente>();
-				
-				for(Paciente p:pacientes){
-					listado.add(p.getNombre());
-				}
-				
-				return listado;
-			}
-			
-=======
-					 */
->>>>>>> 62128f65363e0146362978e01b9d077dc22e2e92
+					// Método para obtener la lista de mujeres
+					public List<String> obtenerListaMujeres() {
+						List<String> listaMujeres = new ArrayList<>();
+						for (Paciente paciente : pacientes) {
+							if (paciente.getGenero() == 'F') { // Filtrar por género femenino
+								listaMujeres.add(paciente.getNombre());
+							}
+						}
+						return listaMujeres;
+					}
+					
+					public double obtenerPrecioMedicamento(String nombreMedicamento) {
+					    for (Medicamento medicamento : medicamentos) {
+					        if (medicamento.getNomComun().equalsIgnoreCase(nombreMedicamento)) {
+					            return medicamento.getPrecio();
+					        }
+					    }
+					    throw new RuntimeException("Medicamento no encontrado: " + nombreMedicamento);
+					}
 }
+
+
+
