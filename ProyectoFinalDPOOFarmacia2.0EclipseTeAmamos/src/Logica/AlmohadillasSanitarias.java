@@ -2,7 +2,6 @@ package Logica;
 
 
 import java.util.Date;
-import Interfaces_Enum.Facturar;
 import LogicaUtiles.Validaciones;
 
 public class AlmohadillasSanitarias extends Venta 

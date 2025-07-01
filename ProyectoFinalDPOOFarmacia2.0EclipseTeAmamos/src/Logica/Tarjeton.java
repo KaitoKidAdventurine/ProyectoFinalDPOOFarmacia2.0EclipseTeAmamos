@@ -1,6 +1,5 @@
 package Logica;
 
-import java.awt.List;
 import java.sql.Date;
 import java.util.ArrayList;
 

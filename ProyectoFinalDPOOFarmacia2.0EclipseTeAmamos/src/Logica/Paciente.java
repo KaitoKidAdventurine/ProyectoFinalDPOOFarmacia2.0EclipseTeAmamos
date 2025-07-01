@@ -2,7 +2,6 @@ package Logica;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import LogicaUtiles.Validaciones;
 
@@ -15,6 +14,7 @@ public class Paciente {
 	protected NucleoFamiliar nucleo;
 	protected ArrayList<Tarjeton> tarjetones;
 	protected boolean esControlado;
+	private String direccion2;
 
 
 	public Paciente(String nombre, String ci, String direccion, Date fechaNacimiento, char genero) 
@@ -118,9 +118,10 @@ public class Paciente {
 
 	public void setDireccion(String direccion) 
 	{
-		if (direccion != null || direccion.trim().isEmpty()) 
-			if(Validaciones.direccion(direccion))
-				this.direccion = direccion;
+		direccion2 = direccion;
+		if (direccion2 != null || direccion2.trim().isEmpty()) 
+			if(Validaciones.direccion(direccion2))
+				this.direccion = direccion2;
 			else
 				throw new IllegalArgumentException("La dirección presenta carcteres especiales");
 		else 

@@ -1,11 +1,9 @@
 package modelos;
 
 import Logica.AlmohadillasSanitarias;
-import Logica.Farmacia;
 import Logica.Venta;
 
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class AlmohadillasTableModel extends ModeloPrincipalTableModel<Venta> {
@@ -74,4 +72,12 @@ public class AlmohadillasTableModel extends ModeloPrincipalTableModel<Venta> {
             fireTableRowsDeleted(rowIndex, rowIndex); // Notificar a la tabla
         }
     }
+
+	public AlmohadillasSanitarias getCompraAt(int i) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+
 }

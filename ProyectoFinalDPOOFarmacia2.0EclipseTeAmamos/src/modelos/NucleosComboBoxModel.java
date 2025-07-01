@@ -17,7 +17,7 @@ public class NucleosComboBoxModel extends ModeloPrincipalComboBoxModel{
 	// Método para cargar datos
     public void cargarDatos() {
         this.removeAllElements(); // Limpiar elementos existentes
-        this.addElement("<Seleccione un núcleo>"); 
+        this.addElement("<Seleccione un nucleo>"); 
         // Obtener la lista de núcleos familiares desde la instancia de Farmacia
         for (NucleoFamiliar nucleo : Farmacia.obtenerInstancia().getNucleos()) {
             // Formatear el texto que aparecerá en el combo

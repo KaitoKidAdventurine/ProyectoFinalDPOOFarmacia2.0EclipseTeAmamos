@@ -5,8 +5,8 @@ import javax.swing.table.DefaultTableModel;
 public class AlmohadillasNecesariasTableModel extends DefaultTableModel {
 
     private static final long serialVersionUID = 1L;
-    private long cantidadNecesaria;
-    private long stockActual;
+	private long stockActual;
+
 
     
     public AlmohadillasNecesariasTableModel(long cantidadNecesaria, long stockActual) 
@@ -19,7 +19,6 @@ public class AlmohadillasNecesariasTableModel extends DefaultTableModel {
         }, 
         new String[] {"Concepto", "Cantidad"});
         
-        this.cantidadNecesaria = cantidadNecesaria;
         this.stockActual = stockActual;
     }
 
