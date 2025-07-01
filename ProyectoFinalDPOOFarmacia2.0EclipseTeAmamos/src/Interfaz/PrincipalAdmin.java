@@ -2,9 +2,12 @@ package Interfaz;
 
 import Logica.Farmacia;
 import Logica.Medicamento;
+import Logica.NucleoFamiliar;
+import Logica.Paciente;
 import LogicaUtiles.Porcentaje;
 import LogicaUtiles.VentaDeMedicamentos;
 import modelos.AlmohadillasNecesariasTableModel;
+import modelos.AlmohadillasTableModel;
 import modelos.ButtonRenderer;
 import modelos.ComparacionVentasTableModel;
 import modelos.ComprasTableModel;
@@ -12,11 +15,9 @@ import modelos.MedicamentoTableModel;
 import modelos.MedicamentosComboBoxModel;
 import modelos.MedicamentosMasVendidosTableModel;
 import modelos.ModeloPrincipalTableModel;
-
+import modelos.NucleosComboBoxModel;
 import modelos.TablaDePacientes;
-
 import modelos.PacientesComboBoxModel;
-
 import modelos.TarjetonesIncumplidosTableModel;
 
 import javax.swing.table.DefaultTableCellRenderer;
@@ -153,6 +154,15 @@ public class PrincipalAdmin extends JFrame
 	private JComboBox<String> comboBoxPacientes;
 	private JComboBox<String> comboBoxMedicamentos;
 	private JComboBox <Integer>comboBoxCantidad;
+	private JScrollPane scrollPane_6;
+	private JTextField textTotal;
+	private JTextField textEfectivo;
+	private JTextField textCambio;
+	private JLabel lblMujeres;
+	private NucleosComboBoxModel nucleosComboBoxModel;
+	private AlmohadillasTableModel modeloAlmohadillas;
+	private JTable tableALmohadillas;
+	private NucleoFamiliar nucleo;
 
 
 	/**
@@ -225,6 +235,24 @@ public class PrincipalAdmin extends JFrame
 	
 	private boolean hayComprasEnLaTabla() {
 	    return comprasTableModel.getRowCount() > 0;
+	}
+	
+	private boolean comproNucleo(){
+		return modeloAlmohadillas.getRowCount() > 0 ;
+	}
+	
+	private void actualizarTotal(JTextField textTotal, AlmohadillasTableModel modeloAlmohadillas) {
+	    double total = 0.0;
+
+	    // Recorrer todas las filas de la tabla
+	    for (int i = 0; i < comprasTableModel.getRowCount(); i++) {
+	        // Obtener el valor de la columna "Total" (índice 4)
+	        double importe = (double) comprasTableModel.getValueAt(i, 4);
+	        total += importe;
+	    }
+
+	    // Actualizar el campo de texto con el total acumulado
+	    txtTotal.setText(String.format("%.2f", total));
 	}
 	/**
 	 * Create the frame.
@@ -700,6 +728,10 @@ public class PrincipalAdmin extends JFrame
 		panel_13.setLayout(null);
 
 		JTextPane txtpnBeneficioDeAdministrador = new JTextPane();
+		txtpnBeneficioDeAdministrador.setEditable(false);
+		txtpnBeneficioDeAdministrador.setBackground(Color.WHITE);
+		txtpnBeneficioDeAdministrador.setDisabledTextColor(Color.BLACK);
+		txtpnBeneficioDeAdministrador.setEnabled(false);
 		txtpnBeneficioDeAdministrador.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnBeneficioDeAdministrador.setText("Beneficio de Administrador : Consultar reportes con lo m\u00E1s inmediato de la farmacia ");
 		txtpnBeneficioDeAdministrador.setBounds(10, 287, 463, 55);
@@ -721,18 +753,30 @@ public class PrincipalAdmin extends JFrame
 		panel_13.add(label_64);
 
 		JTextPane txtpnEnNuestroSistema = new JTextPane();
+		txtpnEnNuestroSistema.setBackground(Color.WHITE);
+		txtpnEnNuestroSistema.setDisabledTextColor(Color.BLACK);
+		txtpnEnNuestroSistema.setEnabled(false);
+		txtpnEnNuestroSistema.setEditable(false);
 		txtpnEnNuestroSistema.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		txtpnEnNuestroSistema.setText("En nuestro sistema podr\u00E1:");
 		txtpnEnNuestroSistema.setBounds(12, 13, 461, 66);
 		panel_13.add(txtpnEnNuestroSistema);
 
 		JTextPane txtpnRealizarLaCompra = new JTextPane();
+		txtpnRealizarLaCompra.setBackground(Color.WHITE);
+		txtpnRealizarLaCompra.setEnabled(false);
+		txtpnRealizarLaCompra.setEditable(false);
+		txtpnRealizarLaCompra.setDisabledTextColor(Color.BLACK);
 		txtpnRealizarLaCompra.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnRealizarLaCompra.setText("Realizar la compra de medicamentos por 3 Tipos de ventas y la compra de almohadillas sanitarias para las mujeres de su n\u00FAcleo familiar ");
 		txtpnRealizarLaCompra.setBounds(10, 71, 442, 80);
 		panel_13.add(txtpnRealizarLaCompra);
 
 		JTextPane txtpnConsultarLaDisponibilidad = new JTextPane();
+		txtpnConsultarLaDisponibilidad.setBackground(Color.WHITE);
+		txtpnConsultarLaDisponibilidad.setDisabledTextColor(Color.BLACK);
+		txtpnConsultarLaDisponibilidad.setEnabled(false);
+		txtpnConsultarLaDisponibilidad.setEditable(false);
 		txtpnConsultarLaDisponibilidad.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnConsultarLaDisponibilidad.setText("Consultar la disponibilidad de medicamentos para realizar la compra exitosa de ellos");
 		txtpnConsultarLaDisponibilidad.setBounds(10, 179, 440, 122);
@@ -1571,20 +1615,6 @@ public class PrincipalAdmin extends JFrame
 							txtPrecio, txtTipo, txtFortaleza, txtTemperatura,
 							txtCantidad, Exped, Venc, codigoDelMed);
 
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					// Actualizar tabla
 					medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().getMedicamentos());
 
@@ -2005,10 +2035,7 @@ public class PrincipalAdmin extends JFrame
 		lblNewLabel_5.setBounds(307, 16, 69, 20); 
 		panel_7.add(lblNewLabel_5);
 		
-		JPanel VentaPrescripcion = new JPanel();
-		pestanas.addTab("New tab", null, VentaPrescripcion, null);
 		
-		JPanel VentaLibre = new JPanel();
 
 		final JPanel VentaLibre = new JPanel();
 		VentaLibre.setBackground(Color.WHITE);
@@ -2330,7 +2357,7 @@ public class PrincipalAdmin extends JFrame
 			public void mouseClicked(MouseEvent e) {
 		        if (!hayComprasEnLaTabla()) {
 		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
+		                "Debe ingresar una compra.", 
 		                "Error", JOptionPane.ERROR_MESSAGE);
 		            return; // Salir si no hay compras
 		        }
@@ -2760,8 +2787,8 @@ public class PrincipalAdmin extends JFrame
 		lblCompra.setBounds(30, 13, 153, 29);
 		panel_21.add(lblCompra);
 		
-		JPanel panel_23 = new JPanel();
-		panel_23.addMouseListener(new MouseAdapter() {
+		JPanel btnCancelarCompra = new JPanel();
+		btnCancelarCompra.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 		        if (!hayComprasEnLaTabla()) {
@@ -2812,11 +2839,11 @@ public class PrincipalAdmin extends JFrame
 			    }
 			}
 		});
-		panel_23.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(255, 0, 0), 2)));
-		panel_23.setBackground(new Color(255, 105, 105));
-		panel_23.setBounds(779, 517, 208, 82);
-		VentaLibre.add(panel_23);
-		panel_23.setLayout(null);
+		btnCancelarCompra.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(255, 0, 0), 2)));
+		btnCancelarCompra.setBackground(new Color(255, 105, 105));
+		btnCancelarCompra.setBounds(779, 517, 208, 82);
+		VentaLibre.add(btnCancelarCompra);
+		btnCancelarCompra.setLayout(null);
 		
 		JLabel lblCancelar = new JLabel("Cancelar");
 		lblCancelar.addMouseListener(new MouseAdapter() {
@@ -2925,10 +2952,10 @@ public class PrincipalAdmin extends JFrame
 		});
 		
 		label_76.setBounds(127, 13, 69, 53);
-		panel_23.add(label_76);
+		btnCancelarCompra.add(label_76);
 		lblCancelar.setFont(new Font("Tahoma", Font.PLAIN, 27));
 		lblCancelar.setBounds(12, 13, 101, 33);
-		panel_23.add(lblCancelar);
+		btnCancelarCompra.add(lblCancelar);
 		UtilesInterfaz.ajustarImagen(label_76, "src/iconos/circulo-cruzado.png");
 		
 		JLabel label_74 = new JLabel("Compra");
@@ -2985,9 +3012,10 @@ public class PrincipalAdmin extends JFrame
 		});
 		label_74.setFont(new Font("Tahoma", Font.PLAIN, 27));
 		label_74.setBounds(12, 13, 127, 93);
-		panel_23.add(label_74);
+		btnCancelarCompra.add(label_74);
 
-		JPanel VentaAlmohadillas = new JPanel();
+		final JPanel VentaAlmohadillas = new JPanel();
+		VentaAlmohadillas.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, VentaAlmohadillas, null);
 		VentaAlmohadillas.setLayout(null);
 
@@ -3012,6 +3040,243 @@ public class PrincipalAdmin extends JFrame
 		lblVentaAlmohadillasSanitarias_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblVentaAlmohadillasSanitarias_1.setBounds(79, 0, 517, 57);
 		panel_18.add(lblVentaAlmohadillasSanitarias_1);
+		
+		JPanel panel_24 = new JPanel();
+		panel_24.setBounds(12, 228, 981, 230);
+		VentaAlmohadillas.add(panel_24);
+		panel_24.setLayout(null);
+		
+		JScrollPane jscroll_18 = new JScrollPane();
+		jscroll_18.setBounds(12, 42, 957, 175);
+		panel_24.add(jscroll_18);
+		
+		tableALmohadillas = new JTable();
+		jscroll_18.setViewportView(tableALmohadillas);
+		tableALmohadillas.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        int fila = tableALmohadillas.rowAtPoint(e.getPoint());
+		        int columna = tableALmohadillas.columnAtPoint(e.getPoint());
+
+		        if (columna == 6) { // Columna de acción ("Eliminar")
+		            int opcion = JOptionPane.showConfirmDialog(
+		                null,
+		                "¿Está seguro de que desea eliminar esta compra?",
+		                "Confirmar eliminación",
+		                JOptionPane.YES_NO_OPTION
+		            );
+
+		            if (opcion == JOptionPane.YES_OPTION) {
+		                try {
+		                	
+		                    // Eliminar la fila del modelo de tabla
+		                    modeloAlmohadillas.eliminarFila(fila);
+
+		                    // Recalcular el total acumulado
+		                    actualizarTotal(textTotal, modeloAlmohadillas);
+		                    
+		                    
+
+		                    // Mostrar mensaje de éxito
+		                    JOptionPane.showMessageDialog(null, "Compra eliminada y núcleo reiniciado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+		                } catch (Exception ex) {
+		                    JOptionPane.showMessageDialog(null, "Error al eliminar la fila " , "Error", JOptionPane.ERROR_MESSAGE);
+		                }
+		               
+		            }
+		            nucleo.setCompraron(false);
+		        }
+		    }
+		    
+		});
+		
+		modeloAlmohadillas = new AlmohadillasTableModel();
+		tableALmohadillas.setModel(modeloAlmohadillas);
+		
+		JLabel label_86 = new JLabel("Compra");
+		label_86.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		label_86.setBounds(12, 0, 153, 29);
+		panel_24.add(label_86);
+		
+		JPanel panel_25 = new JPanel();
+		panel_25.setLayout(null);
+		panel_25.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
+		panel_25.setBackground(SystemColor.menu);
+		panel_25.setBounds(12, 486, 507, 126);
+		VentaAlmohadillas.add(panel_25);
+		
+		JLabel label_77 = new JLabel("Total a Pagar :");
+		label_77.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		label_77.setBounds(12, 13, 133, 37);
+		panel_25.add(label_77);
+		
+		JLabel label_78 = new JLabel("Efectivo :");
+		label_78.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		label_78.setBounds(12, 48, 122, 21);
+		panel_25.add(label_78);
+		
+		JLabel label_79 = new JLabel("Cambio :");
+		label_79.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		label_79.setBounds(12, 74, 97, 27);
+		panel_25.add(label_79);
+		
+		textTotal = new JTextField();
+		textTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		textTotal.setFont(new Font("Arial", Font.PLAIN, 16));
+		textTotal.setEditable(false);
+		textTotal.setColumns(10);
+		textTotal.setBorder(new LineBorder(new Color(0, 0, 0)));
+		textTotal.setBackground(Color.WHITE);
+		textTotal.setBounds(130, 22, 148, 22);
+		panel_25.add(textTotal);
+		
+		textEfectivo = new JTextField();
+		textEfectivo.setHorizontalAlignment(SwingConstants.CENTER);
+		textEfectivo.setFont(new Font("Arial", Font.PLAIN, 16));
+		textEfectivo.setColumns(10);
+		textEfectivo.setBorder(new LineBorder(Color.BLACK));
+		textEfectivo.setBounds(130, 49, 148, 22);
+		panel_25.add(textEfectivo);
+		
+		textCambio = new JTextField();
+		textCambio.setHorizontalAlignment(SwingConstants.CENTER);
+		textCambio.setFont(new Font("Arial", Font.PLAIN, 16));
+		textCambio.setEditable(false);
+		textCambio.setColumns(10);
+		textCambio.setBorder(new LineBorder(Color.BLACK));
+		textCambio.setBackground(Color.WHITE);
+		textCambio.setBounds(130, 78, 148, 22);
+		panel_25.add(textCambio);
+		
+		JButton buttonCambio = new JButton("Calcular Cambio");
+		buttonCambio.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		buttonCambio.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		buttonCambio.setBackground(SystemColor.controlHighlight);
+		buttonCambio.setBounds(318, 36, 164, 44);
+		panel_25.add(buttonCambio);
+		
+		JPanel btnComprar = new JPanel();
+		btnComprar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
+		btnComprar.setLayout(null);
+		btnComprar.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(152, 251, 152), 2)));
+		btnComprar.setBackground(new Color(204, 255, 204));
+		btnComprar.setBounds(542, 503, 208, 82);
+		VentaAlmohadillas.add(btnComprar);
+		
+		JLabel label_80 = new JLabel("Realizar ");
+		label_80.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		label_80.setBounds(12, -11, 127, 80);
+		btnComprar.add(label_80);
+		
+		JLabel label_81 = new JLabel("");
+		label_81.setBounds(119, 13, 65, 53);
+		btnComprar.add(label_81);
+		
+		JLabel label_82 = new JLabel("Compra");
+		label_82.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		label_82.setBounds(12, 13, 127, 93);
+		btnComprar.add(label_82);
+		
+		JPanel btnCancelar = new JPanel();
+		btnCancelar.setLayout(null);
+		btnCancelar.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(255, 0, 0), 2)));
+		btnCancelar.setBackground(new Color(255, 105, 105));
+		btnCancelar.setBounds(762, 503, 208, 82);
+		VentaAlmohadillas.add(btnCancelar);
+		
+		JLabel label_83 = new JLabel("");
+		label_83.setBounds(127, 13, 69, 53);
+		btnCancelar.add(label_83);
+		
+		JLabel label_84 = new JLabel("Cancelar");
+		label_84.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		label_84.setBounds(12, 13, 101, 33);
+		btnCancelar.add(label_84);
+		
+		JLabel label_85 = new JLabel("Compra");
+		label_85.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		label_85.setBounds(12, 13, 127, 93);
+		btnCancelar.add(label_85);
+		
+		JLabel lblNcleos = new JLabel("N\u00FAcleos");
+		lblNcleos.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblNcleos.setBounds(34, 72, 121, 39);
+		VentaAlmohadillas.add(lblNcleos);
+		
+		final JComboBox <String>comboBoxNucleos = new JComboBox<String>();
+		comboBoxNucleos.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		
+		comboBoxNucleos.setBounds(124, 77, 244, 31);
+		NucleosComboBoxModel nucleosComboBoxModel = new NucleosComboBoxModel();
+		comboBoxNucleos.setModel(nucleosComboBoxModel);
+		nucleosComboBoxModel.cargarDatos();
+		
+		VentaAlmohadillas.add(comboBoxNucleos);
+		
+		JButton button = new JButton("A\u00F1adir a la Compra");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				 // Validar selección del núcleo familiar
+		        String nucleoSeleccionado = (String) comboBoxNucleos.getSelectedItem();
+		        if (nucleoSeleccionado == null || nucleoSeleccionado.isEmpty() || nucleoSeleccionado.equals("<Seleccione un núcleo>")) {
+		            JOptionPane.showMessageDialog(VentaAlmohadillas, "Por favor, seleccione un núcleo familiar válido.", "Error", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+
+		        // Buscar el núcleo familiar
+		        String idNucleo = nucleoSeleccionado.split(" - ")[0];
+		        Logica.NucleoFamiliar nucleo = Farmacia.obtenerInstancia().buscarNucleoPorId(idNucleo);
+
+		        // Validar que el núcleo no haya realizado una compra previa
+		        if (nucleo.getCompraron()== true){
+		            JOptionPane.showMessageDialog(VentaAlmohadillas, "Este núcleo ya realizó una compra.", "Error", JOptionPane.ERROR_MESSAGE);
+		            return;
+		        }
+		        try {
+		            // Calcular el importe total
+		            int cantidadMujeres = nucleo.getMujeres().size();
+		            double precioUnitario = 8.5;
+		            double importeTotal = precioUnitario * cantidadMujeres;
+
+		         // Crear una nueva instancia de VentaAlmohadillas
+		            Logica.AlmohadillasSanitarias venta = new Logica.AlmohadillasSanitarias(
+		                precioUnitario,          // Precio unitario de las almohadillas
+		                cantidadMujeres,         // Cantidad de mujeres en el núcleo familiar
+		                Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()) // Fecha de la compra
+		            );
+
+		            // Agregar la venta al modelo de la tabla
+		            modeloAlmohadillas.adicionar(venta);
+
+		            // Actualizar el total acumulado en la interfaz
+		            actualizarTotal(textTotal, modeloAlmohadillas);
+
+		            // Marcar el núcleo como "compraron"
+		            nucleo.setCompraron(true);
+
+		        } catch (RuntimeException ex) {
+		            JOptionPane.showMessageDialog(VentaAlmohadillas, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		        }
+		    }
+				
+			
+		});
+	
+		button.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		button.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		button.setBounds(30, 124, 224, 51);
+		VentaAlmohadillas.add(button);
 
 		JPanel VentaControlada = new JPanel();
 		pestanas.addTab("New tab", null, VentaControlada, null);
@@ -3094,8 +3359,9 @@ public class PrincipalAdmin extends JFrame
 		tablaPacientes.setRowHeight(28);
 
 		// Agregar al JScrollPane
-		JScrollPane scrollPane_5 = new JScrollPane(tablaPacientes);
-		scrollPane_5.setBounds(0, 395, 1005, 255);
-		usuarios.add(scrollPane_5);
+		JScrollPane scrollPane_6;
+		scrollPane_6 = new JScrollPane(tablaPacientes);
+		scrollPane_6.setBounds(0, 395, 1005, 255);
+		usuarios.add(scrollPane_6);
 	}
 }

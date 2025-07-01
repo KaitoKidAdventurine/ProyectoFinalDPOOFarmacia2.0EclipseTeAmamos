@@ -2004,6 +2004,17 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						}
 						throw new RuntimeException("Medicamento no encontrado: " + nombreMedicamento);
 					}
+			
+//==========================================================================================================================================
+				    // Método auxiliar para buscar un núcleo familiar por su ID
+				    public NucleoFamiliar buscarNucleoPorId(String idNucleo) {
+				        for (NucleoFamiliar nucleo : nucleos) {
+				            if (nucleo.getId().equals(idNucleo)) {
+				                return nucleo;
+				            }
+				        }
+				        return null;
+				    }
 }
 
 
