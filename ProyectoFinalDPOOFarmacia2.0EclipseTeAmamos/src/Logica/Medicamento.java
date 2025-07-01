@@ -17,6 +17,7 @@ public class Medicamento
 	protected Date fechaDeProd;
 	protected Date fechaDeVenc;
 	protected String codigo;
+	
 	public Medicamento(String nomComun, String nomCientifico, String presentacion , 
 			double precio, String tipo, String fortalezaDelMed, double tempDeAlmac, 
 			long  cantExis, Date fechaDeProd, Date fechaDeVenc, String codigo)
@@ -206,12 +207,14 @@ public class Medicamento
 		if(Validaciones.noEstaVacio(cantExis))
 			if(Validaciones.noTieneCaracteresEsp(cantExis))
 				if(Validaciones.tieneNumeros(cantExis))
-					this.cantExis = cantExis;
+					if(cantExis >= 0)
+						this.cantExis = cantExis;
+					else 
+						throw new IllegalArgumentException("La cantidad existente de medicamentos en la farmacia no puede ser negativa");
 				else
 					throw new IllegalArgumentException("El campo: cantidad de medicamentos existentes, presenta letras");
 			else
 				throw new IllegalArgumentException("El campo: cantidad de medicamentos existentes, presenta caracteres especiales");
-
 		else
 			throw new IllegalArgumentException("El campo: cantidad de medicamentos existentes, se encuentra vacío");
 	}

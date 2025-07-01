@@ -30,8 +30,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	private ArrayList<Paciente> pacientes;
 	private long cantidadDeAlmohadillasSanitarias;
 	private ArrayList<MedicamentoControlado> medicamentoControlado;
-
-
+	private ArrayList<String> carnets;
 
 	// Constructor PRIVADO
 	private Farmacia() 
@@ -45,6 +44,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		this.cantidadDeAlmohadillasSanitarias = 10;
 		this.pacientes = new ArrayList<Paciente>();
 		this.medicamentoControlado = new ArrayList<MedicamentoControlado>();
+		this.carnets = new ArrayList<String>();
 	}
 
 	// Método para obtener la instancia
@@ -64,27 +64,34 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		inicializarMedicamentosControlados();
 		inicializarTarjetones();
 		inicializarVentaControlada();
-		inicializarVentasLibres();
+		inicializarVentaConPrescripcion();
 		inicializarAlmohadillas();
-		inicializarVentasLibres();
+		inicializarVentaLibre();
 		generarFacturasDesdeVentas();
 		inicializarNucleosFamiliares();
+		actualizarInventario();
 	}
+
 
 	//-------------------------------------------------Reportes-----------------------------------------------------------
 	// Primer reporte
 	public ArrayList<VentaDeMedicamentos> medicamentosMasVendidos()
 	{
+		ArrayList<VentaDeMedicamentos> medVend = new ArrayList<VentaDeMedicamentos>();
 		ArrayList<VentaDeMedicamentos> medMasVendidos = buscarOrdenDeAccion();
-		return medMasVendidos;
+
+		for(int i = 0; i < 10; i++)
+			medVend.add(medMasVendidos.get(i));
+
+		return medVend;
 	}
 
 	// Segundo reporte
 	public long cantDeAlmohadillasNecesarias()
 	{
 		long cantidad = calcularCantidad();
-		if(cantidad < 0)
-			cantidad = 0;
+		//if(cantidad < 0)
+			//cantidad = 0;
 		return cantidad;
 
 	}
@@ -111,26 +118,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	// Metodos del primer reporte 
 	public ArrayList<VentaDeMedicamentos> buscarOrdenDeAccion()
 	{
-
 		ArrayList<VentaDeMedicamentos> ventas = new ArrayList<VentaDeMedicamentos>();
-		for(Medicamento m: medicamentos)
-		{
-			VentaDeMedicamentos venta= new VentaDeMedicamentos();
-			int totalVendidoDelMedicamento = 0;
-			for(Factura f: facturas)
-				if(m.nomComun.equals(f.getNombreDelMed()))
-					totalVendidoDelMedicamento += f.getCantMedVendidos();
-
-			if(totalVendidoDelMedicamento > 0)
-			{
-				venta.setCantidadVendida(totalVendidoDelMedicamento);
-				venta.setNombre(m.nomComun);
-				ventas.add(venta);
-			}
-		}
-
-		//  es como tener un merge sort
-
+		ventas = listaDeMedDeVentas();
 		Collections.sort(ventas, comparador);
 		return ventas;
 	}
@@ -145,6 +134,129 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		}
 			};
 
+
+			public ArrayList<VentaDeMedicamentos> listaDeMedDeVentas() 
+			{
+				ArrayList<VentaDeMedicamentos> ventas = new ArrayList<VentaDeMedicamentos>();
+
+				// Medicamento Controlado 
+				for(MedicamentoControlado m: medicamentoControlado) 
+				{
+					int total = 0;
+
+					if (m.getTipo().equals("Medicamento controlado")) 
+					{
+						System.out.println("Valor del total de med COntrolado: " + total);
+						for(Venta v: historialVentas) 
+						{
+							if(v instanceof VentaControlada) 
+							{
+								if (!seRepiteElMedicamento(m, ventas)) 
+								{
+									if (((VentaControlada) v).getNombreDelMed().equals(m.nomComun)) 
+									{
+										total += ((VentaControlada) v).getCantMedVendidos(); 
+
+									}
+								}
+							}
+						}
+					}
+
+					if(total > 0) 
+					{
+						VentaDeMedicamentos venta = new VentaDeMedicamentos();
+						venta.setCantidadVendida(total);
+						venta.setNombre(m.nomComun);
+						ventas.add(venta); 
+
+					}
+				}
+
+				// Medicamento Libre
+				for(Medicamento m: medicamentos) 
+				{
+					int totalVendidoDelMedicamento = 0;
+
+					if (m.getTipo().equals("Venta libre")) 
+					{
+						totalVendidoDelMedicamento = 0;
+						for(Venta v: historialVentas) 
+						{
+							if(v instanceof VentaLibre) 
+							{
+								if (!seRepiteElMedicamento(m, ventas)) 
+								{
+									if (((VentaLibre) v).getNombreDelMed().equals(m.nomComun)) 
+									{
+										totalVendidoDelMedicamento += ((VentaLibre) v).getCantMedVendidos();
+									}
+								}
+							}
+						}
+
+					}
+
+					if(totalVendidoDelMedicamento > 0) 
+					{
+						VentaDeMedicamentos venta = new VentaDeMedicamentos();
+						venta.setCantidadVendida(totalVendidoDelMedicamento);
+						venta.setNombre(m.nomComun);
+						ventas.add(venta); 
+
+					}
+				}
+
+				// Medicamento Con Prescripción
+				for(Medicamento m: medicamentos) 
+				{
+					int totalVendidoDelMedicamento = 0;
+
+					if (m.getTipo().equals("Con prescripción")) 
+					{
+
+						for(Venta v: historialVentas) 
+						{
+							if(v instanceof VentaConPrescripcion) 
+							{
+								if (!seRepiteElMedicamento(m, ventas)) 
+								{
+									if (((VentaConPrescripcion) v).getNombreDelMed().equals(m.nomComun)) 
+									{
+										totalVendidoDelMedicamento += ((VentaConPrescripcion) v).getCantMedVendidos();
+									}
+								}
+							}
+						}
+
+					}
+
+					if(totalVendidoDelMedicamento > 0) 
+					{
+						VentaDeMedicamentos venta = new VentaDeMedicamentos();
+						venta.setCantidadVendida(totalVendidoDelMedicamento);
+						venta.setNombre(m.nomComun);
+						ventas.add(venta); 
+
+					}
+				}
+
+				return ventas;
+			}
+
+
+
+			public boolean seRepiteElMedicamento(Medicamento med, ArrayList<VentaDeMedicamentos> ventas)
+			{
+				boolean repite = false;
+
+				for(VentaDeMedicamentos vent: ventas)
+				{
+					if(vent.getNombre().equals(med.getNomComun()))
+						repite = true;
+				}
+				return repite;
+			}
 
 
 			// metodos del segundo reporte
@@ -258,7 +370,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						return tarjetonesInactivos;
 					}
 
-					//-----------------------------------------------------------------------------------------------------------------
+					//=====================================================================================================================
 
 
 
@@ -356,12 +468,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					{
 						return cantidadDeAlmohadillasSanitarias;
 					}
-					
+
 					public void setCantidadDeAlmohadillasSanitarias(long cantidadDeAlmohadillasSanitarias)
 					{
 						this.cantidadDeAlmohadillasSanitarias = cantidadDeAlmohadillasSanitarias;
 					}
-					
+
 					public ArrayList<Venta> getHistorialVentas() 
 					{
 						return historialVentas;
@@ -403,23 +515,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					}
 
 
-					// Actualizar datos
-					// implementar
-					/*
-			public boolean puedeComprar(long cant, Medicamento med)
-			{
-				for(Medicamento m: medicamentos)
-			}
-
-
-			public void actualizarCantidadDeMedicamentos()
-			{
-
-			}
-					 */
-
-					// Agregar Datos: 
-
 					// Medicamentos Controlados
 					public void agregarMedicamentosControlados(String nomComun, String nomCientifico, String presentacion,
 							double precio, String tipo, String fortaleza, double tempAlmac,
@@ -449,106 +544,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					}
 
 
-
-					// inicializador de tarjetones
-					public void inicializarTarjetones() 
-					{
-						// Nota: Esta es la fecha de hoy Esto se cambiara mas alante para que se pueda actualizar sola
-						LocalDate HOY = LocalDate.of(2025, 6, 25); 
-
-						for (int i = 0; i < 15; i++) {
-							Paciente p = pacientes.get(i);
-							int numTarjetones = 1 + (i % 3);
-
-							for (int j = 0; j < numTarjetones; j++) 
-							{
-								// 1 de cada 3 tarjetones sera desactivado para darle variedad a los datos
-								boolean estaVencido = j % 3 == 0;
-
-								LocalDate fechaExp;
-								if (estaVencido) {
-									// Tarjetón vencido: fecha de expiración antes del HOY
-									fechaExp = HOY.minusMonths(2 + j); // Hace unos meses
-								} 
-
-								else 
-								{
-									// Tarjetón en vigencia ponemos la fecha normal
-									fechaExp = LocalDate.of(2024, 1 + (i % 12), 1 + (j * 10));
-								}
-
-								LocalDate fechaVenc = fechaExp.plusMonths(6);
-
-								int numMedicamentos = 1 + (j % 3);
-								ArrayList<MedicamentoControlado> medsControlados = new ArrayList<>();
-
-								for (int k = 0; k < numMedicamentos && k < obtenerMedicamentoControlado().size(); k++) 
-								{
-									medsControlados.add((MedicamentoControlado) obtenerMedicamentoControlado().get(k));
-								}
-
-								Tarjeton t = new Tarjeton(
-										p.getNombre(),
-										p.getDireccion(),
-										java.sql.Date.valueOf(fechaExp),
-										java.sql.Date.valueOf(fechaVenc),
-										medsControlados
-										);
-								
-								tarjetones.add(t);
-								p.agregarTarjeton(t);
-							}
-						}
-						System.out.println("Se agregaron los tarjetones "+tarjetones.size());
-					}
-
-					public void generarFacturasDesdeVentas() 
-					{
-						for (Venta venta : historialVentas) 
-						{
-							String nombreMedicamento = "";
-							String codigoMedicamento = "";
-							int cantidadVendida = 1;
-							Date fechaCompra = venta.getFechaVenta();
-
-							if (venta instanceof VentaLibre) 
-							{
-								nombreMedicamento = ((VentaLibre) venta).getNombreDelMed();
-								codigoMedicamento = ((VentaLibre) venta).getCodigoDelMed();
-								cantidadVendida = ((VentaLibre) venta).getCantMedVendidos(); 
-								facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
-							} 
-
-							else if (venta instanceof VentaConPrescripcion) 
-							{
-
-								nombreMedicamento = ((VentaConPrescripcion) venta).getNombreDelMed(); 
-								codigoMedicamento = ((VentaConPrescripcion) venta).getCodigoDelMed();
-								cantidadVendida = ((VentaConPrescripcion) venta).getCantMedVendidos();
-								facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
-							} 
-
-							else if (venta instanceof VentaControlada) 
-							{
-								nombreMedicamento = ((VentaControlada) venta).getNombreDelMed(); 
-								codigoMedicamento = ((VentaControlada) venta).getCodigoDelMed();
-								cantidadVendida = ((VentaControlada) venta).getCantMedVendidos();
-								facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
-							} 
-
-							else if (venta instanceof AlmohadillasSanitarias) 
-							{
-								AlmohadillasSanitarias alm = (AlmohadillasSanitarias) venta;
-								nombreMedicamento = "Almohadillas Sanitarias";
-								codigoMedicamento = "ALM-001";
-								cantidadVendida = alm.getCant();
-								facturas.add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
-							}
-						}
-						System.out.println("Se generaron " + facturas.size() + " facturas desde el historial de ventas.");
-					}
-
-
 					public void agregarPaciente(String nombre, String ci, char genero, LocalDate fechaNac, String direccion) 
 					{
 						Paciente p = new Paciente();
@@ -562,53 +557,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					}
 
 
-					public void inicializarVentasLibres() 
-					{
-						// Ventas con prescripción - 40 ejemplos
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 3, 1), 25.0, LocalDate.of(2025, 1, 1), "Omeprazol", "Inhibidor de bomba", 20 );
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 2), 30.0, LocalDate.of(2025, 1, 1),"Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 3), 28.5, LocalDate.of(2025, 1, 2),"Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 4), 32.75, LocalDate.of(2025, 1, 2),"Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 5), 40.0, LocalDate.of(2025, 1, 3), "Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 6), 22.0, LocalDate.of(2025, 1, 4), "Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 7), 35.0, LocalDate.of(2025, 1, 4), "Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 8), 45.0, LocalDate.of(2025, 1, 5), "Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 9), 30.0, LocalDate.of(2025, 1, 5), "Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 10), 28.0, LocalDate.of(2025, 1, 6), "Omeprazol", "Inhibidor de bomba", 20);
-
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 11), 32.0, LocalDate.of(2025, 1, 6),"Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 12), 37.0, LocalDate.of(2025, 1, 7), "Omeprazol", "Inhibidor de bomba", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 13), 41.0, LocalDate.of(2025, 1, 7), "Metformina", "Glifage", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 14), 29.0, LocalDate.of(2025, 1, 8), "Metformina", "Glifage", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 15), 33.0, LocalDate.of(2025, 1, 8), "Metformina", "Glifage", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 16), 36.0, LocalDate.of(2025, 1, 9), "Metformina", "Glifage", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 17), 42.0, LocalDate.of(2025, 1, 9), "Metformina", "Glifage", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 18), 26.0, LocalDate.of(2025, 1, 10), "Metformina", "Glifage", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 19), 34.0, LocalDate.of(2025, 1, 10), "Metformina", "Glifage", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 20), 39.0, LocalDate.of(2025, 1, 11), "Metformina", "Glifage", 20);
-
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 21), 27.0, LocalDate.of(2025, 1, 11), "Metformina", "Glifage", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 22), 31.0, LocalDate.of(2025, 1, 12), "Metformina", "Glifage", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 23), 38.0, LocalDate.of(2025, 1, 12), "Simvastatina", "Estatinas", 40);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 24), 43.0, LocalDate.of(2025, 1, 13), "Simvastatina", "Estatinas", 40);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 25), 33.0, LocalDate.of(2025, 1, 13), "Simvastatina", "Estatinas", 40);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 26), 29.0, LocalDate.of(2025, 1, 14), "Simvastatina", "Estatinas", 40);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 27), 35.0, LocalDate.of(2025, 1, 14), "Amoxilina", "Penicilina", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 28), 40.0, LocalDate.of(2025, 1, 15), "Amoxilina", "Penicilina", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 29), 31.0, LocalDate.of(2025, 1, 15), "Amoxilina", "Penicilina", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 30), 36.0, LocalDate.of(2025, 1, 16), "Amoxilina", "Penicilina", 20);
-
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 31), 44.0, LocalDate.of(2025, 1, 16), "Amoxilina", "Penicilina", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 1), 25.0, LocalDate.of(2025, 1, 17), "Atorvastatina", "Lipitor", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 2), 30.0, LocalDate.of(2025, 1, 17), "Atorvastatina", "Lipitor", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 3), 28.0, LocalDate.of(2025, 1, 18), "Atorvastatina", "Lipitor", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 4), 32.0, LocalDate.of(2025, 1, 18), "Atorvastatina", "Lipitor", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 5), 37.0, LocalDate.of(2025, 1, 19), "Dipirona", "Metamizol", 40);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 6), 42.0, LocalDate.of(2025, 1, 19), "Naproxeno", "Antiinflamatorio", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 7), 34.0, LocalDate.of(2025, 1, 20), "Dipirona", "Metamizol", 40);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 8), 39.0, LocalDate.of(2025, 1, 20), "Naproxeno", "Antiinflamatorio", 20);
-						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 9), 27.0, LocalDate.of(2025, 1, 21), "Naproxeno", "Antiinflamatorio", 20);
-					}
 
 					public void agregarVentaConPrescripcion(LocalDate date, double importe, LocalDate dateDos, String nombreDelMed,String codigoDelMed, int cantMedVendidos)
 					{
@@ -621,43 +569,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					}
 
 
-					public void inicializarVentaLibre()
-					{
 
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 3, 1), 20.0, "Paracetamol", "Acetaminofén", 15);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 4, 2), 15.0, "Paracetamol", "Acetaminofén", 30 );
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 3), 18.5, "Paracetamol", "Acetaminofén", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 4), 22.0, "Paracetamol", "Acetaminofén", 15);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 5), 10.0, "Paracetamol", "Acetaminofén", 10);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 6), 17.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 7), 25.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 8), 12.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 9), 14.5, "Ibuprofeno", "Ácido Ibuprofénico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 10), 19.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
-
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 11), 21.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 12), 16.0,"Ibuprofeno", "Ácido Ibuprofénico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 13), 23.0,"Ibuprofeno", "Ácido Ibuprofénico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 14), 11.0, "Ibuprofeno", "Ácido Ibuprofénico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 15), 13.5, "Aspirina", "Ácido Acetilsalicílico", 30);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 16), 18.0, "Aspirina", "Ácido Acetilsalicílico", 30);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 17), 24.0, "Aspirina", "Ácido Acetilsalicílico", 30);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 18), 15.0, "Aspirina", "Ácido Acetilsalicílico", 15);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 19), 19.0, "Aspirina", "Ácido Acetilsalicílico", 25);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 20), 20.0, "Loratadina", "Antihistamínico", 20);
-
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 21), 22.0, "Loratadina", "Antihistamínico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 22), 17.0, "Loratadina", "Antihistamínico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 23), 14.0, "Loratadina", "Antihistamínico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 24), 18.0, "Loratadina", "Antihistamínico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 25), 23.0, "Loratadina", "Antihistamínico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 26), 20.0, "Loratadina", "Antihistamínico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 27), 15.0, "Loratadina", "Antihistamínico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 28), 19.0, "Loratadina", "Antihistamínico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 29), 16.0, "Loratadina", "Antihistamínico", 20);
-						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 30), 21.0, "Loratadina", "Antihistamínico", 20);
-
-					}
 
 					public Factura generarFactura(String nombreDelMed, String codigoDelMed, int cantMedVendidos, Date fechaDeLaCompra) 
 					{
@@ -672,23 +584,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						historialVentas.add(vl);
 					}
 
-					public void inicializarAlmohadillas() 
-					{
 
-
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 5, 1), 8.5, 5);
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 2), 8.5, 6);
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 3), 8.5, 4);
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 4), 8.5, 5);
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 5), 8.5, 3);
-
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 6), 8.5, 6);
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 7), 8.5, 5);
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 8), 8.5, 4);
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 9), 8.5, 5);
-						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 10), 8.5, 6);
-
-					}
 
 					public void agregarVentaAlmohadillasSanitarias(LocalDate fecha, double precio, int cant)
 					{
@@ -698,30 +594,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						historialVentas.add(a);
 					}
 
-					public void inicializarVentaControlada()
-					{
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 6, 1), 50.0, "Tramadol","Tramadol Clorhidrato", 30);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 2), 60.0, "Tramadol","Tramadol Clorhidrato", 30);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 3), 55.0, "Tramadol","Tramadol Clorhidrato", 30);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 4), 65.0, "Tramadol","Tramadol Clorhidrato", 30);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 5), 70.0, "Tramadol","Tramadol Clorhidrato", 30);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 6), 48.0, "Tramadol","Tramadol Clorhidrato", 30);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 7), 52.0, "Tramadol","Tramadol Clorhidrato", 30);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 8), 58.0, "Tramadol","Tramadol Clorhidrato", 30);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 9), 63.0, "Alprazolam", "Alprazolam", 20);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 10), 54.0, "Alprazolam", "Alprazolam", 20) ;
 
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 11), 56.0, "Alprazolam", "Alprazolam", 20);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 12), 59.0, "Alprazolam", "Alprazolam", 20);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 13), 62.0, "Alprazolam", "Alprazolam", 20);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 14), 67.0, "Alprazolam", "Alprazolam", 20);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 15), 61.0, "Alprazolam", "Alprazolam", 20);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 16), 53.0, "Clonazepam", "Clonazepam", 40);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 17), 57.0,  "Clonazepam", "Clonazepam", 40);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 18), 64.0, "Clonazepam", "Clonazepam", 40);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 19), 68.0, "Clonazepam", "Clonazepam", 40);
-						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 20), 69.0, "Ritalina", "Metilfenidato", 30);	
-					}
 
 					public void agregarVentaControlada(LocalDate fecha, double importe,String nombreDelMed,String codigoDelMed, int cantMedVendidos)
 					{
@@ -732,34 +605,31 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 
 
 					// Métodos de acceso
-					public ArrayList<Paciente> obtenerPacientes() 
+					public ArrayList<Paciente> getPacientes() 
 					{
 						return pacientes;
 					}
 
-
-					public ArrayList<MedicamentoControlado> obtenerMedicamentoControlado()
+					
+					public ArrayList<String> getCarnets() 
+					{
+						return carnets;
+					}
+					
+					public ArrayList<String> agregarCarnet(String ci)
+					{
+						carnets.add(ci);
+						return carnets;
+					}
+					
+					public ArrayList<MedicamentoControlado> getMedicamentoControlado()
 					{
 						return medicamentoControlado;
 					}
-					public ArrayList<Medicamento> obtenerMedicamentos() 
-					{
-						return medicamentos;
-					}
 
-					public ArrayList<Venta> obtenerVentas()
+					public ArrayList<Venta> getVentas()
 					{
 						return new ArrayList<Venta>(historialVentas);
-					}
-
-					public ArrayList<Factura> obtenerFacturas() 
-					{
-						return new ArrayList<Factura>(facturas);
-					}
-
-					public List<Tarjeton> obtenerTarjetones() 
-					{
-						return new ArrayList<Tarjeton>(tarjetones);
 					}
 
 					// Métodos de registro
@@ -788,8 +658,121 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						tarjetones.add(tarjeton);
 					}
 
+// ====================================================Buscadores============================================================================================================================
+					
+					private Medicamento obtenerMedicamento(String nombre) 
+					{
+						for (Medicamento m : medicamentos) 
+						{
+							if (m.getNomComun().equals(nombre)) 
+							{
+								return m;
+							}
+						}
+						throw new RuntimeException("Medicamento: " +nombre+ " no encontrado");
+					}
 
-					//Inicializacion De Datos
+					public Paciente obtenerPacientePorNombre(String nombre) 
+					{
+						for (Paciente p : Farmacia.obtenerInstancia().getPacientes()) 
+						{
+							if (p.getNombre().equals(nombre)) 
+							{
+								return p;
+							}
+						}
+						throw new RuntimeException("Paciente no encontrado: " + nombre);
+					}
+					
+//================================================================================================================================================================================
+
+					public Medicamento agregarMed(String nomComun, String nomCientifico, String presentacion,
+							double precio, String tipo, String fortaleza, double tempAlmac,
+							long cantExis, LocalDate fechaProd, LocalDate fechaVenc, String codigo)
+					{
+						Date utilFechaProd = Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant());
+						Date utilFechaVenc = Date.from(fechaVenc.atStartOfDay(ZoneId.systemDefault()).toInstant());
+						Medicamento m = new Medicamento(nomComun,nomCientifico, presentacion, precio, tipo, fortaleza, tempAlmac, cantExis, utilFechaProd , utilFechaVenc, codigo);
+						return m;
+					}
+
+					
+
+
+
+
+
+
+
+					public void agregarNucleoFamiliar(String id, String direccion, ArrayList <Paciente> hombres, 
+							ArrayList <Paciente> mujeres, Paciente jefe, boolean compraron)
+					{
+						NucleoFamiliar m = new NucleoFamiliar( id, direccion, hombres, mujeres, jefe, compraron);
+						nucleos.add(m);
+					}
+
+					@Override
+					public long cantidadDeAlmohadillas() 
+					{
+						return getCantidadDeAlmohadillasSanitarias();
+					}
+
+					public void actualizarInventario()
+					{
+						for(Medicamento m: medicamentos)
+							for(Venta v: historialVentas)
+								if(v instanceof VentaConPrescripcion)
+								if(m.getNomComun().equals(((VentaConPrescripcion) v).getNombreDelMed()))
+								{
+									long valorFact = ((VentaConPrescripcion) v).getCantMedVendidos();
+									long valorMed = m.getCantExis();
+									long valor = valorMed - valorFact;
+									m.setCantExis(valor);  
+								}
+						
+						for(Medicamento m: medicamentos)
+							for(Venta v: historialVentas)
+								if(v instanceof VentaLibre)
+								if(m.getNomComun().equals(((VentaLibre) v).getNombreDelMed()))
+								{
+									long valorFact = ((VentaLibre) v).getCantMedVendidos();
+									long valorMed = m.getCantExis();
+									long valor = valorMed - valorFact;
+									m.setCantExis(valor);  
+								}
+						
+
+						for(MedicamentoControlado mc: medicamentoControlado)
+							for(Venta v: historialVentas)
+							{
+								if(v instanceof VentaControlada)
+									
+								if(mc.getNomComun().equals(((VentaControlada) v).getNombreDelMed()))
+								{
+									long valorFact = ((VentaControlada) v).getCantMedVendidos();
+									long valorMed = mc.getCantExis();
+									long valor = valorMed - valorFact;
+									mc.setCantExis(valor);  
+								}
+					
+							}
+					}
+
+					// Funcionalidad: Actualiza la cantidad de medicamentos despues de una compra, sino se puede realizar la compra saldra un mensaje
+					public void actCantMed(Medicamento med, int cant)
+					{
+						for(Medicamento m: medicamentos)
+							if(m.getNomComun().equals(med.getNomComun()))
+							{
+								long valorMed = m.getCantExis();				
+								m.setCantExis(valorMed - cant);  
+							}		
+					}	 
+
+//=========================================================Pacientes==================================================================================================================
+
+
+
 					public void inicializarPacientes() 
 					{
 						// Hombres (25)
@@ -799,12 +782,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						Farmacia.obtenerInstancia().agregarPaciente("Daniel Hernández López", "85071234567", 'M', LocalDate.of(1985, 7, 12), "Calle 45, #78");
 						Farmacia.obtenerInstancia().agregarPaciente("Emilio Juárez Méndez", "92081537880", 'M', LocalDate.of(1992, 8, 15), "Calle 56, #90");
 						Farmacia.obtenerInstancia().agregarPaciente("Fernando Katz Núñez", "83092123426", 'M', LocalDate.of(1983, 9, 21), "Calle 67, #12");
-						Farmacia.obtenerInstancia().agregarPaciente("Gabriel López Ortiz", "89103028901", 'M', LocalDate.of(1989, 10, 30), "Calle 78, #34");
+						Farmacia.obtenerInstancia().agregarPaciente("Gabriel López Ortiz", "81103028921", 'M', LocalDate.of(1989, 10, 30), "Calle 78, #34");
 						Farmacia.obtenerInstancia().agregarPaciente("Héctor Méndez Pérez", "77020545628", 'M', LocalDate.of(1977, 2, 5), "Calle 89, #56");
 						Farmacia.obtenerInstancia().agregarPaciente("Ignacio Núñez Quintero", "94040820123", 'M', LocalDate.of(1994, 4, 8), "Calle 90, #78");
 						Farmacia.obtenerInstancia().agregarPaciente("Javier Ortiz Rojas", "81061156789", 'M', LocalDate.of(1981, 6, 11), "Calle 11, #90");
 						Farmacia.obtenerInstancia().agregarPaciente("Kevin Pérez Sánchez", "99121401224", 'M', LocalDate.of(1999, 12, 14), "Calle 22, #13");
-						Farmacia.obtenerInstancia().agregarPaciente("Luis Quintero Torres", "87101727820", 'M', LocalDate.of(1987, 10, 17), "Calle 33, #24");
+						Farmacia.obtenerInstancia().agregarPaciente("Luis Quintero Torres", "75091927840", 'M', LocalDate.of(1987, 10, 17), "Calle 33, #24");
 						Farmacia.obtenerInstancia().agregarPaciente("Manuel Rojas Aguilar", "93022012325", 'M', LocalDate.of(1993, 2, 20), "Calle 44, #35");
 						Farmacia.obtenerInstancia().agregarPaciente("Nicolás Sánchez Bermúdez", "80032318901", 'M', LocalDate.of(1980, 3, 23), "Calle 55, #46");
 						Farmacia.obtenerInstancia().agregarPaciente("Oscar Torres Cervantes", "95062623446", 'M', LocalDate.of(1995, 6, 26), "Calle 66, #57");
@@ -818,7 +801,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						Farmacia.obtenerInstancia().agregarPaciente("Diego Hernández Katz", "87032017820", 'M', LocalDate.of(1987, 3, 20), "Calle 54, #35");
 						Farmacia.obtenerInstancia().agregarPaciente("Eduardo Ibarra López", "92042323426", 'M', LocalDate.of(1992, 4, 23), "Calle 65, #46");
 						Farmacia.obtenerInstancia().agregarPaciente("Felipe Juárez Méndez", "05020968485", 'M', LocalDate.of(1981, 5, 26), "Calle 76, #57");
-
+						
 						// Mujeres (20)
 						Farmacia.obtenerInstancia().agregarPaciente("Adriana Méndez Núñez", "89062934537", 'F', LocalDate.of(1989, 6, 29), "Calle 87, #68");
 						Farmacia.obtenerInstancia().agregarPaciente("Beatriz Núñez Ortiz", "94080110153", 'F', LocalDate.of(1994, 8, 1), "Calle 98, #79");
@@ -840,52 +823,59 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						Farmacia.obtenerInstancia().agregarPaciente("Sofía Juárez Katz", "97041818911", 'F', LocalDate.of(1997, 4, 18), "Calle 74, #35");
 						Farmacia.obtenerInstancia().agregarPaciente("Tatiana Katz López", "83052114517", 'F', LocalDate.of(1983, 5, 21), "Calle 85, #46");
 						Farmacia.obtenerInstancia().agregarPaciente("Valeria López Méndez", "93062410113", 'F', LocalDate.of(1993, 6, 24), "Calle 96, #57");
-
-						System.out.println("Se insertaron " +Farmacia.obtenerInstancia().pacientes.size()+" pacientes");
+						
+						System.out.println("Se insertaron " +Farmacia.obtenerInstancia().getPacientes().size()+" pacientes");
+						
 					}
 
 
+					//================================================================================================================================================================================
+
+					//===================================================Medicamentos===============================================================================================================
+
+
+					
 
 					public void inicializarMedicamentos() 
 					{
 						// Medicamento 1
-						Farmacia.obtenerInstancia().agregarMedicamento("Paracetamol", "Acetaminofén", "Tabletas", 15.0, "Venta libre", "500 mg", 25.0, 100,
+						Farmacia.obtenerInstancia().agregarMedicamento("Paracetamol", "Acetaminofén", "Tabletas", 15.0, "Venta libre", "500 mg", 25.0, 400,
 								LocalDate.of(2025, 2, 07), LocalDate.of(2027, 2, 07), "MC-1");
 
 						// Medicamento 2
-						Farmacia.obtenerInstancia().agregarMedicamento("Ibuprofeno", "Ácido Ibuprofénico", "Cápsulas", 20.0, "Venta libre", "400 mg", 25.0, 200,
+						Farmacia.obtenerInstancia().agregarMedicamento("Ibuprofeno", "Ácido Ibuprofénico", "Cápsulas", 20.0, "Venta libre", "400 mg", 25.0, 500,
 								LocalDate.of(2025, 2, 15), LocalDate.of(2027, 2 ,15),"MC-2");
 
 						// Medicamento 3
-						Farmacia.obtenerInstancia().agregarMedicamento("Aspirina", "Ácido Acetilsalicílico", "Tabletas", 10.0, "Venta libre", "100 mg", 25.0, 150,
+						Farmacia.obtenerInstancia().agregarMedicamento("Aspirina", "Ácido Acetilsalicílico", "Tabletas", 10.0, "Venta libre", "100 mg", 25.0, 550,
 								LocalDate.of(2025, 3, 10), LocalDate.of(2027, 3, 10),"MC-3");
 
 						// Medicamento 4
-						Farmacia.obtenerInstancia().agregarMedicamento("Loratadina", "Antihistamínico", "Jarabe", 12.5, "Venta libre", "10 mg/ml", 20.0, 300,
+						Farmacia.obtenerInstancia().agregarMedicamento("Loratadina", "Antihistamínico", "Jarabe", 12.5, "Venta libre", "10 mg/ml", 20.0, 500,
 								LocalDate.of(2025,4,20), LocalDate.of(2027, 4,20),"MC-4");
 
 						// Medicamento 5
-						Farmacia.obtenerInstancia().agregarMedicamento("Omeprazol", "Inhibidor de bomba", "Cápsulas", 18.99, "Con prescripción", "20 mg", 20.0, 250,
+						Farmacia.obtenerInstancia().agregarMedicamento("Omeprazol", "Inhibidor de bomba", "Cápsulas", 18.99, "Con prescripción", "20 mg", 20.0, 500,
 								LocalDate.of(2025,2,05), LocalDate.of(2027, 5,05),"MC-5");
 
 						// Medicamento 6
-						Farmacia.obtenerInstancia().agregarMedicamento("Metformina", "Glifage", "Tabletas", 25.50, "Con prescripción", "500 mg", 20.0, 200,
+						Farmacia.obtenerInstancia().agregarMedicamento("Metformina", "Glifage", "Tabletas", 25.50, "Con prescripción", "500 mg", 20.0, 500,
 								LocalDate.of(2025,1,10), LocalDate.of(2027,6,10),"MC-6");
 
 						// Medicamento 7
-						Farmacia.obtenerInstancia().agregarMedicamento("Simvastatina", "Estatinas", "Tabletas", 30.0, "Con prescripción", "20 mg", 20.0, 180,
+						Farmacia.obtenerInstancia().agregarMedicamento("Simvastatina", "Estatinas", "Tabletas", 30.0, "Con prescripción", "20 mg", 20.0, 500,
 								LocalDate.of(2025, 2,15), LocalDate.of(2027, 7,15),"MC-7");
 
 						// Medicamento 8
-						Farmacia.obtenerInstancia().agregarMedicamento("Amoxicilina", "Penicilina", "Cápsulas", 22.75, "Con prescripción", "250 mg", 20.0, 120,
+						Farmacia.obtenerInstancia().agregarMedicamento("Amoxicilina", "Penicilina", "Cápsulas", 22.75, "Con prescripción", "250 mg", 20.0, 500,
 								LocalDate.of(2025, 2,20), LocalDate.of(2027, 8, 20),"MC-8");
 
 						// Medicamento 9
-						Farmacia.obtenerInstancia().agregarMedicamento("Atorvastatina", "Lipitor", "Cápsulas", 35.0, "Con prescripción", "40 mg", 20.0, 100,
+						Farmacia.obtenerInstancia().agregarMedicamento("Atorvastatina", "Lipitor", "Cápsulas", 35.0, "Con prescripción", "40 mg", 20.0, 500,
 								LocalDate.of(2025, 1,25), LocalDate.of(2027,9, 25),"MC-9");
 
 						// Medicamento 10
-						Farmacia.obtenerInstancia().agregarMedicamento("Dipirona", "Metamizol", "Tabletas", 13.0, "Venta libre", "500 mg", 25.0, 400,
+						Farmacia.obtenerInstancia().agregarMedicamento("Dipirona", "Metamizol", "Tabletas", 13.0, "Venta libre", "500 mg", 25.0, 500,
 								LocalDate.of(2025, 3,01), LocalDate.of(2027,10,01),"MC-10");
 
 						// Medicamento 11
@@ -893,17 +883,21 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								LocalDate.of(2025, 2, 05), LocalDate.of(2027, 11, 05 ),"MC-11");
 
 						// Medicamento 12
-						Farmacia.obtenerInstancia().agregarMedicamento("Diclofenaco", "Antiinflamatorio", "Gel", 15.0, "Con prescripción", "100mg", 25.0, 200,
+						Farmacia.obtenerInstancia().agregarMedicamento("Diclofenaco", "Antiinflamatorio", "Gel", 15.0, "Con prescripción", "100mg", 25.0, 300,
 								LocalDate.of(2025, 2, 10), LocalDate.of(2027,12,10),"MC-12");
 
 						// Medicamento 13
-						Farmacia.obtenerInstancia().agregarMedicamento("Naproxeno", "Antiinflamatorio", "Tabletas", 10.5, "Con prescripción", "250 mg", 25.0, 180,
+						Farmacia.obtenerInstancia().agregarMedicamento("Naproxeno", "Antiinflamatorio", "Tabletas", 10.5, "Con prescripción", "250 mg", 25.0, 500,
 								LocalDate.of(2025, 1,15), LocalDate.of(2027, 4,15),"MC-13"); 
 
 						// Medicamento 14
-						Farmacia.obtenerInstancia().agregarMedicamento("Salbutamol", "Ventolín", "Inhalador", 18.99, "Con prescripción", "100 mcg", 15.0, 150,
+						Farmacia.obtenerInstancia().agregarMedicamento("Salbutamol", "Ventolín", "Inhalador", 18.99, "Con prescripción", "100 mcg", 15.0, 500,
 								LocalDate.of(2025, 2, 20), LocalDate.of(2027, 5, 20),"MC-14");
+
+						System.out.println("Medicamentos: " + Farmacia.obtenerInstancia().getMedicamentos().size());
 					}
+
+					// ==================================================Medicamentos Controlados==========================================================================================================
 
 					public void inicializarMedicamentosControlados()
 					{
@@ -1076,55 +1070,261 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								130,
 								120
 								);
+						System.out.println("Medicamentos Controlados: " +Farmacia.obtenerInstancia().getMedicamentoControlado().size());
 					} 
 
-					private Paciente obtenerPacientePorNombre(String nombre) {
-						for (Paciente p : Farmacia.obtenerInstancia().obtenerPacientes()) 
+
+					//===================================================================================================================================================================================
+
+					//===========================================================Ventas==================================================================================================================
+
+
+
+					public void inicializarVentaConPrescripcion() 
+					{
+						// Ventas con prescripción - 40 ejemplos
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 3, 1), 25.0, LocalDate.of(2025, 1, 1), "Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 2), 30.0, LocalDate.of(2025, 1, 1),"Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 3), 28.5, LocalDate.of(2025, 1, 2),"Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 4), 32.75, LocalDate.of(2025, 1, 2),"Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 5), 40.0, LocalDate.of(2025, 1, 3), "Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 6), 22.0, LocalDate.of(2025, 1, 4), "Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 7), 35.0, LocalDate.of(2025, 1, 4), "Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 8), 45.0, LocalDate.of(2025, 1, 5), "Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 9), 30.0, LocalDate.of(2025, 1, 5), "Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 10), 28.0, LocalDate.of(2025, 1, 6), "Omeprazol", "Inhibidor de bomba", 2);
+
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 11), 32.0, LocalDate.of(2025, 1, 6),"Omeprazol", "Inhibidor de bomba", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 12), 37.0, LocalDate.of(2025, 1, 7), "Omeprazol", "Inhibidor de bomba", 3);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 13), 41.0, LocalDate.of(2025, 1, 7), "Metformina", "Glifage", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 14), 29.0, LocalDate.of(2025, 1, 8), "Metformina", "Glifage", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 15), 33.0, LocalDate.of(2025, 1, 8), "Metformina", "Glifage", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 16), 36.0, LocalDate.of(2025, 1, 9), "Metformina", "Glifage", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 17), 42.0, LocalDate.of(2025, 1, 9), "Metformina", "Glifage", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 18), 26.0, LocalDate.of(2025, 1, 10), "Metformina", "Glifage", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 19), 34.0, LocalDate.of(2025, 1, 10), "Metformina", "Glifage", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 20), 39.0, LocalDate.of(2025, 1, 11), "Metformina", "Glifage", 2);
+
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 21), 27.0, LocalDate.of(2025, 1, 11), "Metformina", "Glifage", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 22), 31.0, LocalDate.of(2025, 1, 12), "Metformina", "Glifage", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 23), 38.0, LocalDate.of(2025, 1, 12), "Simvastatina", "Estatinas", 4);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 24), 43.0, LocalDate.of(2025, 1, 13), "Simvastatina", "Estatinas", 4);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 25), 33.0, LocalDate.of(2025, 1, 13), "Simvastatina", "Estatinas", 4);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 26), 29.0, LocalDate.of(2025, 1, 14), "Simvastatina", "Estatinas", 4);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 27), 35.0, LocalDate.of(2025, 1, 14), "Amoxilina", "Penicilina", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 28), 40.0, LocalDate.of(2025, 1, 15), "Amoxilina", "Penicilina", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 29), 31.0, LocalDate.of(2025, 1, 15), "Amoxilina", "Penicilina", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 30), 36.0, LocalDate.of(2025, 1, 16), "Amoxilina", "Penicilina", 2);
+
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 1, 31), 44.0, LocalDate.of(2025, 1, 16), "Amoxilina", "Penicilina", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 1), 25.0, LocalDate.of(2025, 1, 17), "Atorvastatina", "Lipitor", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 2), 30.0, LocalDate.of(2025, 1, 17), "Atorvastatina", "Lipitor", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 3), 28.0, LocalDate.of(2025, 1, 18), "Atorvastatina", "Lipitor", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 4), 32.0, LocalDate.of(2025, 1, 18), "Atorvastatina", "Lipitor", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 5), 37.0, LocalDate.of(2025, 1, 19), "Dipirona", "Metamizol", 4);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 6), 42.0, LocalDate.of(2025, 1, 19), "Naproxeno", "Antiinflamatorio", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 7), 34.0, LocalDate.of(2025, 1, 20), "Dipirona", "Metamizol", 4);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 8), 39.0, LocalDate.of(2025, 1, 20), "Naproxeno", "Antiinflamatorio", 2);
+						Farmacia.obtenerInstancia().agregarVentaConPrescripcion(LocalDate.of(2025, 2, 9), 27.0, LocalDate.of(2025, 1, 21), "Naproxeno", "Antiinflamatorio", 2);
+					}
+
+
+					public void inicializarVentaLibre()
+					{
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 3, 1), 20.0, "Paracetamol", "Acetaminofén", 1);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 4, 2), 15.0, "Paracetamol", "Acetaminofén", 8 );
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 3), 18.5, "Paracetamol", "Acetaminofén", 7);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 4), 22.0, "Paracetamol", "Acetaminofén", 6);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 5), 10.0, "Paracetamol", "Acetaminofén", 5);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 6), 17.0, "Ibuprofeno", "Ácido Ibuprofénico", 1);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 7), 25.0, "Ibuprofeno", "Ácido Ibuprofénico", 4);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 8), 12.0, "Ibuprofeno", "Ácido Ibuprofénico", 2);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 9), 14.5, "Ibuprofeno", "Ácido Ibuprofénico", 5);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 10), 19.0, "Ibuprofeno", "Ácido Ibuprofénico", 10);
+
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 11), 21.0, "Ibuprofeno", "Ácido Ibuprofénico", 2);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 12), 16.0,"Ibuprofeno", "Ácido Ibuprofénico", 2);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 13), 23.0,"Ibuprofeno", "Ácido Ibuprofénico", 2);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 14), 11.0, "Ibuprofeno", "Ácido Ibuprofénico", 2);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 15), 13.5, "Aspirina", "Ácido Acetilsalicílico", 3);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 16), 18.0, "Aspirina", "Ácido Acetilsalicílico", 3);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 17), 24.0, "Aspirina", "Ácido Acetilsalicílico", 3);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 18), 15.0, "Aspirina", "Ácido Acetilsalicílico", 5);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 19), 19.0, "Aspirina", "Ácido Acetilsalicílico", 5);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 20), 20.0, "Loratadina", "Antihistamínico", 10);
+
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 21), 22.0, "Loratadina", "Antihistamínico", 10);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 22), 17.0, "Loratadina", "Antihistamínico", 10);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 23), 14.0, "Loratadina", "Antihistamínico", 10);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 24), 18.0, "Loratadina", "Antihistamínico", 10);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 25), 23.0, "Loratadina", "Antihistamínico", 10);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 26), 20.0, "Loratadina", "Antihistamínico", 7);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 27), 15.0, "Loratadina", "Antihistamínico", 9);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 28), 19.0, "Loratadina", "Antihistamínico", 8);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 29), 16.0, "Loratadina", "Antihistamínico", 7);
+						Farmacia.obtenerInstancia().agregarVentaLibre(LocalDate.of(2025, 1, 30), 21.0, "Loratadina", "Antihistamínico", 5);
+
+					}
+
+
+					public void inicializarVentaControlada()
+					{
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 6, 1), 50.0, "Tramadol","Tramadol Clorhidrato", 3);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 2), 60.0, "Tramadol","Tramadol Clorhidrato", 3);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 3), 55.0, "Tramadol","Tramadol Clorhidrato", 3);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 4), 65.0, "Tramadol","Tramadol Clorhidrato", 3);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 5), 70.0, "Tramadol","Tramadol Clorhidrato", 3);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 6), 48.0, "Tramadol","Tramadol Clorhidrato", 3);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 7), 52.0, "Tramadol","Tramadol Clorhidrato", 3);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 8), 58.0, "Tramadol","Tramadol Clorhidrato", 3);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 9), 63.0, "Alprazolam", "Alprazolam", 2);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 10), 54.0, "Alprazolam", "Alprazolam", 2) ;
+
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 11), 56.0, "Alprazolam", "Alprazolam", 2);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 12), 59.0, "Alprazolam", "Alprazolam", 2);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 13), 62.0, "Alprazolam", "Alprazolam", 2);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 14), 67.0, "Alprazolam", "Alprazolam", 2);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 15), 61.0, "Alprazolam", "Alprazolam", 2);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 16), 53.0, "Clonazepam", "Clonazepam", 4);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 17), 57.0,  "Clonazepam", "Clonazepam", 4);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 18), 64.0, "Clonazepam", "Clonazepam", 4);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 19), 68.0, "Clonazepam", "Clonazepam", 4);
+						Farmacia.obtenerInstancia().agregarVentaControlada(LocalDate.of(2025, 1, 20), 69.0, "Ritalina", "Metilfenidato", 3);	
+					}
+
+
+					public void inicializarAlmohadillas() 
+					{
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 5, 1), 8.5, 5);
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 2), 8.5, 6);
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 3), 8.5, 4);
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 4), 8.5, 5);
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 5), 8.5, 3);
+
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 6), 8.5, 6);
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 7), 8.5, 5);
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 8), 8.5, 4);
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 9), 8.5, 5);
+						Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(LocalDate.of(2025, 1, 10), 8.5, 6);
+					}
+
+
+					//==========================================================================================================================================================
+
+
+					//===========================================Tarjetones====================================================================================================
+
+					public void inicializarTarjetones() 
+					{
+						// Nota: Esta es la fecha de hoy Esto se cambiara mas alante para que se pueda actualizar sola
+						LocalDate hoy = LocalDate.of(2025, 6, 25); 
+
+						for (int i = 0; i < 15; i++) 
 						{
-							if (p.getNombre().equals(nombre)) 
+							Paciente p = Farmacia.obtenerInstancia().getPacientes().get(i);
+							int numTarjetones = 1 + (i % 3);
+
+							for (int j = 0; j < numTarjetones && j < 3; j++) 
 							{
-								return p;
+								// 1 de cada 3 tarjetones sera desactivado para darle variedad a los datos
+								boolean estaVencido = j % 3 == 0;
+
+								LocalDate fechaExp;
+								if (estaVencido) 
+								{
+									// Tarjetón vencido: fecha de expiración antes de hoy 
+									fechaExp = hoy.minusMonths(2 + j); 
+								} 
+
+								else 
+								{
+									// Tarjetón en vigencia ponemos la fecha normal
+									fechaExp = LocalDate.of(2024, 1 + (i % 12), 1 + (j * 10));
+								}
+
+								LocalDate fechaVenc = fechaExp.plusMonths(6);
+
+								int numMedicamentos = 1 + (j % 3);
+								ArrayList<MedicamentoControlado> medsControlados = new ArrayList<>();
+
+								for (int k = 0; k < numMedicamentos && k < Farmacia.obtenerInstancia().getMedicamentoControlado().size(); k++) 
+								{
+									medsControlados.add((MedicamentoControlado) Farmacia.obtenerInstancia().getMedicamentoControlado().get(k));
+								}
+								if(p.obtenerTarjetones().size() < 3  )
+								{
+
+									Tarjeton t = new Tarjeton(
+											p.getNombre(),
+											p.getDireccion(),
+											java.sql.Date.valueOf(fechaExp),
+											java.sql.Date.valueOf(fechaVenc),
+											medsControlados
+											);
+									Farmacia.obtenerInstancia().getTarjetones().add(t);
+									p.agregarTarjeton(t);
+
+								}
 							}
 						}
-						throw new RuntimeException("Paciente no encontrado: " + nombre);
+						System.out.println("Se agregaron los tarjetones "+Farmacia.obtenerInstancia().getTarjetones().size());
 					}
 
-
-					public Medicamento obtenerMed(String nomComun, String nomCientifico, String presentacion,
-							double precio, String tipo, String fortaleza, double tempAlmac,
-							long cantExis, LocalDate fechaProd, LocalDate fechaVenc, String codigo)
+					public void generarFacturasDesdeVentas() 
 					{
-						Date utilFechaProd = Date.from(fechaProd.atStartOfDay(ZoneId.systemDefault()).toInstant());
-						Date utilFechaVenc = Date.from(fechaVenc.atStartOfDay(ZoneId.systemDefault()).toInstant());
-						Medicamento m = new Medicamento(nomComun,nomCientifico, presentacion, precio, tipo, fortaleza, tempAlmac, cantExis, utilFechaProd , utilFechaVenc, codigo);
-						return m;
-					}
-
-
-					private Medicamento obtenerMedicamento(String nombre) 
-					{
-						for (Medicamento m : medicamentos) 
+						for (Venta venta : Farmacia.obtenerInstancia().getHistorialVentas()) 
 						{
-							if (m.getNomComun().equals(nombre)) 
+							String nombreMedicamento = "";
+							String codigoMedicamento = "";
+							int cantidadVendida = 0;
+							Date fechaCompra = venta.getFechaVenta();
+
+							if (venta instanceof VentaLibre) 
 							{
-								return m;
+								nombreMedicamento = ((VentaLibre) venta).getNombreDelMed();
+								codigoMedicamento = ((VentaLibre) venta).getCodigoDelMed();
+								cantidadVendida = ((VentaLibre) venta).getCantMedVendidos(); 
+								Farmacia.obtenerInstancia().getFacturas().add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
+							} 
+
+							else if (venta instanceof VentaConPrescripcion) 
+							{
+
+								nombreMedicamento = ((VentaConPrescripcion) venta).getNombreDelMed(); 
+								codigoMedicamento = ((VentaConPrescripcion) venta).getCodigoDelMed();
+								cantidadVendida = ((VentaConPrescripcion) venta).getCantMedVendidos();
+								Farmacia.obtenerInstancia().getFacturas().add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
+							} 
+
+							else if (venta instanceof VentaControlada) 
+							{
+								nombreMedicamento = ((VentaControlada) venta).getNombreDelMed(); 
+								codigoMedicamento = ((VentaControlada) venta).getCodigoDelMed();
+								cantidadVendida = ((VentaControlada) venta).getCantMedVendidos();
+								Farmacia.obtenerInstancia().getFacturas().add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
+							} 
+
+							else if (venta instanceof AlmohadillasSanitarias) 
+							{
+								AlmohadillasSanitarias alm = (AlmohadillasSanitarias) venta;
+								nombreMedicamento = "Almohadillas Sanitarias";
+								codigoMedicamento = "ALM-001";
+								cantidadVendida = alm.getCant();
+								Farmacia.obtenerInstancia().getFacturas().add(new Factura(nombreMedicamento, codigoMedicamento, cantidadVendida, fechaCompra));
 							}
 						}
-						throw new RuntimeException("Medicamento: " +nombre+ " no encontrado");
+						System.out.println("Se generaron " + Farmacia.obtenerInstancia().getFacturas().size() + " facturas desde el historial de ventas.");
 					}
 
-					
 
 
 
 
-					public void agregarNucleoFamiliar(String id, String direccion, ArrayList <Paciente> hombres, 
-							 ArrayList <Paciente> mujeres, Paciente jefe, boolean compraron)
-					{
-						NucleoFamiliar m = new NucleoFamiliar( id, direccion, hombres, mujeres, jefe, compraron);
-						nucleos.add(m);
-					}
 
+
+
+
+					// ====================================================Nucleos==================================================================================================
 					public void inicializarNucleosFamiliares() 
 					{
 
@@ -1133,61 +1333,61 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-001", 
 								"Calle 23, #45",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Daniel Hernández López"),
-										obtenerPacientePorNombre("Luis Quintero Torres")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Daniel Hernández López"),
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Luis Quintero Torres")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Adriana Méndez Núñez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Adriana Méndez Núñez")
 												)),
-												obtenerPacientePorNombre("Luis Quintero Torres"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Luis Quintero Torres"),
 												false
 								);
-						System.out.println("Nucleo cantidad de mujeres "+Farmacia.obtenerInstancia().nucleos.get(0).getMujeres().size());
+						
 
 						Farmacia.obtenerInstancia().agregarNucleoFamiliar(
 
 								"NUC-002", 
 								"Calle 12, #34",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Héctor Méndez Pérez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Héctor Méndez Pérez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Beatriz Núñez Ortiz"),
-												obtenerPacientePorNombre("Elena Quintero Rojas")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Beatriz Núñez Ortiz"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Elena Quintero Rojas")
 												)),
-												obtenerPacientePorNombre("Héctor Méndez Pérez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Héctor Méndez Pérez"),
 												false
 								);
-						System.out.println("Nucleo cantidad de mujeres "+Farmacia.obtenerInstancia().nucleos.get(1).getMujeres().size());
+						
 
 						Farmacia.obtenerInstancia().agregarNucleoFamiliar(
 
 								"NUC-003", 
 								"Calle 34, #56",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Raúl Bermúdez Espinoza")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Raúl Bermúdez Espinoza")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Camila Ortiz Pérez"),
-												obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Camila Ortiz Pérez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
 												)),
-										obtenerPacientePorNombre("Raúl Bermúdez Espinoza"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Raúl Bermúdez Espinoza"),
 												false
 								);
 
-						System.out.println("Nucleo cantidad de mujeres "+Farmacia.obtenerInstancia().nucleos.get(2).getMujeres().size());
+						
 
 						Farmacia.obtenerInstancia().agregarNucleoFamiliar(
 
 								"NUC-004", 
 								"Calle 45, #78",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Bruno Gutiérrez Juárez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Bruno Gutiérrez Juárez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Diana Pérez Quintero")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Diana Pérez Quintero")
 												)),
-												obtenerPacientePorNombre("Diana Pérez Quintero"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Diana Pérez Quintero"),
 												false
 								);
 
@@ -1197,12 +1397,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-005", 
 								"Calle 56, #90",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Diego Hernández Katz")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Diego Hernández Katz")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Gabriela Sánchez Torres")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Gabriela Sánchez Torres")
 												)),
-												obtenerPacientePorNombre("Diego Hernández Katz"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Diego Hernández Katz"),
 												false
 								);
 
@@ -1212,12 +1412,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-006", 
 								"Calle 67, #12",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Felipe Juárez Méndez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Felipe Juárez Méndez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Karina Cervantes Delgado")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Karina Cervantes Delgado")
 												)),
-												obtenerPacientePorNombre("Felipe Juárez Méndez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Felipe Juárez Méndez"),
 												false
 								);
 
@@ -1227,12 +1427,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-007", 
 								"Calle 78, #34",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Javier Ortiz Rojas")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Javier Ortiz Rojas")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Laura Delgado Espinoza")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Laura Delgado Espinoza")
 												)),
-												obtenerPacientePorNombre("Javier Ortiz Rojas"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Javier Ortiz Rojas"),
 												false
 								);
 
@@ -1242,12 +1442,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-008", 
 								"Calle 89, #56",
 								new ArrayList<>(Arrays.asList(
-										obtenerPacientePorNombre("Kevin Pérez Sánchez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Kevin Pérez Sánchez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Mariana Espinoza Fuentes")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Mariana Espinoza Fuentes")
 												)),
-												obtenerPacientePorNombre("Mariana Espinoza Fuentes"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Mariana Espinoza Fuentes"),
 												false
 								);
 
@@ -1256,12 +1456,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-009", 
 								"Calle 90, #78",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Manuel Rojas Aguilar")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Manuel Rojas Aguilar")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Natalia Fuentes Gutiérrez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Natalia Fuentes Gutiérrez")
 												)),
-												obtenerPacientePorNombre("Manuel Rojas Aguilar"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Manuel Rojas Aguilar"),
 												false
 								);
 
@@ -1271,12 +1471,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-010", 
 								"Calle 11, #90",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Javier Ortiz Rojas")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Javier Ortiz Rojas")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Olivia Gutiérrez Hernández")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Olivia Gutiérrez Hernández")
 												)),
-												obtenerPacientePorNombre("Olivia Gutiérrez Hernández"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Olivia Gutiérrez Hernández"),
 												false
 								);
 
@@ -1286,12 +1486,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-011", 
 								"Calle 22, #13",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Oscar Torres Cervantes")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Oscar Torres Cervantes")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Patricia Hernández Ibarra")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Patricia Hernández Ibarra")
 												)),
-												obtenerPacientePorNombre("Patricia Hernández Ibarra"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Patricia Hernández Ibarra"),
 												false
 								);
 
@@ -1301,12 +1501,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-012", 
 								"Calle 33, #24",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Pablo Aguilar Delgado")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Pablo Aguilar Delgado")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Raquel Ibarra Juárez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Raquel Ibarra Juárez")
 												)),
-												obtenerPacientePorNombre("Pablo Aguilar Delgado"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Pablo Aguilar Delgado"),
 												false
 								);
 
@@ -1316,12 +1516,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-013", 
 								"Calle 44, #35",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Raúl Bermúdez Espinoza")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Raúl Bermúdez Espinoza")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Sofía Juárez Katz")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Sofía Juárez Katz")
 												)),
-												obtenerPacientePorNombre("Raúl Bermúdez Espinoza"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Raúl Bermúdez Espinoza"),
 												false
 								);
 
@@ -1331,12 +1531,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-014", 
 								"Calle 55, #46",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Sergio Cervantes Fuentes")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Sergio Cervantes Fuentes")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Tatiana Katz López")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Tatiana Katz López")
 												)),
-												obtenerPacientePorNombre("Sergio Cervantes Fuentes"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Sergio Cervantes Fuentes"),
 												false
 								);
 
@@ -1346,12 +1546,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-015", 
 								"Calle 66, #57",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Tomás Delgado Gutiérrez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Tomás Delgado Gutiérrez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Valeria López Méndez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Valeria López Méndez")
 												)),
-												obtenerPacientePorNombre("Tomás Delgado Gutiérrez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Tomás Delgado Gutiérrez"),
 												false
 								);
 
@@ -1361,12 +1561,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-016", 
 								"Calle 77, #68",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Víctor Espinoza Hernández")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Víctor Espinoza Hernández")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Jimena Bermúdez Cervantes")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Jimena Bermúdez Cervantes")
 												)),
-												obtenerPacientePorNombre("Víctor Espinoza Hernández"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Víctor Espinoza Hernández"),
 												false
 								);
 
@@ -1376,12 +1576,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-017", 
 								"Calle 88, #79",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Adrián Fuentes Ibarra")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Adrián Fuentes Ibarra")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Helena Torres Aguilar")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Helena Torres Aguilar")
 												)),
-												obtenerPacientePorNombre("Adrián Fuentes Ibarra"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Adrián Fuentes Ibarra"),
 												false
 								);
 
@@ -1391,12 +1591,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-018", 
 								"Calle 99, #80",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Bruno Gutiérrez Juárez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Bruno Gutiérrez Juárez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Sofía Juárez Katz")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Sofía Juárez Katz")
 												)),
-												obtenerPacientePorNombre("Bruno Gutiérrez Juárez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Bruno Gutiérrez Juárez"),
 												false
 								);
 
@@ -1405,12 +1605,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-019", 
 								"Calle 10, #91",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Eduardo Ibarra López")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Eduardo Ibarra López")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Beatriz Núñez Ortiz")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Beatriz Núñez Ortiz")
 												)),
-												obtenerPacientePorNombre("Eduardo Ibarra López"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Eduardo Ibarra López"),
 												false
 								);
 
@@ -1419,12 +1619,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-020", 
 								"Calle 21, #02",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Fernando Katz Núñez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Fernando Katz Núñez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Tatiana Katz López")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Tatiana Katz López")
 												)),
-												obtenerPacientePorNombre("Fernando Katz Núñez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Fernando Katz Núñez"),
 												false
 								);
 
@@ -1434,12 +1634,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-021", 
 								"Calle 32, #13",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Diego Hernández Katz")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Diego Hernández Katz")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Elena Quintero Rojas")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Elena Quintero Rojas")
 												)),
-												obtenerPacientePorNombre("Diego Hernández Katz"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Diego Hernández Katz"),
 												false
 								);
 
@@ -1449,12 +1649,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-022", 
 								"Calle 43, #24",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Sergio Cervantes Fuentes")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Sergio Cervantes Fuentes")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Fernanda Rojas Sánchez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Fernanda Rojas Sánchez")
 												)),
-												obtenerPacientePorNombre("Sergio Cervantes Fuentes"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Sergio Cervantes Fuentes"),
 												false
 								);
 
@@ -1464,12 +1664,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-023", 
 								"Calle 54, #35",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Luis Quintero Torres")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Luis Quintero Torres")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Helena Torres Aguilar")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Helena Torres Aguilar")
 												)),
-												obtenerPacientePorNombre("Luis Quintero Torres"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Luis Quintero Torres"),
 												false
 								);
 
@@ -1479,12 +1679,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-024", 
 								"Calle 65, #46",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Carlos Fuentes Gutiérrez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Carlos Fuentes Gutiérrez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Sofía Juárez Katz")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Sofía Juárez Katz")
 												)),
-												obtenerPacientePorNombre("Carlos Fuentes Gutiérrez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Carlos Fuentes Gutiérrez"),
 												false
 								);
 
@@ -1494,12 +1694,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-025", 
 								"Calle 76, #57",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Alejandro Bermúdez Cervantes")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Alejandro Bermúdez Cervantes")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Mariana Espinoza Fuentes")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Mariana Espinoza Fuentes")
 												)),
-												obtenerPacientePorNombre("Alejandro Bermúdez Cervantes"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Alejandro Bermúdez Cervantes"),
 												false
 								);
 
@@ -1509,12 +1709,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-026", 
 								"Calle 87, #68",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Gabriel López Ortiz")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Gabriel López Ortiz")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Laura Delgado Espinoza")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Laura Delgado Espinoza")
 												)),
-												obtenerPacientePorNombre("Gabriel López Ortiz"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Gabriel López Ortiz"),
 												false
 								);
 
@@ -1524,12 +1724,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-027", 
 								"Calle 98, #79",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Javier Ortiz Rojas")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Javier Ortiz Rojas")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Camila Ortiz Pérez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Camila Ortiz Pérez")
 												)),
-												obtenerPacientePorNombre("Javier Ortiz Rojas"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Javier Ortiz Rojas"),
 												false
 								);
 
@@ -1539,12 +1739,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-028", 
 								"Calle 09, #80",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Benjamín Delgado Espinoza")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Benjamín Delgado Espinoza")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
 												)),
-												obtenerPacientePorNombre("Isabel Aguilar Bermúdez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Isabel Aguilar Bermúdez"),
 												false
 								);
 
@@ -1554,12 +1754,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-029", 
 								"Calle 20, #91",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Daniel Hernández López")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Daniel Hernández López")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Diana Pérez Quintero")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Diana Pérez Quintero")
 												)),
-												obtenerPacientePorNombre("Diana Pérez Quintero"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Diana Pérez Quintero"),
 												false
 								);
 
@@ -1569,12 +1769,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-030", 
 								"Calle 31, #02",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Héctor Méndez Pérez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Héctor Méndez Pérez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Elena Quintero Rojas")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Elena Quintero Rojas")
 												)),
-												obtenerPacientePorNombre("Elena Quintero Rojas"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Elena Quintero Rojas"),
 												false
 								);
 
@@ -1584,12 +1784,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-031", 
 								"Calle 42, #13",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Kevin Pérez Sánchez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Kevin Pérez Sánchez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Fernanda Rojas Sánchez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Fernanda Rojas Sánchez")
 												)),
-												obtenerPacientePorNombre("Fernanda Rojas Sánchez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Fernanda Rojas Sánchez"),
 												false
 								);
 
@@ -1599,12 +1799,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-032", 
 								"Calle 53, #24",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Oscar Torres Cervantes")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Oscar Torres Cervantes")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Gabriela Sánchez Torres")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Gabriela Sánchez Torres")
 												)),
-												obtenerPacientePorNombre("Gabriela Sánchez Torres"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Gabriela Sánchez Torres"),
 												false
 								);
 
@@ -1614,12 +1814,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-033", 
 								"Calle 64, #35",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Manuel Rojas Aguilar")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Manuel Rojas Aguilar")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Helena Torres Aguilar")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Helena Torres Aguilar")
 												)),
-												obtenerPacientePorNombre("Helena Torres Aguilar"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Helena Torres Aguilar"),
 												false
 								);
 
@@ -1629,12 +1829,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-034", 
 								"Calle 75, #46",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Sergio Cervantes Fuentes")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Sergio Cervantes Fuentes")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
 												)),
-												obtenerPacientePorNombre("Isabel Aguilar Bermúdez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Isabel Aguilar Bermúdez"),
 												false
 								);
 
@@ -1643,12 +1843,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-035", 
 								"Calle 86, #57",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Ignacio Núñez Quintero")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Ignacio Núñez Quintero")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Jimena Bermúdez Cervantes")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Jimena Bermúdez Cervantes")
 												)),
-												obtenerPacientePorNombre("Jimena Bermúdez Cervantes"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Jimena Bermúdez Cervantes"),
 												false
 								);
 
@@ -1658,12 +1858,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-036", 
 								"Calle 97, #68",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Alejandro Bermúdez Cervantes")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Alejandro Bermúdez Cervantes")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Karina Cervantes Delgado")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Karina Cervantes Delgado")
 												)),
-												obtenerPacientePorNombre("Karina Cervantes Delgado"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Karina Cervantes Delgado"),
 												false
 								);
 
@@ -1673,12 +1873,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-037", 
 								"Calle 08, #79",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Pablo Aguilar Delgado")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Pablo Aguilar Delgado")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Laura Delgado Espinoza")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Laura Delgado Espinoza")
 												)),
-												obtenerPacientePorNombre("Laura Delgado Espinoza"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Laura Delgado Espinoza"),
 												false
 								);
 
@@ -1688,12 +1888,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-038", 
 								"Calle 19, #80",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Carlos Fuentes Gutiérrez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Carlos Fuentes Gutiérrez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Mariana Espinoza Fuentes")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Mariana Espinoza Fuentes")
 												)),
-												obtenerPacientePorNombre("Mariana Espinoza Fuentes"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Mariana Espinoza Fuentes"),
 												false
 								);
 
@@ -1703,12 +1903,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-039", 
 								"Calle 30, #91",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Javier Ortiz Rojas")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Javier Ortiz Rojas")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Natalia Fuentes Gutiérrez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Natalia Fuentes Gutiérrez")
 												)),
-												obtenerPacientePorNombre("Natalia Fuentes Gutiérrez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Natalia Fuentes Gutiérrez"),
 												false
 								);
 
@@ -1717,29 +1917,16 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								"NUC-040", 
 								"Calle 96, #57",
 								new ArrayList<Paciente>(Arrays.asList(
-										obtenerPacientePorNombre("Tomás Delgado Gutiérrez")
+										Farmacia.obtenerInstancia().obtenerPacientePorNombre("Tomás Delgado Gutiérrez")
 										)),
 										new ArrayList<Paciente>(Arrays.asList(
-												obtenerPacientePorNombre("Valeria López Méndez")
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Valeria López Méndez")
 												)),
-												obtenerPacientePorNombre("Valeria López Méndez"),
+												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Valeria López Méndez"),
 												false
 								);
+						System.out.println("Total de Núcleos: " + Farmacia.obtenerInstancia().getNucleos());
 					}
 
-					@Override
-					public long cantidadDeAlmohadillas() 
-					{
-						return getCantidadDeAlmohadillasSanitarias();
-					}
-
-										
-					// En proceso de codificacion
-					/*
-			public void actualizarValores()
-			{
-				for(Medicamento m: medicamentos)
-					for(Facturas)
-			}
-					 */
+					//===================================================================================================================================================================================			
 }

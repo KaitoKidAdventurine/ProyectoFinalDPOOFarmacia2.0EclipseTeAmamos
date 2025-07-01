@@ -12,7 +12,8 @@ public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento
 
 	public MedicamentoTableModel() 
 	{
-		super(new String[] {
+		super(new String[] 
+		{
 				"Nombre Común", 
 				"Nombre Científico", 
 				"Presentación",

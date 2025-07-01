@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 import LogicaUtiles.Validaciones;
 
-public class RecetaMedica {
+public class RecetaMedica 
+{
 	private Date fechaDeExpedi;
 	private String nombreMed;
 	private String idMed;

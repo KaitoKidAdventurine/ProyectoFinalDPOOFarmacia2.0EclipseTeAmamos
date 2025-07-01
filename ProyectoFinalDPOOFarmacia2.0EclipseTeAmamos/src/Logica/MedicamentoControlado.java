@@ -1,7 +1,6 @@
 package Logica;
 
 import java.util.Date;
-
 import Logica.Medicamento;
 import LogicaUtiles.Validaciones;
 

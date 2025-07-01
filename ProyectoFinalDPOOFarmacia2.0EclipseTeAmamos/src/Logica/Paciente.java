@@ -13,15 +13,8 @@ public class Paciente {
 	protected Date fechaNacimiento;
 	protected char genero;
 	protected NucleoFamiliar nucleo;
-	protected List<Tarjeton> tarjetones;
+	protected ArrayList<Tarjeton> tarjetones;
 	protected boolean esControlado;
-
-
-	public Paciente() 
-	{
-		this.tarjetones = new ArrayList<Tarjeton>();
-		this.esControlado = false;
-	}
 
 
 	public Paciente(String nombre, String ci, String direccion, Date fechaNacimiento, char genero) 
@@ -35,12 +28,31 @@ public class Paciente {
 		this.esControlado = false;
 	}
 
+	public Paciente() 
+	{
+		this.tarjetones = new ArrayList<Tarjeton>();
+		this.esControlado = false;
+		setNucleo(nucleo);
+	}
+
+
+	public void setFechaNacimiento(Date fechaNacimiento) 
+	{
+		if (fechaNacimiento == null) 
+		{
+			throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
+		}
+		this.fechaNacimiento = fechaNacimiento;
+	}
+
+
+
 
 	public void agregarTarjeton(Tarjeton tarjeton) 
 	{
 		if (tarjeton != null) 
 		{
-			if (this.tarjetones.size() <= 3) 
+			if (tarjetones.size() <= 3) 
 			{
 				this.tarjetones.add(tarjeton);
 				this.esControlado = true;
@@ -50,13 +62,10 @@ public class Paciente {
 		}
 		else        
 			throw new IllegalArgumentException("El tarjetón no puede ser nulo");
-
-
-
 	}
 
 
-	public List<Tarjeton> obtenerTarjetones() 
+	public ArrayList<Tarjeton> obtenerTarjetones() 
 	{
 		return new ArrayList<Tarjeton>(tarjetones);
 	}
@@ -74,18 +83,19 @@ public class Paciente {
 
 	public void setNombre(String nombre) 
 	{
-
 		if(Validaciones.noEstaVacio(nombre))
 			if(Validaciones.noTieneNumeros(nombre))
 				if(Validaciones.noTieneCaracteresEsp(nombre))
-					this.nombre = nombre;
+					if(Validaciones.esMayusculaLaPrimeraLetra(nombre))
+						this.nombre = nombre;
+					else
+						throw new IllegalArgumentException("El campo: nombre del paciente, presenta minúscula en el primer caracter");
 				else
-					throw new IllegalArgumentException("El campo: nombre comun del medicamento, presenta caracteres especiales");
+					throw new IllegalArgumentException("El campo: nombre del paciente, presenta caracteres especiales");
 			else
-				throw new IllegalArgumentException("El campo: nombre comun del medicamento, presenta números");
+				throw new IllegalArgumentException("El campo: nombre del paciente, presenta números");
 		else
-			throw new IllegalArgumentException("El campo: nombre comun del medicamento, se encuentra vacío");
-
+			throw new IllegalArgumentException("El campo: nombre del paciente, se encuentra vacío");
 	}
 
 	public String getCi() 
@@ -95,27 +105,26 @@ public class Paciente {
 
 	public void setCi(String ci) 
 	{
-		if (ci == null || ci.length() != 11) 
-		{
-			throw new IllegalArgumentException("El CI debe tener exactamente 11 dígitos");
-		}
-
 		if(Validaciones.validarCI(ci))
-			this.ci = ci;
+			{
+				this.ci = ci;
+			}
+		else
+			throw new IllegalArgumentException("El campo: carnet de indentidad, se encuentra vacío" + ci);
 	}
+	
 
-	public String getDireccion() 
-	{
-		return direccion;
-	}
+	
 
 	public void setDireccion(String direccion) 
 	{
-		if (direccion == null || direccion.trim().isEmpty()) 
-		{
-			throw new IllegalArgumentException("La dirección no puede estar vacía");
-		}
-		this.direccion = direccion;
+		if (direccion != null || direccion.trim().isEmpty()) 
+			if(Validaciones.direccion(direccion))
+				this.direccion = direccion;
+			else
+				throw new IllegalArgumentException("La dirección presenta carcteres especiales");
+		else 
+			throw new IllegalArgumentException("La dirección del paciente no puede estar vacía");
 	}
 
 	public Date getFechaNacimiento() 
@@ -123,14 +132,7 @@ public class Paciente {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) 
-	{
-		if (fechaNacimiento == null) 
-		{
-			throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
-		}
-		this.fechaNacimiento = fechaNacimiento;
-	}
+
 
 	public char getGenero() 
 	{
@@ -139,21 +141,35 @@ public class Paciente {
 
 	public void setGenero(char genero) 
 	{
-		if (genero != 'M' && genero != 'm' && genero != 'F' && genero != 'f') 
-		{
+		if (genero == 'M' || genero == 'm' || genero == 'F' || genero == 'f') 
+			this.genero = Character.toUpperCase(genero);
+		else
 			throw new IllegalArgumentException("Género inválido: debe ser M o F");
-		}
-		this.genero = Character.toUpperCase(genero);
 	}
 
 	public NucleoFamiliar getNucleo() 
 	{
 		return nucleo;
 	}
-
+	public String getDireccion() 
+	{
+		return direccion;
+	}
+	
 	public void setNucleo(NucleoFamiliar nucleo) 
 	{
+		//if(nucleo != null)
+		//{
+		//	nucleo.setCompraron(nucleo.getCompraron());
+		//	nucleo.setDireccion(nucleo.getDireccion());
+		//	nucleo.setHombres(nucleo.getHombres());
+		//	nucleo.setMujeres(nucleo.getMujeres());
+		//	nucleo.setId(nucleo.getId());
+		//	nucleo.setJefe(nucleo.getJefe());
 		this.nucleo = nucleo;
+		//}
+		//else 
+		//	throw new IllegalArgumentException("El campo: núcleo del paciente se encuentra vacío");
 	}
 
 	public boolean esControlado() 
