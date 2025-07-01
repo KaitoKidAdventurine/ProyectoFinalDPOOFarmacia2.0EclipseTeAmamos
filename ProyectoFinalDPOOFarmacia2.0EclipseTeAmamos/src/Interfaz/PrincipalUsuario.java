@@ -1736,6 +1736,6 @@ public class PrincipalUsuario extends JFrame {
 				Farmacia.obtenerInstancia().inicializarDatosPrueba();
 
 				// LLENAR EL MODELO CON LOS DATOS
-				medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().obtenerMedicamentos());
+				medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().getMedicamentos());
 	}
 }

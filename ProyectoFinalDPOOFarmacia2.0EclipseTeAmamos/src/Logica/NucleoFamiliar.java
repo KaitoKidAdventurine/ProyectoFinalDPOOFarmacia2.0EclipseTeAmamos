@@ -32,7 +32,10 @@ public class NucleoFamiliar
 
 	public void setCompraron(boolean compraron) 
 	{
-		this.compraron = compraron;
+		if(compraron == true || compraron == false)
+			this.compraron = compraron;
+		else
+			throw new IllegalArgumentException("El campo: compraron tiene que ser si o no");
 	}
 
 	public String getId() 
@@ -44,27 +47,25 @@ public class NucleoFamiliar
 	public void setId(String id) 
 	{
 		if(Validaciones.noEstaVacio(id))
-
 			this.id = id;
-
 		else
 			throw new IllegalArgumentException("El campo: id, se encuentra vacío");
 	}
 
 	public String getDireccion() 
 	{
-
 		return direccion;
 	}
 
 	public void setDireccion(String direccion) 
 	{
 		if(Validaciones.noEstaVacio(direccion))
-
-			this.direccion = direccion;
-
+			if(Validaciones.direccion(direccion))
+				this.direccion = direccion;
+			else
+				throw new IllegalArgumentException("El campo: dirección, tiene caracteres especiales: "+ direccion );
 		else
-			throw new IllegalArgumentException("El campo: dirección, se encuentra vacío");
+			throw new IllegalArgumentException("El campo: dirección, se encuentra vacío: " + direccion);
 	}
 	
 	public ArrayList<Paciente> getHombres() 
@@ -105,6 +106,12 @@ public class NucleoFamiliar
 
 	public void setJefe(Paciente jefe) 
 	{
+		jefe.setCi(jefe.getCi());
+		jefe.setDireccion(jefe.getDireccion());
+		jefe.setFechaNacimiento(jefe.getFechaNacimiento());
+		jefe.setGenero(jefe.getGenero());
+		jefe.setNombre(jefe.getNombre());
+		jefe.setNucleo(jefe.getNucleo());
 		this.jefe = jefe;
 	}
 

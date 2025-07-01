@@ -15,6 +15,12 @@ public class Validaciones
 		return texto != null && !texto.trim().isEmpty(); 
 	}
 
+	public static boolean esMayusculaLaPrimeraLetra(String texto)
+	{
+		boolean esValido = true;
+		char primLetra = texto.charAt(0);
+		return Character.isUpperCase(primLetra);
+	}
 
 	public static boolean noTieneNumeros(String texto)
 	{
@@ -281,6 +287,18 @@ public class Validaciones
 		return salida;
 	}
 	
+	public static boolean seRepiteElCarnet(String ci, ArrayList<String> carnets)
+	{
+		boolean salida = false; 
+		for(String c: carnets)
+			if(c.trim().equals(ci))
+			{
+				salida = true;
+			}
+		System.out.println("CI: " + ci);
+		return salida;
+	}
+	
 	
 	public static boolean validarCI(String ci) 
 	{
@@ -378,7 +396,7 @@ public class Validaciones
 		}
 	}
 	
-	// Puse minimo 120 annos como el maximo de tiempo que una persona puede vivir.
+	// Puse maximo 120 annos como el maximo de tiempo que una persona puede vivir.
 	private static void validarAnnoMinimo(int annoCompleto) 
 	{
 		if (annoCompleto < 1905) 

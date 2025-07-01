@@ -12,7 +12,11 @@ import modelos.MedicamentoTableModel;
 import modelos.MedicamentosComboBoxModel;
 import modelos.MedicamentosMasVendidosTableModel;
 import modelos.ModeloPrincipalTableModel;
+
+import modelos.TablaDePacientes;
+
 import modelos.PacientesComboBoxModel;
+
 import modelos.TarjetonesIncumplidosTableModel;
 
 import javax.swing.table.DefaultTableCellRenderer;
@@ -114,7 +118,7 @@ public class PrincipalAdmin extends JFrame
 	private int posY;
 	private Point e;
 	private JTable tablaMedicamentos;
-	private MedicamentoTableModel medicamentoTableModel;
+	private MedicamentoTableModel medicamentoTableModel;	
 	private JScrollPane scrollPane;
 	private JTextField textNombreComun;
 	private JTextField textNombreCientifico;
@@ -135,6 +139,7 @@ public class PrincipalAdmin extends JFrame
 	private JTable tablaTarjetones;
 	private TarjetonesIncumplidosTableModel tarjetonesModel;
 	private JTextField textcodigoDelMed;
+	private TablaDePacientes tablaPacientes;
 	private JTable tablaCompras;
 	private JTextField txtTotal;
 	private JTextField txtEfectivo;
@@ -148,6 +153,7 @@ public class PrincipalAdmin extends JFrame
 	private JComboBox<String> comboBoxPacientes;
 	private JComboBox<String> comboBoxMedicamentos;
 	private JComboBox <Integer>comboBoxCantidad;
+
 
 	/**
 	 * Launch the application.
@@ -191,7 +197,8 @@ public class PrincipalAdmin extends JFrame
 		textCantidad.setText("");
 	}
 	
-	private void actualizarTotal(JTextField txtTotal, ComprasTableModel comprasTableModel) {
+	private void actualizarTotal(JTextField txtTotal, ComprasTableModel comprasTableModel) 
+	{
 	    double total = 0.0;
 
 	    for (int i = 0; i < comprasTableModel.getRowCount(); i++) {
@@ -284,11 +291,13 @@ public class PrincipalAdmin extends JFrame
 				System.exit(0);
 			}
 			@Override
-			public void mouseEntered(MouseEvent arg0) {
+			public void mouseEntered(MouseEvent arg0) 
+			{
 				UtilesInterfaz.ajustarImagen(cruz, "src/iconos/exit1.png");
 			}
 			@Override
-			public void mouseExited(MouseEvent arg0) {
+			public void mouseExited(MouseEvent arg0) 
+			{
 				UtilesInterfaz.ajustarImagen(cruz, "src/iconos/exit0.png");
 			}
 		});
@@ -911,7 +920,7 @@ public class PrincipalAdmin extends JFrame
 		Farmacia.obtenerInstancia().inicializarDatosPrueba();
 
 		// LLENAR EL MODELO CON LOS DATOS
-		medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().obtenerMedicamentos());
+		medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().getMedicamentos());
 
 
 		JPanel medicamentos = new JPanel();
@@ -960,7 +969,7 @@ public class PrincipalAdmin extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				medicamentoTableModel.actualizar(
-						Farmacia.obtenerInstancia().obtenerMedicamentos()
+						Farmacia.obtenerInstancia().getMedicamentos()
 
 						);
 			}
@@ -1558,12 +1567,26 @@ public class PrincipalAdmin extends JFrame
 							txtCantidad, Exped, Venc, codigoDelMed 
 							);
 
-					Medicamento m = Farmacia.obtenerInstancia().obtenerMed(txtNombreComun, txtNombreCientifico, txtPresentacion,
+					Medicamento m = Farmacia.obtenerInstancia().agregarMed(txtNombreComun, txtNombreCientifico, txtPresentacion,
 							txtPrecio, txtTipo, txtFortaleza, txtTemperatura,
 							txtCantidad, Exped, Venc, codigoDelMed);
 
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					
 					// Actualizar tabla
-					medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().obtenerMedicamentos());
+					medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().getMedicamentos());
 
 
 					// Mensaje de éxito
@@ -1977,8 +2000,19 @@ public class PrincipalAdmin extends JFrame
 		tablaTarjetones.setModel(tarjetonesModel);
 		tarjetonesModel.actualizar(Farmacia.obtenerInstancia().registroDeIncumplimiento());
 
+
+		JLabel lblNewLabel_5 = new JLabel("New label"); 
+		lblNewLabel_5.setBounds(307, 16, 69, 20); 
+		panel_7.add(lblNewLabel_5);
+		
+		JPanel VentaPrescripcion = new JPanel();
+		pestanas.addTab("New tab", null, VentaPrescripcion, null);
+		
+		JPanel VentaLibre = new JPanel();
+
 		final JPanel VentaLibre = new JPanel();
 		VentaLibre.setBackground(Color.WHITE);
+
 		pestanas.addTab("New tab", null, VentaLibre, null);
 		VentaLibre.setLayout(null);
 
@@ -2560,7 +2594,8 @@ public class PrincipalAdmin extends JFrame
 			        int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
 
 			        // Validar que la cantidad sea mayor que cero
-			        if (cantidadSeleccionada <= 0) {
+			        if (cantidadSeleccionada <= 0) 
+			        {
 			            JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
 			            return;
 			        }
@@ -2980,6 +3015,7 @@ public class PrincipalAdmin extends JFrame
 
 		JPanel VentaControlada = new JPanel();
 		pestanas.addTab("New tab", null, VentaControlada, null);
+
 		VentaControlada.setLayout(null);
 
 		JPanel panel_19 = new JPanel();
@@ -3030,6 +3066,7 @@ public class PrincipalAdmin extends JFrame
 		lblVentaPrescripcion.setBounds(79, 0, 510, 57);
 		panel_20.add(lblVentaPrescripcion);
 
+
 		JPanel usuarios = new JPanel();
 		pestanas.addTab("New tab", null, usuarios, null);
 		usuarios.setLayout(null);
@@ -3044,6 +3081,21 @@ public class PrincipalAdmin extends JFrame
 		lblUsuarios_1.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		lblUsuarios_1.setBounds(12, 0, 205, 43);
 		panel_16.add(lblUsuarios_1);
+				
+		// Inicialización del modelo
+		TablaDePacientes modeloTabla = new TablaDePacientes();
 
+		// Inicialización de los datos
+		Farmacia.obtenerInstancia().inicializarDatosPrueba();
+		modeloTabla.actualizar(Farmacia.obtenerInstancia().getPacientes());
+
+		// Creacion de la tabla con el modelo
+		JTable tablaPacientes = new JTable(modeloTabla);
+		tablaPacientes.setRowHeight(28);
+
+		// Agregar al JScrollPane
+		JScrollPane scrollPane_5 = new JScrollPane(tablaPacientes);
+		scrollPane_5.setBounds(0, 395, 1005, 255);
+		usuarios.add(scrollPane_5);
 	}
 }

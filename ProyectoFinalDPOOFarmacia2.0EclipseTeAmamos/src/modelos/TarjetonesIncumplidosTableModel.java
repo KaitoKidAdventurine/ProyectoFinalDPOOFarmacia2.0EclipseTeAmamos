@@ -12,8 +12,10 @@ public class TarjetonesIncumplidosTableModel extends ModeloPrincipalTableModel<T
 
     private static final long serialVersionUID = 1L;
 
-    public TarjetonesIncumplidosTableModel() {
-        super(new String[] {
+    public TarjetonesIncumplidosTableModel() 
+    {
+        super(new String[] 
+        {
             "Nombre Paciente",
             "Dirección",
             "Fecha Expedición", 

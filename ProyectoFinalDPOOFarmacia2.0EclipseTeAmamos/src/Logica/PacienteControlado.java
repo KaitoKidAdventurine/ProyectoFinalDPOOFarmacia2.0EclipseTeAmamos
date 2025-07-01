@@ -41,10 +41,7 @@ public class PacienteControlado extends Paciente
 			throw new IllegalArgumentException("El campo: los , se encuentra vacío");
 	}
 
-	public void agregarPatologia()
-	{
-		
-	}
+	
 	
 	public ArrayList<Tarjeton> obtenerTarjetones()
 	{

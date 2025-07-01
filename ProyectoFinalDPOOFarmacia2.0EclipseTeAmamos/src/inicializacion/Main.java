@@ -1,13 +1,18 @@
-/*package inicializacion;
+package inicializacion;
 
 import java.awt.EventQueue;
 import java.util.Locale;
+
 import javax.swing.JOptionPane;
+
 import Interfaz.Login;
+import Logica.Farmacia;
 import LogicaUtiles.Validaciones;
 
-public class Main {
-    public static void main(String[] args) {
+public class Main 
+{
+    public static void main(String[] args) 
+    {
         // Configurar localización
         Locale.setDefault(new Locale("es", "ES"));
         
@@ -40,17 +45,22 @@ public class Main {
         }
     }
     
+    
     private static void inicializarHilo() {
         new Thread(new Runnable() {
             public void run() {
-                try {
-                    // Inicializar datos de la base de datos
-                    InicializadoraBaseDatos.inicializarTodo();
-                } catch(Exception e) {
+                try 
+                {
+                 
+                    Farmacia.obtenerInstancia().inicializarDatosPrueba();
+                } 
+                
+                catch(Exception e) 
+                {
                     e.printStackTrace();
                     // No mostramos error al usuario para no interrumpir su experiencia
                 }
             }
         }).start();
     }
-}*/
+}
