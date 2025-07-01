@@ -91,7 +91,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 	{
 		long cantidad = calcularCantidad();
 		//if(cantidad < 0)
-			//cantidad = 0;
+		//cantidad = 0;
 		return cantidad;
 
 	}
@@ -543,7 +543,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						medicamentos.add(m);
 					}
 
-
 					public void agregarPaciente(String nombre, String ci, char genero, LocalDate fechaNac, String direccion) 
 					{
 						Paciente p = new Paciente();
@@ -610,18 +609,18 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						return pacientes;
 					}
 
-					
+
 					public ArrayList<String> getCarnets() 
 					{
 						return carnets;
 					}
-					
+
 					public ArrayList<String> agregarCarnet(String ci)
 					{
 						carnets.add(ci);
 						return carnets;
 					}
-					
+
 					public ArrayList<MedicamentoControlado> getMedicamentoControlado()
 					{
 						return medicamentoControlado;
@@ -658,8 +657,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						tarjetones.add(tarjeton);
 					}
 
-// ====================================================Buscadores============================================================================================================================
-					
+					// ====================================================Buscadores============================================================================================================================
+
 					private Medicamento obtenerMedicamento(String nombre) 
 					{
 						for (Medicamento m : medicamentos) 
@@ -683,8 +682,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						}
 						throw new RuntimeException("Paciente no encontrado: " + nombre);
 					}
-					
-//================================================================================================================================================================================
+
+					//================================================================================================================================================================================
 
 					public Medicamento agregarMed(String nomComun, String nomCientifico, String presentacion,
 							double precio, String tipo, String fortaleza, double tempAlmac,
@@ -696,7 +695,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						return m;
 					}
 
-					
+
 
 
 
@@ -722,39 +721,39 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						for(Medicamento m: medicamentos)
 							for(Venta v: historialVentas)
 								if(v instanceof VentaConPrescripcion)
-								if(m.getNomComun().equals(((VentaConPrescripcion) v).getNombreDelMed()))
-								{
-									long valorFact = ((VentaConPrescripcion) v).getCantMedVendidos();
-									long valorMed = m.getCantExis();
-									long valor = valorMed - valorFact;
-									m.setCantExis(valor);  
-								}
-						
+									if(m.getNomComun().equals(((VentaConPrescripcion) v).getNombreDelMed()))
+									{
+										long valorFact = ((VentaConPrescripcion) v).getCantMedVendidos();
+										long valorMed = m.getCantExis();
+										long valor = valorMed - valorFact;
+										m.setCantExis(valor);  
+									}
+
 						for(Medicamento m: medicamentos)
 							for(Venta v: historialVentas)
 								if(v instanceof VentaLibre)
-								if(m.getNomComun().equals(((VentaLibre) v).getNombreDelMed()))
-								{
-									long valorFact = ((VentaLibre) v).getCantMedVendidos();
-									long valorMed = m.getCantExis();
-									long valor = valorMed - valorFact;
-									m.setCantExis(valor);  
-								}
-						
+									if(m.getNomComun().equals(((VentaLibre) v).getNombreDelMed()))
+									{
+										long valorFact = ((VentaLibre) v).getCantMedVendidos();
+										long valorMed = m.getCantExis();
+										long valor = valorMed - valorFact;
+										m.setCantExis(valor);  
+									}
+
 
 						for(MedicamentoControlado mc: medicamentoControlado)
 							for(Venta v: historialVentas)
 							{
 								if(v instanceof VentaControlada)
-									
-								if(mc.getNomComun().equals(((VentaControlada) v).getNombreDelMed()))
-								{
-									long valorFact = ((VentaControlada) v).getCantMedVendidos();
-									long valorMed = mc.getCantExis();
-									long valor = valorMed - valorFact;
-									mc.setCantExis(valor);  
-								}
-					
+
+									if(mc.getNomComun().equals(((VentaControlada) v).getNombreDelMed()))
+									{
+										long valorFact = ((VentaControlada) v).getCantMedVendidos();
+										long valorMed = mc.getCantExis();
+										long valor = valorMed - valorFact;
+										mc.setCantExis(valor);  
+									}
+
 							}
 					}
 
@@ -769,7 +768,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 							}		
 					}	 
 
-//=========================================================Pacientes==================================================================================================================
+					//=========================================================Pacientes==================================================================================================================
 
 
 
@@ -801,7 +800,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						Farmacia.obtenerInstancia().agregarPaciente("Diego Hernández Katz", "87032017820", 'M', LocalDate.of(1987, 3, 20), "Calle 54, #35");
 						Farmacia.obtenerInstancia().agregarPaciente("Eduardo Ibarra López", "92042323426", 'M', LocalDate.of(1992, 4, 23), "Calle 65, #46");
 						Farmacia.obtenerInstancia().agregarPaciente("Felipe Juárez Méndez", "05020968485", 'M', LocalDate.of(1981, 5, 26), "Calle 76, #57");
-						
+
 						// Mujeres (20)
 						Farmacia.obtenerInstancia().agregarPaciente("Adriana Méndez Núñez", "89062934537", 'F', LocalDate.of(1989, 6, 29), "Calle 87, #68");
 						Farmacia.obtenerInstancia().agregarPaciente("Beatriz Núñez Ortiz", "94080110153", 'F', LocalDate.of(1994, 8, 1), "Calle 98, #79");
@@ -823,9 +822,9 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						Farmacia.obtenerInstancia().agregarPaciente("Sofía Juárez Katz", "97041818911", 'F', LocalDate.of(1997, 4, 18), "Calle 74, #35");
 						Farmacia.obtenerInstancia().agregarPaciente("Tatiana Katz López", "83052114517", 'F', LocalDate.of(1983, 5, 21), "Calle 85, #46");
 						Farmacia.obtenerInstancia().agregarPaciente("Valeria López Méndez", "93062410113", 'F', LocalDate.of(1993, 6, 24), "Calle 96, #57");
-						
+
 						System.out.println("Se insertaron " +Farmacia.obtenerInstancia().getPacientes().size()+" pacientes");
-						
+
 					}
 
 
@@ -834,7 +833,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					//===================================================Medicamentos===============================================================================================================
 
 
-					
+
 
 					public void inicializarMedicamentos() 
 					{
@@ -1316,14 +1315,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						System.out.println("Se generaron " + Farmacia.obtenerInstancia().getFacturas().size() + " facturas desde el historial de ventas.");
 					}
 
-
-
-
-
-
-
-
-
 					// ====================================================Nucleos==================================================================================================
 					public void inicializarNucleosFamiliares() 
 					{
@@ -1342,7 +1333,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Luis Quintero Torres"),
 												false
 								);
-						
+
 
 						Farmacia.obtenerInstancia().agregarNucleoFamiliar(
 
@@ -1358,7 +1349,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Héctor Méndez Pérez"),
 												false
 								);
-						
+
 
 						Farmacia.obtenerInstancia().agregarNucleoFamiliar(
 
@@ -1371,11 +1362,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Camila Ortiz Pérez"),
 												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Isabel Aguilar Bermúdez")
 												)),
+
 												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Raúl Bermúdez Espinoza"),
 												false
 								);
 
-						
+
 
 						Farmacia.obtenerInstancia().agregarNucleoFamiliar(
 
@@ -1929,4 +1921,90 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					}
 
 					//===================================================================================================================================================================================			
+
+
+					//-------------------------------------------Listados para ComboBox-------------------------------------------------------------------
+
+					// Método para obtener la lista de pacientes
+					public List<String> obtenerListaPacientes() {
+						List<String> listaPacientes = new ArrayList<>();
+						for (Paciente paciente : pacientes) {
+							listaPacientes.add(paciente.getNombre());
+						}
+						return listaPacientes;
+					}
+
+					// Método para obtener la lista de medicamentos
+					public List<String> obtenerListaMedicamentos() {
+						List<String> listaMedicamentos = new ArrayList<>();
+						for (Medicamento medicamento : medicamentos) {
+							listaMedicamentos.add(medicamento.getNomComun());
+						}
+						return listaMedicamentos;
+					}
+
+					//Método para obtener la lista de medicamentos de venta libre 
+					public List<Medicamento> obtenerMedicamentosVentaLibre() {
+						List<Medicamento> medicamentosVentaLibre = new ArrayList<>();
+						for (Medicamento medicamento : medicamentos) {
+							if ("Venta libre".equalsIgnoreCase(medicamento.getTipo())) {
+								medicamentosVentaLibre.add(medicamento);
+							}
+						}
+						return medicamentosVentaLibre;
+					}
+
+					// Método para obtener la lista de medicamentos controlados
+					public List<String> obtenerListaMedicamentosControlados() {
+						List<String> listaMedControlados = new ArrayList<>();
+						for (MedicamentoControlado medicamento : medicamentoControlado) {
+							listaMedControlados.add(medicamento.getNomComun());
+						}
+						return listaMedControlados;
+					}
+
+					// Método para obtener la lista de tarjetones
+					public List<String> obtenerListaTarjetones() {
+						List<String> listaTarjetones = new ArrayList<>();
+						for (Tarjeton tarjeton : tarjetones) {
+							listaTarjetones.add(tarjeton.getNombre());
+						}
+						return listaTarjetones;
+					}
+
+					// Método para obtener la lista de recetas
+					public List<String> obtenerListaRecetas() {
+						List<String> listaRecetas = new ArrayList<>();
+						for (Venta venta : historialVentas) {
+							if (venta instanceof VentaConPrescripcion) {
+								VentaConPrescripcion receta = (VentaConPrescripcion) venta;
+								listaRecetas.add(receta.getNombreDelMed());
+							}
+						}
+						return listaRecetas;
+					}
+
+					// Método para obtener la lista de mujeres
+					public List<String> obtenerListaMujeres() {
+						List<String> listaMujeres = new ArrayList<>();
+						for (Paciente paciente : pacientes) {
+							if (paciente.getGenero() == 'F') { // Filtrar por género femenino
+								listaMujeres.add(paciente.getNombre());
+							}
+						}
+						return listaMujeres;
+					}
+
+					public double obtenerPrecioMedicamento(String nombreMedicamento) 
+					{
+						for (Medicamento medicamento : medicamentos) {
+							if (medicamento.getNomComun().equalsIgnoreCase(nombreMedicamento)) {
+								return medicamento.getPrecio();
+							}
+						}
+						throw new RuntimeException("Medicamento no encontrado: " + nombreMedicamento);
+					}
 }
+
+
+
