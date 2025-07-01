@@ -735,6 +735,10 @@ public class PrincipalAdmin extends JFrame
 		panel_13.add(label_65);
 
 		JTextPane txtpnCrditos = new JTextPane();
+		txtpnCrditos.setBackground(Color.WHITE);
+		txtpnCrditos.setDisabledTextColor(Color.BLACK);
+		txtpnCrditos.setEnabled(false);
+		txtpnCrditos.setEditable(false);
 		txtpnCrditos.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnCrditos.setText("Cr\u00E9ditos:\r\n-Alison Hidalgo Guerra\r\nGitHub: AlisonH17\r\n-Eriet Dario Armas Gonz\u00E1lez \r\nGitHub: KaitoKidAdventurine");
 		txtpnCrditos.setBounds(140, 370, 254, 111);
