@@ -245,4 +245,10 @@ public class Medicamento
 		else
 			throw new IllegalArgumentException("El campo: fecha de Vencimiento del medicamento, se encuentra vacío");
 	}
+
+
+	public boolean esControlado() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

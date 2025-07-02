@@ -2033,7 +2033,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						}
 						return listaMujeres;
 					}
-<<<<<<< HEAD
+
 
 					public double obtenerPrecioMedicamento(String nombreMedicamento) {
 					    // Validación básica
@@ -2056,20 +2056,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					        }
 					    }
 
-					    // Si no se encontró el medicamento
-					    throw new IllegalArgumentException("Medicamento no encontrado: " + nombreBuscado);
-=======
-					
-					public double obtenerPrecioMedicamento(String nombreMedicamento) 
-					{
-						for (Medicamento medicamento : medicamentos) {
-							if (medicamento.getNomComun().equalsIgnoreCase(nombreMedicamento)) {
-								return medicamento.getPrecio();
-							}
-						}
-						throw new RuntimeException("Medicamento no encontrado: " + nombreMedicamento);
->>>>>>> 7a363c56d1196bc1e01ba03a9e9ebeec93838d38
 					}
+
 
 					public ArrayList<Medicamento> filtroLetrasParaMed()
 					{

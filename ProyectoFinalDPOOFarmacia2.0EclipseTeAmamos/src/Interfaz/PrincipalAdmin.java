@@ -3637,28 +3637,43 @@ public class PrincipalAdmin extends JFrame
 		    @Override
 		    public void mouseClicked(MouseEvent e) {
 		        try {
-		           
 
-		            // Obtener selección de cantidad
+		            // Obtener selección de medicamento
+		            String nombreMedicamento = (String) comboBoxMedControlado.getSelectedItem();
+
+		            if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
+		                JOptionPane.showMessageDialog(VentaControlada, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+
+		            // Buscar el medicamento en la lista global de Farmacia
+		            String medicamento = nombreMedicamento ;
+
+		            for (Medicamento m : Farmacia.obtenerInstancia().getMedicamentos()) {
+		                if (m.getNomComun().equalsIgnoreCase(nombreMedicamento) && m instanceof MedicamentoControlado) {
+		                    medicamento = m.getNomComun();
+		                    break;
+		                }
+		            }
+
+		            if (medicamento == null) {
+		                JOptionPane.showMessageDialog(VentaControlada, "El medicamento seleccionado no es un medicamento controlado o no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+		                return;
+		            }
+
+		            // Obtener la cantidad seleccionada
 		            Object cantidadObj = comboBoxCantid.getSelectedItem();
 
-		            if (cantidadObj == null) {
+		            if (cantidadObj == null || cantidadObj.toString().trim().isEmpty()) {
 		                JOptionPane.showMessageDialog(VentaControlada, "Por favor, seleccione una cantidad válida.", "Error", JOptionPane.ERROR_MESSAGE);
 		                return;
 		            }
 
 		            int cantidadSeleccionada;
-		            if (cantidadObj instanceof Integer) {
-		                cantidadSeleccionada = (Integer) cantidadObj;
-		            } else if (cantidadObj instanceof String) {
-		                try {
-		                    cantidadSeleccionada = Integer.parseInt((String) cantidadObj);
-		                } catch (NumberFormatException ex) {
-		                    JOptionPane.showMessageDialog(VentaControlada, "La cantidad debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
-		                    return;
-		                }
-		            } else {
-		                JOptionPane.showMessageDialog(VentaControlada, "Tipo de cantidad no soportado.", "Error", JOptionPane.ERROR_MESSAGE);
+		            try {
+		                cantidadSeleccionada = Integer.parseInt(cantidadObj.toString().trim());
+		            } catch (NumberFormatException ex) {
+		                JOptionPane.showMessageDialog(VentaControlada, "La cantidad debe ser un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
 		                return;
 		            }
 
@@ -3676,7 +3691,7 @@ public class PrincipalAdmin extends JFrame
 		            }
 
 		            // Verificar límite de medicamento (ejemplo: 10 unidades)
-		            int cantidadAcumulada = cantidadesAcumuladas.getOrDefault(medicamento.getNomComun(), 0);
+		            int cantidadAcumulada = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
 
 		            if (cantidadAcumulada + cantidadSeleccionada > 10) {
 		                JOptionPane.showMessageDialog(VentaControlada, "No puede comprar más de 10 unidades de este medicamento.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -3697,15 +3712,15 @@ public class PrincipalAdmin extends JFrame
 		            compraControladaTableModel.adicionar(venta);
 
 		            // Actualizar cantidad acumulada
-		            cantidadesAcumuladas.put(medicamento.getNomComun(), cantidadAcumulada + cantidadSeleccionada);
+		            cantidadesAcumuladas.put(nombreMedicamento, cantidadAcumulada + cantidadSeleccionada);
 
 		            // Deshabilitar combo de pacientes si es la primera vez
 		            if (!pacienteSeleccionado) {
-		                comboBoxPacientesControlados.setEnabled(false);
-		                pacienteSeleccionado = true;
+		                comboBoxPacientesControlados.setEnabled(false); // Deshabilita el combo
+		                pacienteSeleccionado = true; // Marca que ya se seleccionó un paciente
 		            }
 
-		            // Opcional: mostrar mensaje de éxito
+		            // Mostrar éxito
 		            JOptionPane.showMessageDialog(VentaControlada, "Medicamento añadido correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
 		        } catch (Exception ex) {
@@ -3840,12 +3855,10 @@ public class PrincipalAdmin extends JFrame
 		label_99.setBounds(12, 13, 127, 93);
 		panel_28.add(label_99);
 
-<<<<<<< HEAD
-		JPanel VentaPrescripcion = new JPanel();
-		VentaPrescripcion.setBackground(Color.WHITE);
-=======
+
 		
->>>>>>> 7a363c56d1196bc1e01ba03a9e9ebeec93838d38
+		VentaPrescripcion.setBackground(Color.WHITE);
+
 		pestanas.addTab("New tab", null, VentaPrescripcion, null);
 		VentaPrescripcion.setLayout(null);
 
