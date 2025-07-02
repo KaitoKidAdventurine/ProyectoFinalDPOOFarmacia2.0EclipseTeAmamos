@@ -73,6 +73,13 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		Validaciones.removerMedicamentosControladosRepetidos(); 
 		Validaciones.removerMedicamentosRepetidos() ; 
 		Validaciones.carnetsDeIdentidadRepetido();
+		Validaciones.reajustarNucleosYDirecciones();
+		Validaciones.seRepiteCodDelMed();
+		Validaciones.removerNucleosRepetidos();
+		for(NucleoFamiliar n: Farmacia.obtenerInstancia().getNucleos())
+			System.out.println("Nucleo Familiar id : "+ n.getId());
+		Validaciones.seRepiteCodDelNucleo();
+		Validaciones.seRepiteCodDelMedCon();
 		System.out.println("Total de medicamentos: "+Farmacia.obtenerInstancia().getMedicamentos().size());
 		System.out.println("Total de medicamentos Controlados: "+Farmacia.obtenerInstancia().getMedicamentoControlado().size());
 	}
@@ -1205,11 +1212,13 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						// Simulamos una fecha fija de hoy para pruebas: 1 de Julio de 2025
 						LocalDate hoy = LocalDate.of(2025, 7, 1);
 
-						for (int i = 0; i < 15; i++) {
+						for (int i = 0; i < 15; i++) 
+						{
 							Paciente p = Farmacia.obtenerInstancia().getPacientes().get(i);
 							int numTarjetones = 1 + (i % 3);
 
-							for (int j = 0; j < numTarjetones && j < 3; j++) {
+							for (int j = 0; j < numTarjetones && j < 3; j++) 
+							{
 
 								// Decidimos si será vencido (1 de cada 5)
 								boolean estaVencido = (j % 5 == 0); // 1 de cada 5
@@ -1263,41 +1272,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								}
 							}
 						}
-
-
-						Tarjeton tVencido = new Tarjeton(
-								"Beatriz Nuñez Ortiz",
-								"23A / 244 Y 250",
-								java.sql.Date.valueOf(LocalDate.of(2024, 1, 1)),
-								java.sql.Date.valueOf(LocalDate.of(2024, 6, 30)),
-								new ArrayList<>(Farmacia.obtenerInstancia().getMedicamentoControlado())
-								);
-						Farmacia.obtenerInstancia().getTarjetones().add(tVencido);
-
-						Tarjeton tVencidoDos = new Tarjeton(
-								"Gabriela Sánchez Torres",
-								"Calle Victoria 244",
-								java.sql.Date.valueOf(LocalDate.of(2024, 1, 1)),
-								java.sql.Date.valueOf(LocalDate.of(2024, 6, 30)),
-								new ArrayList<>(Farmacia.obtenerInstancia().getMedicamentoControlado())
-								);
-						Farmacia.obtenerInstancia().getTarjetones().add(tVencidoDos);
-
-						Tarjeton tVencidoTres = new Tarjeton(
-								"Helena Torres Aguilar",
-								"23B/244254",
-								java.sql.Date.valueOf(LocalDate.of(2024, 1, 1)),
-								java.sql.Date.valueOf(LocalDate.of(2024, 6, 30)),
-								new ArrayList<>(Farmacia.obtenerInstancia().getMedicamentoControlado())
-								);
-						Farmacia.obtenerInstancia().getTarjetones().add(tVencidoTres);
-
-						System.out.println("Se agregaron los tarjetones: " + Farmacia.obtenerInstancia().getTarjetones().size());
 					}
-
-
-
-
+					
 					public void generarFacturasDesdeVentas() 
 					{
 						for (Venta venta : Farmacia.obtenerInstancia().getHistorialVentas()) 
@@ -1964,15 +1940,15 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					}
 
 					public List<String> obtenerListaPacientesControlados() {
-					    List<String> listaControlados = new ArrayList<>();
-					    for (Paciente paciente : pacientes) {
-					        if (paciente.esControlado()) { // Ajusta este método según tu clase Paciente
-					            listaControlados.add(paciente.getNombre());
-					        }
-					    }
-					    return listaControlados;
+						List<String> listaControlados = new ArrayList<>();
+						for (Paciente paciente : pacientes) {
+							if (paciente.esControlado()) { // Ajusta este método según tu clase Paciente
+								listaControlados.add(paciente.getNombre());
+							}
+						}
+						return listaControlados;
 					}
-					
+
 					// Método para obtener la lista de medicamentos
 					public List<String> obtenerListaMedicamentos() {
 						List<String> listaMedicamentos = new ArrayList<>();
@@ -2022,7 +1998,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						}
 						return listaRecetas;
 					}
-					
+
 					// Método para obtener la lista de mujeres
 					public List<String> obtenerListaMujeres() {
 						List<String> listaMujeres = new ArrayList<>();
@@ -2033,14 +2009,13 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						}
 						return listaMujeres;
 					}
+<<<<<<< HEAD
+
+=======
+>>>>>>> d25e4b1b6908c94b1fefdba83667004533a8a254
 
 
-					public double obtenerPrecioMedicamento(String nombreMedicamento) {
-					    // Validación básica
-					    if (nombreMedicamento == null || nombreMedicamento.trim().isEmpty()) {
-					        throw new IllegalArgumentException("El nombre del medicamento no puede ser nulo o vacío.");
-					    }
-
+<<<<<<< HEAD
 					    String nombreBuscado = nombreMedicamento.trim();
 
 					    for (Medicamento medicamento : medicamentos) {
@@ -2059,6 +2034,45 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					}
 
 
+=======
+					public double obtenerPrecioMedicamento(String nombreMedicamento) 
+					{
+						// Validación básica
+						if (nombreMedicamento == null || nombreMedicamento.trim().isEmpty()) 
+						{
+							throw new IllegalArgumentException("El nombre del medicamento no puede ser nulo o vacío.");
+						}
+
+						String nombreBuscado = nombreMedicamento.trim();
+
+						for (Medicamento medicamento : medicamentos) 
+						{
+							if (medicamento.getNomComun() != null 
+									&& medicamento.getNomComun().equalsIgnoreCase(nombreBuscado)) 
+							{
+
+								// Verificar si es controlado
+								if (medicamento.getTipo().equals("Medicamento controlado")) 
+								{
+									return medicamento.getPrecio(); 
+								} 
+								
+								else 
+								{
+									throw new IllegalArgumentException("El medicamento '" + nombreBuscado + "' NO es un medicamento controlado.");
+								}
+							}
+						}
+
+						// Si no se encontró el medicamento
+						throw new IllegalArgumentException("Medicamento no encontrado: " + nombreBuscado);
+					}
+
+
+
+
+					//=============== Filtros =============================================================================================================
+>>>>>>> d25e4b1b6908c94b1fefdba83667004533a8a254
 					public ArrayList<Medicamento> filtroLetrasParaMed()
 					{
 						ArrayList<Medicamento> med = new ArrayList<Medicamento>();
@@ -2108,54 +2122,62 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								Double primerValor = m1.getPrecio();
 								Double segundoValor = m2.getPrecio();
 								return primerValor.compareTo(segundoValor);
-								
+
 							}
 								});
 
 						return med;	
 					}
-					
+
 					public ArrayList<Medicamento> desorganizarPorLimites() 
 					{
-					    ArrayList<Medicamento> med = new ArrayList<Medicamento>();
-					    
-					    // Guardo todos los datos en la lista
-					    
+						ArrayList<Medicamento> med = new ArrayList<Medicamento>();
+
+						// Guardo todos los datos en la lista
+
 						for(Medicamento m: medicamentos)
 							med.add(m);
 						for(MedicamentoControlado mc: medicamentoControlado)
 							med.add(mc);
-						
-					    int n = med.size();
-					    
-					    for (int i = 0; i < n / 2; i++) 
-					    {
-					        int j = n - 1 - i;
 
-					        // Se Intercambia la posición de i con la posición j
-					        
-					        Medicamento temp = med.get(i);
-					        med.set(i, med.get(j));
-					        med.set(j, temp);
-					    }
+						int n = med.size();
 
-					    return med;
+						for (int i = 0; i < n / 2; i++) 
+						{
+							int j = n - 1 - i;
+
+							// Se Intercambia la posición de i con la posición j
+
+							Medicamento temp = med.get(i);
+							med.set(i, med.get(j));
+							med.set(j, temp);
+						}
+
+						return med;
 					}
 
-			
-//==========================================================================================================================================
-				    // Método auxiliar para buscar un núcleo familiar por su ID
-				    public NucleoFamiliar buscarNucleoPorId(String idNucleo) 
-				    {
-				        for (NucleoFamiliar nucleo : nucleos) 
-				        {
-				            if (nucleo.getId().equals(idNucleo)) 
-				            {
-				                return nucleo;
-				            }
-				        }
-				        return null;
-				    }
+
+					//==========================================================================================================================================
+					// Método auxiliar para buscar un núcleo familiar por su ID
+					public NucleoFamiliar buscarNucleoPorId(String idNucleo) 
+					{
+						for (NucleoFamiliar nucleo : nucleos) 
+						{
+							if (nucleo.getId().equals(idNucleo)) 
+							{
+								return nucleo;
+							}
+						}
+						return null;
+					}
+
+
+					//==========================================================================================================================================
+
+
+
+
+
 }
 
 

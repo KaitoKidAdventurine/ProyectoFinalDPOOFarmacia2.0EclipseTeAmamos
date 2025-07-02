@@ -12,6 +12,7 @@ import java.util.HashSet;
 import Logica.Farmacia;
 import Logica.Medicamento;
 import Logica.MedicamentoControlado;
+import Logica.NucleoFamiliar;
 import Logica.Paciente;
 import Logica.Tarjeton;
 
@@ -464,7 +465,7 @@ public class Validaciones
 		}
 		//for(int i = 0; i < ( Farmacia.obtenerInstancia().getPacientes().size() - 1) /2; i++)
 		//if(Farmacia.obtenerInstancia().getPacientes().get(i).equals(aEliminar.get(i)))
-		
+
 		int i = 0;
 		ArrayList<Paciente> pas = Farmacia.obtenerInstancia().getPacientes();
 		Iterator <Paciente> it = pas.iterator();
@@ -480,41 +481,41 @@ public class Validaciones
 	    Farmacia.obtenerInstancia().getPacientes().clear();
 	    Farmacia.obtenerInstancia().getPacientes().addAll(pas);
 	}
-	*/
+	 */
 	public static void removerPacientesRepetidos() 
 	{
-	    ArrayList<Paciente> pacientes = Farmacia.obtenerInstancia().getPacientes();
+		ArrayList<Paciente> pacientes = Farmacia.obtenerInstancia().getPacientes();
 
-	    HashMap<String, Paciente> mapaPorCI = new HashMap<>();
+		HashMap<String, Paciente> mapaPorCI = new HashMap<>();
 
-	    // Sobreescribe con el último paciente encontrado por CI
-	    for (Paciente p : pacientes) 
-	    {
-	        mapaPorCI.put(p.getCi(), p);
-	    }
+		// Sobreescribe con el último paciente encontrado por CI
+		for (Paciente p : pacientes) 
+		{
+			mapaPorCI.put(p.getCi(), p);
+		}
 
-	    // Limpiar y rellenar con los valores únicos
-	    Farmacia.obtenerInstancia().getPacientes().clear();
-	    Farmacia.obtenerInstancia().getPacientes().addAll(mapaPorCI.values());
-	    System.out.println("Total de pacientes: "+ Farmacia.obtenerInstancia().getPacientes().size());
+		// Limpiar y rellenar con los valores únicos
+		Farmacia.obtenerInstancia().getPacientes().clear();
+		Farmacia.obtenerInstancia().getPacientes().addAll(mapaPorCI.values());
+		System.out.println("Total de pacientes: "+ Farmacia.obtenerInstancia().getPacientes().size());
 	}
-	
+
 	public static void removerMedicamentosRepetidos() 
 	{
 		ArrayList<Medicamento> medicamentos = Farmacia.obtenerInstancia().getMedicamentos();
 
-	    HashMap<String, Medicamento> mapaPorCodigo = new HashMap<>();
+		HashMap<String, Medicamento> mapaPorCodigo = new HashMap<>();
 
-	    // Sobreescribe con el último paciente encontrado por CI
-	    for (Medicamento m : medicamentos) 
-	    {
-	    	mapaPorCodigo.put(m.getCodigo(), m);
-	    }
+		// Sobreescribe con el último paciente encontrado por CI
+		for (Medicamento m : medicamentos) 
+		{
+			mapaPorCodigo.put(m.getCodigo(), m);
+		}
 
-	    // Limpiar y rellenar con los valores únicos
-	    Farmacia.obtenerInstancia().getMedicamentos().clear();
-	    Farmacia.obtenerInstancia().getMedicamentos().addAll(mapaPorCodigo.values());
-	    System.out.println("Total de medicamentos: "+ Farmacia.obtenerInstancia().getMedicamentos().size());
+		// Limpiar y rellenar con los valores únicos
+		Farmacia.obtenerInstancia().getMedicamentos().clear();
+		Farmacia.obtenerInstancia().getMedicamentos().addAll(mapaPorCodigo.values());
+		System.out.println("Total de medicamentos: "+ Farmacia.obtenerInstancia().getMedicamentos().size());
 	}
 
 
@@ -522,18 +523,18 @@ public class Validaciones
 	{
 		ArrayList<MedicamentoControlado> medicamentos = Farmacia.obtenerInstancia().getMedicamentoControlado();
 
-	    HashMap<String, MedicamentoControlado> mapaPorCodigo = new HashMap<>();
+		HashMap<String, MedicamentoControlado> mapaPorCodigo = new HashMap<>();
 
-	    // Sobreescribe con el último paciente encontrado por CI
-	    for (MedicamentoControlado m : medicamentos) 
-	    {
-	    	mapaPorCodigo.put(m.getCodigo(), m);
-	    }
+		// Sobreescribe con el último paciente encontrado por CI
+		for (MedicamentoControlado m : medicamentos) 
+		{
+			mapaPorCodigo.put(m.getCodigo(), m);
+		}
 
-	    // Limpiar y rellenar con los valores únicos
-	    Farmacia.obtenerInstancia().getMedicamentoControlado().clear();
-	    Farmacia.obtenerInstancia().getMedicamentoControlado().addAll(mapaPorCodigo.values());
-	    System.out.println("Total de medicamentos Controlados: "+ Farmacia.obtenerInstancia().getMedicamentos().size());
+		// Limpiar y rellenar con los valores únicos
+		Farmacia.obtenerInstancia().getMedicamentoControlado().clear();
+		Farmacia.obtenerInstancia().getMedicamentoControlado().addAll(mapaPorCodigo.values());
+		System.out.println("Total de medicamentos Controlados: "+ Farmacia.obtenerInstancia().getMedicamentos().size());
 	}
 
 
@@ -568,7 +569,7 @@ public class Validaciones
 	{
 		int contador;
 		ArrayList <String> carnes  = Farmacia.obtenerInstancia().getCarnets();
-		
+
 
 		for(String c: Farmacia.obtenerInstancia().getCarnets())
 		{
@@ -590,4 +591,150 @@ public class Validaciones
 	}
 
 
+	public static void reajustarNucleosYDirecciones() 
+	{
+		for (Paciente p : Farmacia.obtenerInstancia().getPacientes()) 
+		{
+			boolean encontrado = false;
+
+			// Buscar en todos los núcleos
+			for(int i= 0; i< Farmacia.obtenerInstancia().getNucleos().size() && encontrado == false; i++)
+			{
+				if (Farmacia.obtenerInstancia().getNucleos().get(i).getHombres().contains(p) 
+						|| Farmacia.obtenerInstancia().getNucleos().get(i).getMujeres().contains(p)) 
+				{
+					p.setDireccion(Farmacia.obtenerInstancia().getNucleos().get(i).getDireccion());
+					p.setNucleo(Farmacia.obtenerInstancia().getNucleos().get(i));
+					System.out.println("Direccion: " + p.getDireccion() + 
+							" Paciente: " + p.getNombre() + 
+							" Nucleo: " + Farmacia.obtenerInstancia().getNucleos().get(i).getDireccion());
+					encontrado = true;
+				}
+			}
+			
+			for (NucleoFamiliar n : Farmacia.obtenerInstancia().getNucleos()) 
+			{
+
+				// Verificar si el paciente está en hombres o mujeres
+				if (n.getHombres().contains(p) || n.getMujeres().contains(p)) 
+				{
+					p.setDireccion(n.getDireccion());
+					p.setNucleo(n);
+					encontrado = true;
+					
+				}
+			}
+		}
+	}
+
+	public static void seRepiteCodDelMed()
+	{
+		int contador;
+		ArrayList <String>  med =  new ArrayList<String>();
+		for(Medicamento m: Farmacia.obtenerInstancia().getMedicamentos())
+		med.add(m.getCodigo());
+
+
+		for(Medicamento c: Farmacia.obtenerInstancia().getMedicamentos())
+		{
+			contador = 0;
+			for(String m: med)
+				if(c.getCodigo().equals(m))
+					contador++;
+			if(contador !=1)
+				throw new IllegalArgumentException("El medicamento "+ c.getNomComun() + " se encuentra repetido");
+		}	
+		
+	}
+	// Usar en validaciones
+	public static void seRepiteCodDelMedAgregado(Medicamento medi)
+	{
+		for(Medicamento c: Farmacia.obtenerInstancia().getMedicamentos())
+		{
+			if(c.getCodigo().equals(medi.getCodigo()))
+				throw new IllegalArgumentException("El medicamento "+ medi.getNomComun() + " ya se encuentra en la base de datos");
+		}	
+		
+	}
+	
+	public static void seRepiteCodDelNucleo()
+	{
+		int contador;
+		ArrayList <String>  med =  new ArrayList<String>();
+		for(NucleoFamiliar n: Farmacia.obtenerInstancia().getNucleos())
+		med.add(n.getId());
+
+
+		for(NucleoFamiliar n: Farmacia.obtenerInstancia().getNucleos())
+		{
+			contador = 0;
+			for(String m: med)
+				if(n.getId().equals(m))
+					contador++;
+			
+			if(contador !=1)
+				throw new IllegalArgumentException("El nucleo "+ n.getId() + " se encuentra repetido");
+		}	
+	}
+	// Usar en validaciones
+	public static void seRepiteCodDelNucleoAgregado(NucleoFamiliar nuc)
+	{
+		for(NucleoFamiliar nf: Farmacia.obtenerInstancia().getNucleos())
+		{
+			if(nf.getId().equals(nuc.getId()))
+				throw new IllegalArgumentException("El Nucleo Familiar: "+ nuc.getId() + " ya se encuentra en la base de datos");
+		}	
+		
+	}
+	
+	
+	public static void seRepiteCodDelMedCon()
+	{
+		int contador;
+		ArrayList <String>  med =  new ArrayList<String>();
+		for(MedicamentoControlado m: Farmacia.obtenerInstancia().getMedicamentoControlado())
+		med.add(m.getCodigo());
+
+
+		for(MedicamentoControlado c: Farmacia.obtenerInstancia().getMedicamentoControlado())
+		{
+			contador = 0;
+			for(String m: med)
+				if(c.getCodigo().equals(m))
+					contador++;
+			if(contador !=1)
+				throw new IllegalArgumentException("El medicamento Controlado "+ c.getNomComun() + " se encuentra repetido");
+		}	
+		
+	}
+	
+	
+	// Usar en validaciones
+		public static void seRepiteCodDelMedContAgregado(MedicamentoControlado medi)
+		{
+			for(Medicamento c: Farmacia.obtenerInstancia().getMedicamentos())
+			{
+				if(c.getCodigo().equals(medi.getCodigo()))
+					throw new IllegalArgumentException("El medicamento Controlado: "+ medi.getNomComun() + " ya se encuentra en la base de datos");
+			}	
+			
+		}
+	
+		public static void removerNucleosRepetidos() 
+		{
+			ArrayList<NucleoFamiliar> nucleos = Farmacia.obtenerInstancia().getNucleos();
+
+			HashMap<String, NucleoFamiliar> mapaPorCodigo = new HashMap<>();
+
+			// Sobreescribe con el último paciente encontrado por CI
+			for (NucleoFamiliar n : nucleos) 
+			{
+				mapaPorCodigo.put(n.getId(), n);
+			}
+
+			// Limpiar y rellenar con los valores únicos
+			Farmacia.obtenerInstancia().getNucleos().clear();
+			Farmacia.obtenerInstancia().getNucleos().addAll(mapaPorCodigo.values());
+			System.out.println("Total de Nucleos Familiares: "+ Farmacia.obtenerInstancia().getMedicamentos().size());
+		}
 }

@@ -25,16 +25,19 @@ public enum Presentacion {
 
     private final String descripcion;
 
-    Presentacion(String descripcion) {
+    Presentacion(String descripcion) 
+    {
         this.descripcion = descripcion;
     }
 
-    public String getDescripcion() {
+    public String getDescripcion() 
+    {
         return descripcion;
     }
 
     @Override
-    public String toString() {
+    public String toString() 
+    {
         return descripcion;
     }
 }
