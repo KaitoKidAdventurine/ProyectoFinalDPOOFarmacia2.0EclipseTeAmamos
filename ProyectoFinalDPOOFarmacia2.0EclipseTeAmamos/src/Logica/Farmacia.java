@@ -1917,6 +1917,16 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						return listaPacientes;
 					}
 
+					public List<String> obtenerListaPacientesControlados() {
+					    List<String> listaControlados = new ArrayList<>();
+					    for (Paciente paciente : pacientes) {
+					        if (paciente.esControlado()) { // Ajusta este método según tu clase Paciente
+					            listaControlados.add(paciente.getNombre());
+					        }
+					    }
+					    return listaControlados;
+					}
+					
 					// Método para obtener la lista de medicamentos
 					public List<String> obtenerListaMedicamentos() {
 						List<String> listaMedicamentos = new ArrayList<>();
@@ -1978,14 +1988,29 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						return listaMujeres;
 					}
 
-					public double obtenerPrecioMedicamento(String nombreMedicamento) 
-					{
-						for (Medicamento medicamento : medicamentos) {
-							if (medicamento.getNomComun().equalsIgnoreCase(nombreMedicamento)) {
-								return medicamento.getPrecio();
-							}
-						}
-						throw new RuntimeException("Medicamento no encontrado: " + nombreMedicamento);
+					public double obtenerPrecioMedicamento(String nombreMedicamento) {
+					    // Validación básica
+					    if (nombreMedicamento == null || nombreMedicamento.trim().isEmpty()) {
+					        throw new IllegalArgumentException("El nombre del medicamento no puede ser nulo o vacío.");
+					    }
+
+					    String nombreBuscado = nombreMedicamento.trim();
+
+					    for (Medicamento medicamento : medicamentos) {
+					        if (medicamento.getNomComun() != null 
+					                && medicamento.getNomComun().equalsIgnoreCase(nombreBuscado)) {
+
+					            // Verificar si es controlado
+					            if (medicamento.esControlado()) {
+					                return medicamento.getPrecio(); // Es válido: es controlado
+					            } else {
+					                throw new IllegalArgumentException("El medicamento '" + nombreBuscado + "' NO es un medicamento controlado.");
+					            }
+					        }
+					    }
+
+					    // Si no se encontró el medicamento
+					    throw new IllegalArgumentException("Medicamento no encontrado: " + nombreBuscado);
 					}
 			
 //==========================================================================================================================================

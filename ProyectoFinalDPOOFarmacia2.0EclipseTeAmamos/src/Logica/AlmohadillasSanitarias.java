@@ -2,7 +2,7 @@ package Logica;
 
 
 import java.util.Date;
-import LogicaUtiles.Validaciones;
+
 
 public class AlmohadillasSanitarias extends Venta 
 {
@@ -11,9 +11,15 @@ public class AlmohadillasSanitarias extends Venta
 	
 	public AlmohadillasSanitarias(double precioUnit, int cant,Date fechaVenta)
 	{
-		super(fechaVenta, cant * precioUnit);
-		setPrecioUnit(precioUnit);
-		setCant(cant);
+	    super(fechaVenta, precioUnit * cant);
+	    if (precioUnit <= 0 || cant <= 0) {
+	        throw new IllegalArgumentException("Precio y cantidad deben ser mayores que cero.");
+	    }
+
+	    this.precioUnit = precioUnit;
+	    this.cant = cant;
+
+
 	}
 	
 	
@@ -23,20 +29,11 @@ public class AlmohadillasSanitarias extends Venta
 	}
 
 
-	public void setPrecioUnit(double precioUnit) 
-	{
-		
-		if(Validaciones.noEstaVacio(precioUnit))
-			if(!Validaciones.esUnaLetra(precioUnit))
-				if(Validaciones.noTieneCaracteresEsp(precioUnit))
-					this.precioUnit = precioUnit;
-				else
-					throw new IllegalArgumentException("El campo: precio, presenta caracteres especiales");
-			else
-				throw new IllegalArgumentException("El campo: precio, presenta letras");
-		else
-			throw new IllegalArgumentException("El campo: precio, se encuentra vacío");
-		
+	public void setPrecioUnit(double precioUnit) {
+	    if (precioUnit <= 0) {
+	        throw new IllegalArgumentException("El precio debe ser mayor que cero.");
+	    }
+	    this.precioUnit = precioUnit;
 	}
 
 
@@ -46,10 +43,11 @@ public class AlmohadillasSanitarias extends Venta
 	}
 
 
-	public void setCant(int cant) 
-	{
-		
-		this.cant =  cant;
+	public void setCant(int cant) {
+	    if (cant <= 0) {
+	        throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
+	    }
+	    this.cant = cant;
 	}
 
 
