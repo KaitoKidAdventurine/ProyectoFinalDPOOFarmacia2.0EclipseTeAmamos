@@ -204,7 +204,8 @@ public class PrincipalAdmin extends JFrame
 		});
 	}
 
-	public void limpiarCampos() {
+	public void limpiarCampos() 
+	{
 		textNombreComun.setText("");
 		textNombreCientifico.setText("");
 		textPresentacion.setText("");
@@ -982,7 +983,7 @@ public class PrincipalAdmin extends JFrame
 		Farmacia.obtenerInstancia().inicializarDatosPrueba();
 
 		// LLENAR EL MODELO CON LOS DATOS
-		medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().getMedicamentos());
+		medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().mostrarTodosLosMedicamentos());
 
 
 		JPanel medicamentos = new JPanel();
@@ -1029,29 +1030,43 @@ public class PrincipalAdmin extends JFrame
 		txtpnOrdenarNombresComunes.setEditable(false);
 		txtpnOrdenarNombresComunes.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
-				medicamentoTableModel.actualizar(
-						Farmacia.obtenerInstancia().getMedicamentos()
-
-						);
+			public void mouseClicked(MouseEvent e) 
+			{
+				ArrayList<Medicamento> orden = Farmacia.obtenerInstancia().filtroLetrasParaMed();
+				medicamentoTableModel.limpiarTabla();
+				medicamentoTableModel.actualizar(orden);
 			}
 		});
+		
+		// Ordenar por precio 
+		
 		txtpnOrdenarNombresComunes.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnOrdenarNombresComunes.setText("Ordenar nombres comunes");
 		txtpnOrdenarNombresComunes.setBounds(12, 13, 152, 44);
 		panel_8.add(txtpnOrdenarNombresComunes);
 
-		JPanel panel_9 = new JPanel();
-		panel_9.setLayout(null);
-		panel_9.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 128, 0)), new LineBorder(new Color(0, 0, 0))));
+			
+		JPanel panel_9 = new JPanel(); 
 		panel_9.setBackground(Color.WHITE);
+		panel_9.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 128, 0)), new LineBorder(new Color(0, 0, 0))));
 		panel_9.setBounds(12, 153, 184, 70);
+		panel_9.setLayout(null);
 		medicamentos.add(panel_9);
-
+		
 		JTextPane txtpnOrdenarPreciosde = new JTextPane();
 		txtpnOrdenarPreciosde.setEditable(false);
 		txtpnOrdenarPreciosde.setText("Ordenar precios (de menor a mayor)");
 		txtpnOrdenarPreciosde.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		txtpnOrdenarPreciosde.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{
+				ArrayList<Medicamento> orden = Farmacia.obtenerInstancia().filtroPrecioParaMed();	
+				medicamentoTableModel.limpiarTabla();
+				medicamentoTableModel.actualizar(orden);
+			}
+		});
 		txtpnOrdenarPreciosde.setBounds(12, 13, 160, 44);
 		panel_9.add(txtpnOrdenarPreciosde);
 
@@ -1080,6 +1095,16 @@ public class PrincipalAdmin extends JFrame
 		txtpnSinOrdenar.setEditable(false);
 		txtpnSinOrdenar.setText("Sin ordenar");
 		txtpnSinOrdenar.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		txtpnSinOrdenar.addMouseListener(new MouseAdapter() 
+		{
+			@Override
+			public void mouseClicked(MouseEvent e) 
+			{
+				ArrayList<Medicamento> orden = Farmacia.obtenerInstancia().desorganizarPorLimites();	
+				medicamentoTableModel.limpiarTabla();
+				medicamentoTableModel.actualizar(orden);
+			}
+		});
 		txtpnSinOrdenar.setBounds(36, 23, 115, 34);
 		panel_11.add(txtpnSinOrdenar);
 
@@ -1573,7 +1598,8 @@ public class PrincipalAdmin extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) 
 			{
-				try {
+				try 
+				{
 					// Obtener los valores de los campos
 					String txtNombreComun = textNombreComun.getText();
 					String txtNombreCientifico = textNombreCientifico.getText();
@@ -1593,6 +1619,7 @@ public class PrincipalAdmin extends JFrame
 						JOptionPane.showMessageDialog(null, 
 								"Nombre común, nombre científico y presentación son obligatorios", 
 								"Error", JOptionPane.ERROR_MESSAGE);
+					if(txtTipo == "Venta Libre" || txtTipo == "venta libre")
 						return;
 					}
 
@@ -1605,7 +1632,7 @@ public class PrincipalAdmin extends JFrame
 					}
 
 					// Formato esperado de fecha
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 					Date fechaProd = sdf.parse(txtFechaProduccion);
 					Date fechaVenc = sdf.parse(txtFechaVencimiento);
 
@@ -1648,7 +1675,7 @@ public class PrincipalAdmin extends JFrame
 
 				} catch (ParseException ex) {
 					JOptionPane.showMessageDialog(null, 
-							"Formato de fecha inválido. Use dd/MM/yyyy", 
+							"Formato de fecha inválido. Use yyyy-MM-dd", 
 							"Error", JOptionPane.ERROR_MESSAGE);
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, 
@@ -2053,6 +2080,14 @@ public class PrincipalAdmin extends JFrame
 		lblNewLabel_5.setBounds(307, 16, 69, 20); 
 		panel_7.add(lblNewLabel_5);
 
+		
+		JPanel VentaPrescripcion = new JPanel();
+		pestanas.addTab("New tab", null, VentaPrescripcion, null);
+		
+		
+
+
+
 
 
 		final JPanel VentaLibre = new JPanel();
@@ -2065,7 +2100,7 @@ public class PrincipalAdmin extends JFrame
 		scrollPane_5.setFont(new Font("Arial", Font.PLAIN, 19));
 		scrollPane_5.setBounds(38, 224, 941, 197);
 		VentaLibre.add(scrollPane_5);
-
+		
 
 		//Inicializar el modelo de la tabla
 		comprasTableModel = new ComprasTableModel();
@@ -2459,14 +2494,16 @@ public class PrincipalAdmin extends JFrame
 					// Convertir LocalDate a Date
 					Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-					// Crear una nueva instancia de VentaLibre
-					Logica.VentaLibre venta = new Logica.VentaLibre(
-							fechaDeCompra, // Fecha de compra
-							importeTotal, // Importe total
-							nombreMedicamento, // Nombre del medicamento
-							"MC-001", // Código del medicamento (puedes ajustarlo según sea necesario)
-							cantidadSeleccionada // Cantidad vendida
-							);
+
+			        // Crear una nueva instancia de VentaLibre
+			        Logica.VentaLibre venta = new Logica.VentaLibre(
+			                fechaDeCompra, // Fecha de compra
+			                importeTotal, // Importe total
+			                nombreMedicamento, // Nombre del medicamento
+			                "MC-0001", // Código del medicamento (puedes ajustarlo según sea necesario)
+			                cantidadSeleccionada // Cantidad vendida
+			        );
+
 
 					// Agregar la venta al historial de Farmacia
 					Farmacia.obtenerInstancia().registrarVenta(venta);
@@ -3803,8 +3840,12 @@ public class PrincipalAdmin extends JFrame
 		label_99.setBounds(12, 13, 127, 93);
 		panel_28.add(label_99);
 
+<<<<<<< HEAD
 		JPanel VentaPrescripcion = new JPanel();
 		VentaPrescripcion.setBackground(Color.WHITE);
+=======
+		
+>>>>>>> 7a363c56d1196bc1e01ba03a9e9ebeec93838d38
 		pestanas.addTab("New tab", null, VentaPrescripcion, null);
 		VentaPrescripcion.setLayout(null);
 
@@ -4010,7 +4051,8 @@ public class PrincipalAdmin extends JFrame
 		tablaPacientes.setRowHeight(28);
 
 		// Agregar al JScrollPane
-		JScrollPane scrollPane_6;
+
+		JScrollPane scrollPane_6 = new JScrollPane(tablaPacientes);
 		scrollPane_6 = new JScrollPane(tablaPacientes);
 		scrollPane_6.setBounds(0, 395, 1005, 255);
 		usuarios.add(scrollPane_6);

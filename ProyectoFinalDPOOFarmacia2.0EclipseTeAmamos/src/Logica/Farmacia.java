@@ -7,6 +7,10 @@ import java.util.Date;
 
 import LogicaUtiles.Factura;
 import LogicaUtiles.Porcentaje;
+
+import LogicaUtiles.Factura;
+import LogicaUtiles.Validaciones;
+
 import Logica.Medicamento;
 import LogicaUtiles.VentaDeMedicamentos;
 import Interfaces_Enum.Facturar;
@@ -65,6 +69,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		generarFacturasDesdeVentas();
 		inicializarNucleosFamiliares();
 		actualizarInventario();
+		Validaciones.removerPacientesRepetidos();
+		Validaciones.removerMedicamentosControladosRepetidos(); 
+		Validaciones.removerMedicamentosRepetidos() ; 
+		Validaciones.carnetsDeIdentidadRepetido();
+		System.out.println("Total de medicamentos: "+Farmacia.obtenerInstancia().getMedicamentos().size());
+		System.out.println("Total de medicamentos Controlados: "+Farmacia.obtenerInstancia().getMedicamentoControlado().size());
 	}
 
 
@@ -141,7 +151,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 
 					if (m.getTipo().equals("Medicamento controlado")) 
 					{
-						System.out.println("Valor del total de med COntrolado: " + total);
 						for(Venta v: historialVentas) 
 						{
 							if(v instanceof VentaControlada) 
@@ -265,8 +274,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					if(n.getCompraron() == false)
 					{
 						cantidad += n.getMujeres().size();
-						System.out.println(n.getMujeres().size());
-
 					}
 				}
 
@@ -357,8 +364,8 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					{
 						ArrayList<Tarjeton> tarjetonesInactivos = new ArrayList<Tarjeton>();
 						for(Tarjeton t: tarjetones)
-							//if(t.validacion(t.getFechaExpedicion(), t.getFechaVencimiento()))
-							tarjetonesInactivos.add(t);
+							if(Validaciones.estaVencido(t.getFechaVencimiento()))
+								tarjetonesInactivos.add(t);
 
 						System.out.println("Hay "+tarjetonesInactivos.size()+" inactivos");
 
@@ -556,9 +563,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					{
 						Date fechaVenta = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
 						Date fechaDeCompra = Date.from(dateDos.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
 						VentaConPrescripcion m = new VentaConPrescripcion(fechaVenta, importe, fechaDeCompra, nombreDelMed, codigoDelMed, cantMedVendidos);
-
 						historialVentas.add(m);
 					}
 
@@ -582,7 +587,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 
 					public void agregarVentaAlmohadillasSanitarias(LocalDate fecha, double precio, int cant)
 					{
-						//AlmohadillasSanitarias(double precioUnit, int cant,Date fechaVenta)
 						Date fechaDeCompra = Date.from(fecha.atStartOfDay(ZoneId.systemDefault()).toInstant());
 						AlmohadillasSanitarias a = new AlmohadillasSanitarias(precio, cant, fechaDeCompra);
 						historialVentas.add(a);
@@ -803,7 +807,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						Farmacia.obtenerInstancia().agregarPaciente("Patricia Hernández Ibarra", "99121217890", 'F', LocalDate.of(1999, 12, 12), "Calle 52, #13");
 						Farmacia.obtenerInstancia().agregarPaciente("Raquel Ibarra Juárez", "81031523456", 'F', LocalDate.of(1981, 3, 15), "Calle 63, #24");
 						Farmacia.obtenerInstancia().agregarPaciente("Sofía Juárez Katz", "97041818911", 'F', LocalDate.of(1997, 4, 18), "Calle 74, #35");
-						Farmacia.obtenerInstancia().agregarPaciente("Tatiana Katz López", "83052114517", 'F', LocalDate.of(1983, 5, 21), "Calle 85, #46");
+						Farmacia.obtenerInstancia().agregarPaciente("Tatiana Katz López", "82062114537", 'F', LocalDate.of(1983, 5, 21), "Calle 85, #46");
 						Farmacia.obtenerInstancia().agregarPaciente("Valeria López Méndez", "93062410113", 'F', LocalDate.of(1993, 6, 24), "Calle 96, #57");
 
 						System.out.println("Se insertaron " +Farmacia.obtenerInstancia().getPacientes().size()+" pacientes");
@@ -1198,44 +1202,55 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 
 					public void inicializarTarjetones() 
 					{
-						// Nota: Esta es la fecha de hoy Esto se cambiara mas alante para que se pueda actualizar sola
-						LocalDate hoy = LocalDate.of(2025, 6, 25); 
+						// Simulamos una fecha fija de hoy para pruebas: 1 de Julio de 2025
+						LocalDate hoy = LocalDate.of(2025, 7, 1);
 
-						for (int i = 0; i < 15; i++) 
-						{
+						for (int i = 0; i < 15; i++) {
 							Paciente p = Farmacia.obtenerInstancia().getPacientes().get(i);
 							int numTarjetones = 1 + (i % 3);
 
-							for (int j = 0; j < numTarjetones && j < 3; j++) 
-							{
-								// 1 de cada 3 tarjetones sera desactivado para darle variedad a los datos
-								boolean estaVencido = j % 3 == 0;
+							for (int j = 0; j < numTarjetones && j < 3; j++) {
 
-								LocalDate fechaExp;
-								if (estaVencido) 
-								{
-									// Tarjetón vencido: fecha de expiración antes de hoy 
-									fechaExp = hoy.minusMonths(2 + j); 
-								} 
+								// Decidimos si será vencido (1 de cada 5)
+								boolean estaVencido = (j % 5 == 0); // 1 de cada 5
 
-								else 
-								{
-									// Tarjetón en vigencia ponemos la fecha normal
-									fechaExp = LocalDate.of(2024, 1 + (i % 12), 1 + (j * 10));
+								LocalDate fechaExp = null;
+								LocalDate fechaVenc = null;
+
+								if (estaVencido) {
+									// Tarjetón vencido: expiró antes de hoy
+									// Generamos un vencimiento entre 1 y 6 meses antes de hoy
+									int mesesAtras = 1 + (int)(Math.random() * 6); // entre 1 y 6 meses atrás
+									fechaVenc = hoy.minusMonths(mesesAtras);
+
+									// Expedición debe ser antes del vencimiento (ej: 1 o 2 meses antes)
+									int mesesAntesDeVencer = 1 + (int)(Math.random() * 2);
+									fechaExp = fechaVenc.minusMonths(mesesAntesDeVencer);
+
+								} else {
+									// Tarjetón vigente: vence después de hoy
+									int mesesFuturo = 3 + (int)(Math.random() * 10); // entre 3 y 12 meses
+									fechaVenc = hoy.plusMonths(mesesFuturo);
+
+									// Expedición 2 meses antes del vencimiento
+									fechaExp = fechaVenc.minusMonths(2);
 								}
 
-								LocalDate fechaVenc = fechaExp.plusMonths(6);
+								// Asegurarse de que la fecha de expedición no esté en el futuro
+								if (fechaExp.isAfter(hoy)) {
+									fechaExp = hoy; // Si por error se genera en el futuro, ajustamos a hoy
+								}
 
+								// Seleccionamos algunos medicamentos controlados
 								int numMedicamentos = 1 + (j % 3);
 								ArrayList<MedicamentoControlado> medsControlados = new ArrayList<>();
 
-								for (int k = 0; k < numMedicamentos && k < Farmacia.obtenerInstancia().getMedicamentoControlado().size(); k++) 
-								{
+								for (int k = 0; k < numMedicamentos && k < Farmacia.obtenerInstancia().getMedicamentoControlado().size(); k++) {
 									medsControlados.add((MedicamentoControlado) Farmacia.obtenerInstancia().getMedicamentoControlado().get(k));
 								}
-								if(p.obtenerTarjetones().size() < 3  )
-								{
 
+								// Añadimos el tarjetón solo si el paciente tiene espacio
+								if (p.obtenerTarjetones().size() < 3) {
 									Tarjeton t = new Tarjeton(
 											p.getNombre(),
 											p.getDireccion(),
@@ -1245,12 +1260,43 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 											);
 									Farmacia.obtenerInstancia().getTarjetones().add(t);
 									p.agregarTarjeton(t);
-
 								}
 							}
 						}
-						System.out.println("Se agregaron los tarjetones "+Farmacia.obtenerInstancia().getTarjetones().size());
+
+
+						Tarjeton tVencido = new Tarjeton(
+								"Beatriz Nuñez Ortiz",
+								"23A / 244 Y 250",
+								java.sql.Date.valueOf(LocalDate.of(2024, 1, 1)),
+								java.sql.Date.valueOf(LocalDate.of(2024, 6, 30)),
+								new ArrayList<>(Farmacia.obtenerInstancia().getMedicamentoControlado())
+								);
+						Farmacia.obtenerInstancia().getTarjetones().add(tVencido);
+
+						Tarjeton tVencidoDos = new Tarjeton(
+								"Gabriela Sánchez Torres",
+								"Calle Victoria 244",
+								java.sql.Date.valueOf(LocalDate.of(2024, 1, 1)),
+								java.sql.Date.valueOf(LocalDate.of(2024, 6, 30)),
+								new ArrayList<>(Farmacia.obtenerInstancia().getMedicamentoControlado())
+								);
+						Farmacia.obtenerInstancia().getTarjetones().add(tVencidoDos);
+
+						Tarjeton tVencidoTres = new Tarjeton(
+								"Helena Torres Aguilar",
+								"23B/244254",
+								java.sql.Date.valueOf(LocalDate.of(2024, 1, 1)),
+								java.sql.Date.valueOf(LocalDate.of(2024, 6, 30)),
+								new ArrayList<>(Farmacia.obtenerInstancia().getMedicamentoControlado())
+								);
+						Farmacia.obtenerInstancia().getTarjetones().add(tVencidoTres);
+
+						System.out.println("Se agregaron los tarjetones: " + Farmacia.obtenerInstancia().getTarjetones().size());
 					}
+
+
+
 
 					public void generarFacturasDesdeVentas() 
 					{
@@ -1900,7 +1946,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 												Farmacia.obtenerInstancia().obtenerPacientePorNombre("Valeria López Méndez"),
 												false
 								);
-						System.out.println("Total de Núcleos: " + Farmacia.obtenerInstancia().getNucleos());
+						System.out.println("Total de Núcleos: " + Farmacia.obtenerInstancia().getNucleos().size());
 					}
 
 					//===================================================================================================================================================================================			
@@ -1976,7 +2022,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						}
 						return listaRecetas;
 					}
-
+					
 					// Método para obtener la lista de mujeres
 					public List<String> obtenerListaMujeres() {
 						List<String> listaMujeres = new ArrayList<>();
@@ -1987,6 +2033,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						}
 						return listaMujeres;
 					}
+<<<<<<< HEAD
 
 					public double obtenerPrecioMedicamento(String nombreMedicamento) {
 					    // Validación básica
@@ -2011,19 +2058,118 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 
 					    // Si no se encontró el medicamento
 					    throw new IllegalArgumentException("Medicamento no encontrado: " + nombreBuscado);
+=======
+					
+					public double obtenerPrecioMedicamento(String nombreMedicamento) 
+					{
+						for (Medicamento medicamento : medicamentos) {
+							if (medicamento.getNomComun().equalsIgnoreCase(nombreMedicamento)) {
+								return medicamento.getPrecio();
+							}
+						}
+						throw new RuntimeException("Medicamento no encontrado: " + nombreMedicamento);
+>>>>>>> 7a363c56d1196bc1e01ba03a9e9ebeec93838d38
 					}
+
+					public ArrayList<Medicamento> filtroLetrasParaMed()
+					{
+						ArrayList<Medicamento> med = new ArrayList<Medicamento>();
+
+						for(Medicamento m: medicamentos)
+							med.add(m);
+						for(MedicamentoControlado mc: medicamentoControlado)
+							med.add(mc);
+
+						Collections.sort(med, new Comparator<Medicamento>() 
+								{
+							@Override
+							public int compare(Medicamento m1, Medicamento m2) 
+							{
+								return m1.getNomComun().compareTo(m2.getNomComun());
+							}
+								});
+
+						return med;	
+					}
+
+					public ArrayList<Medicamento> mostrarTodosLosMedicamentos()
+					{
+						ArrayList<Medicamento> med = new ArrayList<Medicamento>();
+
+						for(Medicamento m: medicamentos)
+							med.add(m);
+						for(MedicamentoControlado mc: medicamentoControlado)
+							med.add(mc);
+						return med;
+					}
+
+					public ArrayList<Medicamento> filtroPrecioParaMed()
+					{
+						ArrayList<Medicamento> med = new ArrayList<Medicamento>();
+
+						for(Medicamento m: medicamentos)
+							med.add(m);
+						for(MedicamentoControlado mc: medicamentoControlado)
+							med.add(mc);
+
+						Collections.sort(med, new Comparator<Medicamento>() 
+								{
+							@Override
+							public int compare(Medicamento m1, Medicamento m2) 
+							{
+								Double primerValor = m1.getPrecio();
+								Double segundoValor = m2.getPrecio();
+								return primerValor.compareTo(segundoValor);
+								
+							}
+								});
+
+						return med;	
+					}
+					
+					public ArrayList<Medicamento> desorganizarPorLimites() 
+					{
+					    ArrayList<Medicamento> med = new ArrayList<Medicamento>();
+					    
+					    // Guardo todos los datos en la lista
+					    
+						for(Medicamento m: medicamentos)
+							med.add(m);
+						for(MedicamentoControlado mc: medicamentoControlado)
+							med.add(mc);
+						
+					    int n = med.size();
+					    
+					    for (int i = 0; i < n / 2; i++) 
+					    {
+					        int j = n - 1 - i;
+
+					        // Se Intercambia la posición de i con la posición j
+					        
+					        Medicamento temp = med.get(i);
+					        med.set(i, med.get(j));
+					        med.set(j, temp);
+					    }
+
+					    return med;
+					}
+
 			
 //==========================================================================================================================================
 				    // Método auxiliar para buscar un núcleo familiar por su ID
-				    public NucleoFamiliar buscarNucleoPorId(String idNucleo) {
-				        for (NucleoFamiliar nucleo : nucleos) {
-				            if (nucleo.getId().equals(idNucleo)) {
+				    public NucleoFamiliar buscarNucleoPorId(String idNucleo) 
+				    {
+				        for (NucleoFamiliar nucleo : nucleos) 
+				        {
+				            if (nucleo.getId().equals(idNucleo)) 
+				            {
 				                return nucleo;
 				            }
 				        }
 				        return null;
 				    }
 }
+
 
 
 
