@@ -165,7 +165,10 @@ public class Medicamento
 		if(Validaciones.noEstaVacio(tipo))
 			if(Validaciones.noTieneCaracteresEsp(tipo))
 				if(Validaciones.noTieneNumeros(tipo))
-					this.tipo = tipo;
+					if(tipo == "Venta libre" ||  tipo == "Con prescripción" || tipo == "Medicamento controlado")
+						this.tipo = tipo;
+					else
+						throw new IllegalArgumentException("El campo: tipo de medicamento, debe ser: Venta libre o Con prescripción o  Medicamento controlado");
 				else
 					throw new IllegalArgumentException("El campo: tipo de medicamento, presenta caracteres especiales");
 			else

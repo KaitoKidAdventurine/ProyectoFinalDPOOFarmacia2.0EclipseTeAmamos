@@ -5,8 +5,20 @@ import java.util.Date;
 import java.time.ZoneId;
 import java.util.ArrayList;
 
+
+
+import java.util.HashMap;
+import java.util.HashSet;
+
+import Logica.Farmacia;
+import Logica.Medicamento;
+import Logica.MedicamentoControlado;
 import Logica.Paciente;
 import Logica.Tarjeton;
+
+import java.util.Iterator;
+
+
 
 public class Validaciones 
 {
@@ -101,7 +113,7 @@ public class Validaciones
 		// de matches
 
 
-		return texto.matches("^[a-zA-Z0-9\\s#°ºª.,-]+$");
+		return texto.matches("^[a-zA-Z0-9\\s#°ºª.,/-]+$");
 	}
 
 
@@ -203,26 +215,26 @@ public class Validaciones
 
 	public static boolean sobrepasaDeLaFechaDeHoy (Date fecha)
 	{
-		
+
 		// Funcionalidad: Retorna true si la fecha  sobrepasa de la
 		// fecha de hoy, mientras que si hace lo contrario decuelve true.
 
 		// Obtener la fecha actual del sistema
-	    Date hoy = new Date();
+		Date hoy = new Date();
 
-	    // Comparar si la fecha pasada es posterior a hoy
-	    return fecha.before(hoy);
+		// Comparar si la fecha pasada es posterior a hoy
+		return fecha.before(hoy);
 	}
-	
+
 	public static boolean esAntesDeLaFechaDeHoy (Date fecha)
 	{
 		// Funcionalidad: Devolvera true si es despues  de la fecha de hoy y devolvera false
 		// si es antes de la fecha de hoy 
-		
+
 		Date hoy = new Date();
 		return fecha.after(hoy);
 	}
-	
+
 	public static boolean estaEntreLasDosFechas(Date inicio, Date fecha ,Date fin)
 	{
 		// Funcionalidad: Revisa que la fecha este entre la fecha 
@@ -253,10 +265,10 @@ public class Validaciones
 		for(int i = 0; i < mujeres.size() && salida == true; i++)
 		{
 			Paciente pacienteX = mujeres.get(i);
-			
+
 			String carnet = pacienteX.getCi();
 			int numero = Character.getNumericValue(carnet.charAt(9));
-			
+
 			// par es hombre "77020545628"
 			if(numero % 2 == 0) 
 				salida = false;
@@ -265,8 +277,8 @@ public class Validaciones
 		return salida;
 	}
 
-	
-	
+
+
 
 	public static boolean sonHombres(ArrayList<Paciente> hombres)
 	{
@@ -277,7 +289,7 @@ public class Validaciones
 			Paciente pacienteX = hombres.get(i);
 			String carnet = pacienteX.getCi();
 			int numero = Character.getNumericValue(carnet.charAt(9));
-			
+
 			// impar es mujer 
 			if(numero % 2 != 0)
 			{
@@ -286,7 +298,7 @@ public class Validaciones
 		}
 		return salida;
 	}
-	
+
 	public static boolean seRepiteElCarnet(String ci, ArrayList<String> carnets)
 	{
 		boolean salida = false; 
@@ -298,8 +310,8 @@ public class Validaciones
 		System.out.println("CI: " + ci);
 		return salida;
 	}
-	
-	
+
+
 	public static boolean validarCI(String ci) 
 	{
 		// Funcionalidad: 
@@ -318,7 +330,7 @@ public class Validaciones
 		{
 			throw new IllegalArgumentException("El CI debe tener 11 dígitos numéricos");
 		}
-		
+
 		if(ci == null)
 		{
 			throw new IllegalArgumentException("El CI no puede estar vacío");
@@ -330,15 +342,15 @@ public class Validaciones
 	{
 		String fechaStr = ci.substring(0, 6);
 		char digitoSiglo = ci.charAt(6);
-		
+
 		// Extrae todos los datos de anno, siglo, mes, dia.
-		
+
 		int anno = extraerAnno(fechaStr);
 		int mes = extraerMes(fechaStr);
 		int dia = extraerDia(fechaStr);
 		int siglo = determinarSiglo(digitoSiglo);
-		
-		
+
+
 		// Con los datos obtenidos verifica si esos datos son validos.
 		return crearFechaValidada(anno, mes, dia, siglo);
 	}
@@ -348,12 +360,12 @@ public class Validaciones
 	{
 		return Integer.parseInt(fechaStr.substring(0, 2));
 	}
-	
+
 	// Estrae el mes del carnet 
 	private static int extraerMes(String fechaStr) {
 		return Integer.parseInt(fechaStr.substring(2, 4));
 	}
-	
+
 	// Estrae el dia del carnet
 	private static int extraerDia(String fechaStr) 
 	{
@@ -363,7 +375,7 @@ public class Validaciones
 	// Determinación del siglo
 	private static int determinarSiglo(char digitoSiglo) 
 	{
-		
+
 		switch (digitoSiglo) 
 		{
 		case '0': case '1': case '2': case '3': case '4': case '5':
@@ -389,13 +401,13 @@ public class Validaciones
 			validarFechaNoFutura(fecha);
 			return fecha;
 		} 
-		
+
 		catch (Exception e) 
 		{
 			throw new IllegalArgumentException("Fecha inválida: " + dia + "/" + mes + "/" + annoCompleto);
 		}
 	}
-	
+
 	// Puse maximo 120 annos como el maximo de tiempo que una persona puede vivir.
 	private static void validarAnnoMinimo(int annoCompleto) 
 	{
@@ -404,7 +416,7 @@ public class Validaciones
 			throw new IllegalArgumentException("No se acepta un año menor de 1905");
 		}
 	}
-	
+
 	// Valida que la fecha no pueda ser posterior a hoy
 	private static void validarFechaNoFutura(LocalDate fecha) 
 	{
@@ -417,13 +429,130 @@ public class Validaciones
 	// Validación de edad
 	private static void validarEdad(LocalDate fechaNacimiento) 
 	{
-		
+
 		Period periodo = Period.between(fechaNacimiento, LocalDate.now());
 		if (periodo.getYears() > 120) 
 		{
 			throw new IllegalArgumentException("Edad inválida: más de 120 años");
 		}
 	}
+
+	// remuebe los pacientes que esten repetidos
+	/*
+	public static void removerPacientesRepetidos() 
+	{
+		ArrayList<Paciente> pacientes = Farmacia.obtenerInstancia().getPacientes();
+		ArrayList<Paciente> pacientesRep = new ArrayList<>(pacientes);
+		ArrayList<Paciente> aEliminar = new ArrayList<>();
+
+		int contador;
+
+		for (Paciente p : pacientes) 
+		{
+			contador = 0;
+			for (Paciente pc : pacientesRep) 
+			{
+				if (p.getCi().equals(pc.getCi())) 
+				{
+					contador++;
+				}
+			}
+
+			if (contador > 1) 
+			{
+				aEliminar.add(p); // Marcar para eliminar
+			}
+		}
+		//for(int i = 0; i < ( Farmacia.obtenerInstancia().getPacientes().size() - 1) /2; i++)
+		//if(Farmacia.obtenerInstancia().getPacientes().get(i).equals(aEliminar.get(i)))
+		
+		int i = 0;
+		ArrayList<Paciente> pas = Farmacia.obtenerInstancia().getPacientes();
+		Iterator <Paciente> it = pas.iterator();
+	    while (it.hasNext() && i < 45) 
+	    {
+	        Paciente actual = it.next();
+	        if (i < 45 && actual.equals(aEliminar.get(i))) 
+	        {
+	            it.remove();
+	        }
+	        i++;
+	    }
+	    Farmacia.obtenerInstancia().getPacientes().clear();
+	    Farmacia.obtenerInstancia().getPacientes().addAll(pas);
+	}
+	*/
+	public static void removerPacientesRepetidos() 
+	{
+	    ArrayList<Paciente> pacientes = Farmacia.obtenerInstancia().getPacientes();
+
+	    HashMap<String, Paciente> mapaPorCI = new HashMap<>();
+
+	    // Sobreescribe con el último paciente encontrado por CI
+	    for (Paciente p : pacientes) 
+	    {
+	        mapaPorCI.put(p.getCi(), p);
+	    }
+
+	    // Limpiar y rellenar con los valores únicos
+	    Farmacia.obtenerInstancia().getPacientes().clear();
+	    Farmacia.obtenerInstancia().getPacientes().addAll(mapaPorCI.values());
+	    System.out.println("Total de pacientes: "+ Farmacia.obtenerInstancia().getPacientes().size());
+	}
+	
+	public static void removerMedicamentosRepetidos() 
+	{
+		ArrayList<Medicamento> medicamentos = Farmacia.obtenerInstancia().getMedicamentos();
+
+	    HashMap<String, Medicamento> mapaPorCodigo = new HashMap<>();
+
+	    // Sobreescribe con el último paciente encontrado por CI
+	    for (Medicamento m : medicamentos) 
+	    {
+	    	mapaPorCodigo.put(m.getCodigo(), m);
+	    }
+
+	    // Limpiar y rellenar con los valores únicos
+	    Farmacia.obtenerInstancia().getMedicamentos().clear();
+	    Farmacia.obtenerInstancia().getMedicamentos().addAll(mapaPorCodigo.values());
+	    System.out.println("Total de medicamentos: "+ Farmacia.obtenerInstancia().getMedicamentos().size());
+	}
+
+
+	public static void removerMedicamentosControladosRepetidos() 
+	{
+		ArrayList<MedicamentoControlado> medicamentos = Farmacia.obtenerInstancia().getMedicamentoControlado();
+
+	    HashMap<String, MedicamentoControlado> mapaPorCodigo = new HashMap<>();
+
+	    // Sobreescribe con el último paciente encontrado por CI
+	    for (MedicamentoControlado m : medicamentos) 
+	    {
+	    	mapaPorCodigo.put(m.getCodigo(), m);
+	    }
+
+	    // Limpiar y rellenar con los valores únicos
+	    Farmacia.obtenerInstancia().getMedicamentoControlado().clear();
+	    Farmacia.obtenerInstancia().getMedicamentoControlado().addAll(mapaPorCodigo.values());
+	    System.out.println("Total de medicamentos Controlados: "+ Farmacia.obtenerInstancia().getMedicamentos().size());
+	}
+
+
+
+
+	// Validacion para agregar CI 
+	private static boolean carnetsDeIdentidadRepetidoEnAgregarPaciente(Paciente pac)
+	{
+		boolean salida = false;
+		for(int i= 0; i < Farmacia.obtenerInstancia().getPacientes().size() && salida == false; i++ )
+			if(Farmacia.obtenerInstancia().getPacientes().get(i).equals(pac))
+				salida = true;
+
+		return salida;
+	}
+
+
+
 
 	// Validación de dígito de sexo
 	private static void validarDigitoSexo(char digitoSexo) 
@@ -432,6 +561,33 @@ public class Validaciones
 		{
 			throw new IllegalArgumentException("Dígito de sexo debe ser un número");
 		}
+	}
+
+
+	// Validacion para verificar que el carnet no se encuentra repetido
+	public static void carnetsDeIdentidadRepetido()
+	{
+		int contador;
+		ArrayList <String> carnes  = Farmacia.obtenerInstancia().getCarnets();
+		
+
+		for(String c: Farmacia.obtenerInstancia().getCarnets())
+		{
+			contador = 0;
+			for(String co: carnes)
+				if(c.equals(co))
+					contador++;
+			if(contador !=1)
+				throw new IllegalArgumentException("El carnet de identidad"+ c + "se encuentra repetido");
+		}	
+	}
+
+
+	public static boolean estaVencido(Date fechaVencimiento) 
+	{
+		// Funcionalidad: devuelve true si el vencimiento es antes de la fecha de hoy  
+		Date fechaDeHoy = new Date(); 
+		return fechaVencimiento.before(fechaDeHoy); 
 	}
 
 
