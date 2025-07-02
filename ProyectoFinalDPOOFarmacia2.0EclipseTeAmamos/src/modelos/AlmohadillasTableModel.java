@@ -10,19 +10,18 @@ public class AlmohadillasTableModel extends ModeloPrincipalTableModel<Venta> {
     private static final long serialVersionUID = 1L;
 
     public AlmohadillasTableModel() {
-        super(new Object[]{"N° Compra", "Producto", "Precio Unitario", "Cantidad", "Total", "Fecha de Compra", "Acción"});
+        super(new Object[]{"N° Compra", "Producto", "Precio Unitario", "Cantidad", "Total", "Fecha de Compra"});
     }
 
     @Override
     public void adicionar(Venta venta) {
-        Object[] fila = new Object[7];
+        Object[] fila = new Object[6];
         fila[0] = getRowCount() + 1; // Número de compra
         fila[1] = obtenerNombreProducto(venta); // Nombre del producto ("Almohadillas Sanitarias")
         fila[2] = obtenerPrecioUnitario(venta); // Precio unitario
         fila[3] = obtenerCantidad(venta); // Cantidad (número de mujeres en el núcleo)
         fila[4] = calcularTotal(fila[2], fila[3]); // Total calculado
         fila[5] = venta.getFechaVenta(); // Fecha de la compra
-        fila[6] = "Eliminar"; // Botón de acción
         addRow(fila);
     }
 
@@ -73,10 +72,6 @@ public class AlmohadillasTableModel extends ModeloPrincipalTableModel<Venta> {
         }
     }
 
-	public AlmohadillasSanitarias getCompraAt(int i) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	
 

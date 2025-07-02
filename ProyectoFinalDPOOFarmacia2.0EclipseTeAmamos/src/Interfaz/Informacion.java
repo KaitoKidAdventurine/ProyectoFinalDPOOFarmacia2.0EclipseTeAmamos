@@ -86,4 +86,19 @@ public class Informacion extends JDialog {
 		lblInformacinDeUsuarios.setBounds(47, 13, 378, 39);
 		contentPanel.add(lblInformacinDeUsuarios);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

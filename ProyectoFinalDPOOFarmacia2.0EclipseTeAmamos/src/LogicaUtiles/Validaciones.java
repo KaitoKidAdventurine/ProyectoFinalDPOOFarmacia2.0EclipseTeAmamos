@@ -720,4 +720,21 @@ public class Validaciones
 			
 		}
 	
+		public static void removerNucleosRepetidos() 
+		{
+			ArrayList<NucleoFamiliar> nucleos = Farmacia.obtenerInstancia().getNucleos();
+
+			HashMap<String, NucleoFamiliar> mapaPorCodigo = new HashMap<>();
+
+			// Sobreescribe con el último paciente encontrado por CI
+			for (NucleoFamiliar n : nucleos) 
+			{
+				mapaPorCodigo.put(n.getId(), n);
+			}
+
+			// Limpiar y rellenar con los valores únicos
+			Farmacia.obtenerInstancia().getNucleos().clear();
+			Farmacia.obtenerInstancia().getNucleos().addAll(mapaPorCodigo.values());
+			System.out.println("Total de Nucleos Familiares: "+ Farmacia.obtenerInstancia().getMedicamentos().size());
+		}
 }
