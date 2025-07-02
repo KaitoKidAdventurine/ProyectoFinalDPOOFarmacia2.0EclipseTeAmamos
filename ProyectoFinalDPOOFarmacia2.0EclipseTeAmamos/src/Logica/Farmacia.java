@@ -3,16 +3,14 @@ package Logica;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
-import java.text.SimpleDateFormat;
-import java.time.*;
 import java.util.Date;
 
-import Interfaces_Enum.Presentacion;
-import Logica.*;
 import LogicaUtiles.Factura;
 import LogicaUtiles.Porcentaje;
+
 import LogicaUtiles.Factura;
 import LogicaUtiles.Validaciones;
+
 import Logica.Medicamento;
 import LogicaUtiles.VentaDeMedicamentos;
 import Interfaces_Enum.Facturar;
@@ -659,18 +657,6 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					}
 
 					// ====================================================Buscadores============================================================================================================================
-
-					private Medicamento obtenerMedicamento(String nombre) 
-					{
-						for (Medicamento m : medicamentos) 
-						{
-							if (m.getNomComun().equals(nombre)) 
-							{
-								return m;
-							}
-						}
-						throw new RuntimeException("Medicamento: " +nombre+ " no encontrado");
-					}
 
 					public Paciente obtenerPacientePorNombre(String nombre) 
 					{
@@ -2131,6 +2117,22 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 					    return med;
 					}
 
-
-
+			
+//==========================================================================================================================================
+				    // Método auxiliar para buscar un núcleo familiar por su ID
+				    public NucleoFamiliar buscarNucleoPorId(String idNucleo) 
+				    {
+				        for (NucleoFamiliar nucleo : nucleos) 
+				        {
+				            if (nucleo.getId().equals(idNucleo)) 
+				            {
+				                return nucleo;
+				            }
+				        }
+				        return null;
+				    }
 }
+
+
+
+

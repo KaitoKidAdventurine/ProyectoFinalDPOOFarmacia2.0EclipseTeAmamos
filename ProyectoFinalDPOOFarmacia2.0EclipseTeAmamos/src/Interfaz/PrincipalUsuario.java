@@ -1722,17 +1722,14 @@ public class PrincipalUsuario extends JFrame {
 				label_74.setBounds(12, -11, 127, 93);
 				panel_23.add(label_74);
 				
-				JPanel panel_11 = new JPanel();
-				pestanas.addTab("New tab", null, panel_11, null);
+				JPanel VentaAlmohadillas = new JPanel();
+				pestanas.addTab("New tab", null, VentaAlmohadillas, null);
 				
-				JPanel panel_12 = new JPanel();
-				pestanas.addTab("New tab", null, panel_12, null);
+				JPanel VentaControlada = new JPanel();
+				pestanas.addTab("New tab", null, VentaControlada, null);
 				
-				JPanel panel_13 = new JPanel();
-				pestanas.addTab("New tab", null, panel_13, null);
-				
-				JPanel panel_14 = new JPanel();
-				pestanas.addTab("New tab", null, panel_14, null);
+				JPanel VentaPrescripcion = new JPanel();
+				pestanas.addTab("New tab", null, VentaPrescripcion, null);
 				
 
 				// CARGAR DATOS DESDE LA FARMACIA

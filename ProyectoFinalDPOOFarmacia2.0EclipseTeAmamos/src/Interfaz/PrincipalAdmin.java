@@ -2,9 +2,12 @@ package Interfaz;
 
 import Logica.Farmacia;
 import Logica.Medicamento;
+import Logica.NucleoFamiliar;
+import Logica.Paciente;
 import LogicaUtiles.Porcentaje;
 import LogicaUtiles.VentaDeMedicamentos;
 import modelos.AlmohadillasNecesariasTableModel;
+import modelos.AlmohadillasTableModel;
 import modelos.ButtonRenderer;
 import modelos.ComparacionVentasTableModel;
 import modelos.ComprasTableModel;
@@ -12,11 +15,9 @@ import modelos.MedicamentoTableModel;
 import modelos.MedicamentosComboBoxModel;
 import modelos.MedicamentosMasVendidosTableModel;
 import modelos.ModeloPrincipalTableModel;
-
+import modelos.NucleosComboBoxModel;
 import modelos.TablaDePacientes;
-
 import modelos.PacientesComboBoxModel;
-
 import modelos.TarjetonesIncumplidosTableModel;
 
 import javax.swing.table.DefaultTableCellRenderer;
@@ -153,6 +154,16 @@ public class PrincipalAdmin extends JFrame
 	private JComboBox<String> comboBoxPacientes;
 	private JComboBox<String> comboBoxMedicamentos;
 	private JComboBox <Integer>comboBoxCantidad;
+	private JScrollPane scrollPane_6;
+	private JTextField textTotal;
+	private JTextField textEfectivo;
+	private JTextField textCambio;
+	private JLabel lblMujeres;
+	private NucleosComboBoxModel nucleosComboBoxModel;
+	private AlmohadillasTableModel modeloAlmohadillas;
+	private JTable tableALmohadillas;
+	private NucleoFamiliar nucleo;
+	private JComboBox <String>comboBoxNucleos;
 
 
 	/**
@@ -197,35 +208,55 @@ public class PrincipalAdmin extends JFrame
 		textTemperatura.setText("");
 		textCantidad.setText("");
 	}
-	
+
 	private void actualizarTotal(JTextField txtTotal, ComprasTableModel comprasTableModel) 
 	{
-	    double total = 0.0;
+		double total = 0.0;
 
-	    for (int i = 0; i < comprasTableModel.getRowCount(); i++) {
-	        double precioMedicamento = (double) comprasTableModel.getValueAt(i, 2);
-	        int cantidad = (int) comprasTableModel.getValueAt(i, 3);
+		for (int i = 0; i < comprasTableModel.getRowCount(); i++) {
+			double precioMedicamento = (double) comprasTableModel.getValueAt(i, 2);
+			int cantidad = (int) comprasTableModel.getValueAt(i, 3);
 
-	        total += precioMedicamento * cantidad;
-	    }
+			total += precioMedicamento * cantidad;
+		}
 
-	    txtTotal.setText(String.format("%.2f", total)); // Actualizar el campo de texto con el total
+		txtTotal.setText(String.format("%.2f", total)); // Actualizar el campo de texto con el total
 	}
-	
+
 	// Método para restar la cantidad eliminada del registro de cantidades acumuladas
 	private void restarCantidadAcumulada(String nombreMedicamento, int cantidadEliminada) {
-	    int cantidadAcumuladaActual = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
-	    int nuevaCantidadAcumulada = cantidadAcumuladaActual - cantidadEliminada;
+		int cantidadAcumuladaActual = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
+		int nuevaCantidadAcumulada = cantidadAcumuladaActual - cantidadEliminada;
 
-	    if (nuevaCantidadAcumulada <= 0) {
-	        cantidadesAcumuladas.remove(nombreMedicamento); // Eliminar si llega a cero
-	    } else {
-	        cantidadesAcumuladas.put(nombreMedicamento, nuevaCantidadAcumulada); // Actualizar
-	    }
+		if (nuevaCantidadAcumulada <= 0) {
+			cantidadesAcumuladas.remove(nombreMedicamento); // Eliminar si llega a cero
+		} else {
+			cantidadesAcumuladas.put(nombreMedicamento, nuevaCantidadAcumulada); // Actualizar
+		}
+	}
+
+	private boolean hayComprasEnLaTabla() {
+		return comprasTableModel.getRowCount() > 0;
 	}
 	
-	private boolean hayComprasEnLaTabla() {
-	    return comprasTableModel.getRowCount() > 0;
+
+
+	private boolean comproNucleo(){
+		return modeloAlmohadillas.getRowCount() > 0 ;
+	}
+
+	private void actualizarTotal(JTextField textTotal, AlmohadillasTableModel modeloAlmohadillas) {
+		double total = 0.0;
+
+		// Recorrer todas las filas de la tabla
+		for (int i = 0; i < modeloAlmohadillas.getRowCount(); i++) {
+			// Obtener el valor de la columna "Total" (índice 4)
+			double importe = (double) modeloAlmohadillas.getValueAt(i, 4);
+			total += importe;
+		}
+
+		// Actualizar el campo de texto con el total acumulado
+		textTotal.setText(String.format("%.2f", total));
 	}
 	/**
 	 * Create the frame.
@@ -247,8 +278,8 @@ public class PrincipalAdmin extends JFrame
 		// Centrar la ventana en la pantalla
 
 		this.setLocationRelativeTo(null);
-		
-	
+
+
 
 		JPanel barraSuperior = new JPanel();
 		barraSuperior.setBorder(new LineBorder(new Color(0, 0, 0), 4));
@@ -701,6 +732,10 @@ public class PrincipalAdmin extends JFrame
 		panel_13.setLayout(null);
 
 		JTextPane txtpnBeneficioDeAdministrador = new JTextPane();
+		txtpnBeneficioDeAdministrador.setEditable(false);
+		txtpnBeneficioDeAdministrador.setBackground(Color.WHITE);
+		txtpnBeneficioDeAdministrador.setDisabledTextColor(Color.BLACK);
+		txtpnBeneficioDeAdministrador.setEnabled(false);
 		txtpnBeneficioDeAdministrador.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnBeneficioDeAdministrador.setText("Beneficio de Administrador : Consultar reportes con lo m\u00E1s inmediato de la farmacia ");
 		txtpnBeneficioDeAdministrador.setBounds(10, 287, 463, 55);
@@ -722,18 +757,30 @@ public class PrincipalAdmin extends JFrame
 		panel_13.add(label_64);
 
 		JTextPane txtpnEnNuestroSistema = new JTextPane();
+		txtpnEnNuestroSistema.setBackground(Color.WHITE);
+		txtpnEnNuestroSistema.setDisabledTextColor(Color.BLACK);
+		txtpnEnNuestroSistema.setEnabled(false);
+		txtpnEnNuestroSistema.setEditable(false);
 		txtpnEnNuestroSistema.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		txtpnEnNuestroSistema.setText("En nuestro sistema podr\u00E1:");
 		txtpnEnNuestroSistema.setBounds(12, 13, 461, 66);
 		panel_13.add(txtpnEnNuestroSistema);
 
 		JTextPane txtpnRealizarLaCompra = new JTextPane();
+		txtpnRealizarLaCompra.setBackground(Color.WHITE);
+		txtpnRealizarLaCompra.setEnabled(false);
+		txtpnRealizarLaCompra.setEditable(false);
+		txtpnRealizarLaCompra.setDisabledTextColor(Color.BLACK);
 		txtpnRealizarLaCompra.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnRealizarLaCompra.setText("Realizar la compra de medicamentos por 3 Tipos de ventas y la compra de almohadillas sanitarias para las mujeres de su n\u00FAcleo familiar ");
 		txtpnRealizarLaCompra.setBounds(10, 71, 442, 80);
 		panel_13.add(txtpnRealizarLaCompra);
 
 		JTextPane txtpnConsultarLaDisponibilidad = new JTextPane();
+		txtpnConsultarLaDisponibilidad.setBackground(Color.WHITE);
+		txtpnConsultarLaDisponibilidad.setDisabledTextColor(Color.BLACK);
+		txtpnConsultarLaDisponibilidad.setEnabled(false);
+		txtpnConsultarLaDisponibilidad.setEditable(false);
 		txtpnConsultarLaDisponibilidad.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnConsultarLaDisponibilidad.setText("Consultar la disponibilidad de medicamentos para realizar la compra exitosa de ellos");
 		txtpnConsultarLaDisponibilidad.setBounds(10, 179, 440, 122);
@@ -745,6 +792,10 @@ public class PrincipalAdmin extends JFrame
 		panel_13.add(label_65);
 
 		JTextPane txtpnCrditos = new JTextPane();
+		txtpnCrditos.setBackground(Color.WHITE);
+		txtpnCrditos.setDisabledTextColor(Color.BLACK);
+		txtpnCrditos.setEnabled(false);
+		txtpnCrditos.setEditable(false);
 		txtpnCrditos.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnCrditos.setText("Cr\u00E9ditos:\r\n-Alison Hidalgo Guerra\r\nGitHub: AlisonH17\r\n-Eriet Dario Armas Gonz\u00E1lez \r\nGitHub: KaitoKidAdventurine");
 		txtpnCrditos.setBounds(140, 370, 254, 111);
@@ -1457,23 +1508,23 @@ public class PrincipalAdmin extends JFrame
 		textPrecio.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-                char c = e.getKeyChar();
-                String text = textPrecio.getText();
+				char c = e.getKeyChar();
+				String text = textPrecio.getText();
 
-                // Permitir solo dígitos y un único punto
-                if (!Character.isDigit(c) && c != '.') {
-                    e.consume(); // Consumir el evento si no es un número o punto
-                }
+				// Permitir solo dígitos y un único punto
+				if (!Character.isDigit(c) && c != '.') {
+					e.consume(); // Consumir el evento si no es un número o punto
+				}
 
-                // Permitir solo un punto en el campo
-                if (c == '.' && text.contains(".")) {
-                    e.consume(); // Consumir el evento si ya hay un punto
-                }
+				// Permitir solo un punto en el campo
+				if (c == '.' && text.contains(".")) {
+					e.consume(); // Consumir el evento si ya hay un punto
+				}
 
-                // Evitar que el punto sea el primer carácter
-                if (c == '.' && text.isEmpty()) {
-                    e.consume(); // Consumir el evento si el punto está al inicio
-                }
+				// Evitar que el punto sea el primer carácter
+				if (c == '.' && text.isEmpty()) {
+					e.consume(); // Consumir el evento si el punto está al inicio
+				}
 			}
 		});
 		textPrecio.setColumns(10);
@@ -1594,20 +1645,6 @@ public class PrincipalAdmin extends JFrame
 							txtPrecio, txtTipo, txtFortaleza, txtTemperatura,
 							txtCantidad, Exped, Venc, codigoDelMed);
 
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
-					
 					// Actualizar tabla
 					medicamentoTableModel.actualizar(Farmacia.obtenerInstancia().getMedicamentos());
 
@@ -2027,11 +2064,16 @@ public class PrincipalAdmin extends JFrame
 		JLabel lblNewLabel_5 = new JLabel("New label"); 
 		lblNewLabel_5.setBounds(307, 16, 69, 20); 
 		panel_7.add(lblNewLabel_5);
+
 		
 		JPanel VentaPrescripcion = new JPanel();
 		pestanas.addTab("New tab", null, VentaPrescripcion, null);
 		
 		
+
+
+
+
 
 		final JPanel VentaLibre = new JPanel();
 		VentaLibre.setBackground(Color.WHITE);
@@ -2049,57 +2091,57 @@ public class PrincipalAdmin extends JFrame
 		comprasTableModel = new ComprasTableModel();
 		tablaCompras = new JTable();
 		tablaCompras.setModel(comprasTableModel);
-		
-		  // 2. Configurar el renderizador de botones para la columna de acción
-	    tablaCompras.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
 
-	    // 3. Agregar el MouseListener para manejar el evento de clic en "Eliminar"
-	    tablaCompras.addMouseListener(new MouseAdapter() {
-	        @Override
-	        public void mouseClicked(MouseEvent e) {
-	            int fila = tablaCompras.rowAtPoint(e.getPoint());
-	            int columna = tablaCompras.columnAtPoint(e.getPoint());
+		// 2. Configurar el renderizador de botones para la columna de acción
+		tablaCompras.getColumnModel().getColumn(5).setCellRenderer(new ButtonRenderer());
 
-	            if (columna == 5) { // Columna de acción ("Eliminar")
-	                int opcion = JOptionPane.showConfirmDialog(
-	                    null,
-	                    "¿Está seguro de que desea eliminar esta compra?",
-	                    "Confirmar eliminación",
-	                    JOptionPane.YES_NO_OPTION
-	                );
+		// 3. Agregar el MouseListener para manejar el evento de clic en "Eliminar"
+		tablaCompras.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int fila = tablaCompras.rowAtPoint(e.getPoint());
+				int columna = tablaCompras.columnAtPoint(e.getPoint());
 
-	                if (opcion == JOptionPane.YES_OPTION) {
-	                    // Obtener los datos de la fila seleccionada
-	                    String nombreMedicamento = (String) comprasTableModel.getValueAt(fila, 1);
-	                    int cantidadEliminada = (int) comprasTableModel.getValueAt(fila, 3);
+				if (columna == 5) { // Columna de acción ("Eliminar")
+					int opcion = JOptionPane.showConfirmDialog(
+							null,
+							"¿Está seguro de que desea eliminar esta compra?",
+							"Confirmar eliminación",
+							JOptionPane.YES_NO_OPTION
+							);
 
-	                    // Validar que la cantidad eliminada sea válida
-	                    if (cantidadEliminada <= 0) {
-	                        JOptionPane.showMessageDialog(null, 
-	                            "La cantidad eliminada debe ser mayor que cero.", 
-	                            "Error", JOptionPane.ERROR_MESSAGE);
-	                        return;
-	                    }
+					if (opcion == JOptionPane.YES_OPTION) {
+						// Obtener los datos de la fila seleccionada
+						String nombreMedicamento = (String) comprasTableModel.getValueAt(fila, 1);
+						int cantidadEliminada = (int) comprasTableModel.getValueAt(fila, 3);
 
-	                    // Restar la cantidad eliminada del registro de cantidades acumuladas
-	                    int cantidadAcumuladaActual = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
-	                    int nuevaCantidadAcumulada = cantidadAcumuladaActual - cantidadEliminada;
+						// Validar que la cantidad eliminada sea válida
+						if (cantidadEliminada <= 0) {
+							JOptionPane.showMessageDialog(null, 
+									"La cantidad eliminada debe ser mayor que cero.", 
+									"Error", JOptionPane.ERROR_MESSAGE);
+							return;
+						}
 
-	                    if (nuevaCantidadAcumulada <= 0) {
-	                        cantidadesAcumuladas.remove(nombreMedicamento);
-	                    } else {
-	                        cantidadesAcumuladas.put(nombreMedicamento, nuevaCantidadAcumulada);
-	                    }
+						// Restar la cantidad eliminada del registro de cantidades acumuladas
+						int cantidadAcumuladaActual = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
+						int nuevaCantidadAcumulada = cantidadAcumuladaActual - cantidadEliminada;
 
-	                    // Eliminar la fila del modelo de tabla
-	                    comprasTableModel.eliminarFila(fila);
+						if (nuevaCantidadAcumulada <= 0) {
+							cantidadesAcumuladas.remove(nombreMedicamento);
+						} else {
+							cantidadesAcumuladas.put(nombreMedicamento, nuevaCantidadAcumulada);
+						}
 
-	                    // Recalcular el total acumulado
-	                    actualizarTotal(txtTotal, comprasTableModel);
-	                }
-	            }
-	        }
-	    });
+						// Eliminar la fila del modelo de tabla
+						comprasTableModel.eliminarFila(fila);
+
+						// Recalcular el total acumulado
+						actualizarTotal(txtTotal, comprasTableModel);
+					}
+				}
+			}
+		});
 		scrollPane_5.setViewportView(tablaCompras);
 
 		JPanel panel_17 = new JPanel();
@@ -2113,7 +2155,7 @@ public class PrincipalAdmin extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				pestanas.setSelectedIndex(1);
-				
+
 			}
 		});
 		label_66.setBounds(12, 0, 57, 57);
@@ -2187,86 +2229,86 @@ public class PrincipalAdmin extends JFrame
 
 
 		btnAadirALa.addMouseListener(new MouseAdapter() {
-		    @Override
-		    public void mouseClicked(MouseEvent e) {
-		        // Obtener el nombre del medicamento seleccionado
-		        String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Obtener el nombre del medicamento seleccionado
+				String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
 
-		        // Obtener el nombre del paciente seleccionado
-		        String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
+				// Obtener el nombre del paciente seleccionado
+				String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
 
-		        // Validar selección del medicamento
-		        if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
-		            JOptionPane.showMessageDialog(VentaLibre, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
-		            return;
-		        }
+				// Validar selección del medicamento
+				if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
+					JOptionPane.showMessageDialog(VentaLibre, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
-		        // Validar selección del paciente
-		        if ("<Seleccione un paciente>".equals(nombrePaciente)) {
-		            JOptionPane.showMessageDialog(VentaLibre, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
-		            return;
-		        }
-		        
+				// Validar selección del paciente
+				if ("<Seleccione un paciente>".equals(nombrePaciente)) {
+					JOptionPane.showMessageDialog(VentaLibre, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
-		        // Si es la primera vez que se selecciona un paciente, deshabilitar el combobox
-		        if (!pacienteSeleccionado) {
-		            comboBoxPacientes.setEnabled(false); // Deshabilitar el combobox
-		            pacienteSeleccionado = true; // Marcar que ya se seleccionó un paciente
-		        }
 
-		        // Obtener la cantidad seleccionada en el combobox
-		        int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
+				// Si es la primera vez que se selecciona un paciente, deshabilitar el combobox
+				if (!pacienteSeleccionado) {
+					comboBoxPacientes.setEnabled(false); // Deshabilitar el combobox
+					pacienteSeleccionado = true; // Marcar que ya se seleccionó un paciente
+				}
 
-		        // Validar que la cantidad sea mayor que cero
-		        if (cantidadSeleccionada <= 0) {
-		            JOptionPane.showMessageDialog(VentaLibre, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
-		            return;
-		        }
+				// Obtener la cantidad seleccionada en el combobox
+				int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
 
-		        try {
-		            // Verificar si el medicamento ya tiene una cantidad acumulada
-		            int cantidadAcumulada = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
+				// Validar que la cantidad sea mayor que cero
+				if (cantidadSeleccionada <= 0) {
+					JOptionPane.showMessageDialog(VentaLibre, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 
-		            // Calcular la cantidad total si se agrega esta compra
-		            int cantidadTotal = cantidadAcumulada + cantidadSeleccionada;
+				try {
+					// Verificar si el medicamento ya tiene una cantidad acumulada
+					int cantidadAcumulada = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
 
-		            // Validar que la cantidad total no exceda el límite de 10 unidades
-		            if (cantidadTotal > 10) {
-		                JOptionPane.showMessageDialog(VentaLibre, "No puede comprar más de 10 unidades de este medicamento.", "Error", JOptionPane.ERROR_MESSAGE);
-		                return;
-		            }
+					// Calcular la cantidad total si se agrega esta compra
+					int cantidadTotal = cantidadAcumulada + cantidadSeleccionada;
 
-		            comprasTableModel.cantidad = cantidadSeleccionada; // Actualizar la variable externa
-		            // Obtener el precio del medicamento
-		            double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
+					// Validar que la cantidad total no exceda el límite de 10 unidades
+					if (cantidadTotal > 10) {
+						JOptionPane.showMessageDialog(VentaLibre, "No puede comprar más de 10 unidades de este medicamento.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-		            // Calcular el importe total
-		            double importeTotal = precioMedicamento * cantidadSeleccionada;
+					comprasTableModel.cantidad = cantidadSeleccionada; // Actualizar la variable externa
+					// Obtener el precio del medicamento
+					double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
 
-		            // Convertir LocalDate a Date
-		            Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+					// Calcular el importe total
+					double importeTotal = precioMedicamento * cantidadSeleccionada;
 
-		            // Crear una nueva instancia de VentaLibre
-		            Logica.VentaLibre venta = new Logica.VentaLibre(
-		                    fechaDeCompra, // Fecha de compra
-		                    importeTotal, // Importe total
-		                    nombreMedicamento, // Nombre del medicamento
-		                    "MC-001", // Código del medicamento (puedes ajustarlo según sea necesario)
-		                    cantidadSeleccionada // Cantidad vendida
-		            );
+					// Convertir LocalDate a Date
+					Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-		         // Actualizar el registro de cantidades acumuladas
-		            int cantidadAcumuladaActual = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
-		            cantidadesAcumuladas.put(nombreMedicamento, cantidadAcumuladaActual + cantidadSeleccionada);
-		            // Agregar la venta al modelo de la tabla
-		            comprasTableModel.adicionar(venta);
+					// Crear una nueva instancia de VentaLibre
+					Logica.VentaLibre venta = new Logica.VentaLibre(
+							fechaDeCompra, // Fecha de compra
+							importeTotal, // Importe total
+							nombreMedicamento, // Nombre del medicamento
+							"MC-001", // Código del medicamento (puedes ajustarlo según sea necesario)
+							cantidadSeleccionada // Cantidad vendida
+							);
 
-		            actualizarTotal(txtTotal, comprasTableModel);
-		        } catch (RuntimeException ex) {
-		            // Manejar errores, como medicamento no encontrado
-		            JOptionPane.showMessageDialog(VentaLibre, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-		        }
-		    }
+					// Actualizar el registro de cantidades acumuladas
+					int cantidadAcumuladaActual = cantidadesAcumuladas.getOrDefault(nombreMedicamento, 0);
+					cantidadesAcumuladas.put(nombreMedicamento, cantidadAcumuladaActual + cantidadSeleccionada);
+					// Agregar la venta al modelo de la tabla
+					comprasTableModel.adicionar(venta);
+
+					actualizarTotal(txtTotal, comprasTableModel);
+				} catch (RuntimeException ex) {
+					// Manejar errores, como medicamento no encontrado
+					JOptionPane.showMessageDialog(VentaLibre, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		});
 		btnAadirALa.setBorder(new LineBorder(new Color(0, 0, 0), 2));
 		btnAadirALa.setFont(new Font("Tahoma", Font.PLAIN, 19));
@@ -2311,25 +2353,25 @@ public class PrincipalAdmin extends JFrame
 		txtEfectivo.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-                char c = e.getKeyChar();
-                String text = txtEfectivo.getText();
+				char c = e.getKeyChar();
+				String text = txtEfectivo.getText();
 
-                // Permitir solo dígitos y un único punto
-                if (!Character.isDigit(c) && c != '.') {
-                    e.consume(); // Consumir el evento si no es un número o punto
-                }
+				// Permitir solo dígitos y un único punto
+				if (!Character.isDigit(c) && c != '.') {
+					e.consume(); // Consumir el evento si no es un número o punto
+				}
 
-                // Permitir solo un punto en el campo
-                if (c == '.' && text.contains(".")) {
-                    e.consume(); // Consumir el evento si ya hay un punto
-                }
+				// Permitir solo un punto en el campo
+				if (c == '.' && text.contains(".")) {
+					e.consume(); // Consumir el evento si ya hay un punto
+				}
 
-                // Evitar que el punto sea el primer carácter
-                if (c == '.' && text.isEmpty()) {
-                    e.consume(); // Consumir el evento si el punto está al inicio
-                }
-            }
-			
+				// Evitar que el punto sea el primer carácter
+				if (c == '.' && text.isEmpty()) {
+					e.consume(); // Consumir el evento si el punto está al inicio
+				}
+			}
+
 		});
 		txtEfectivo.setBorder(new LineBorder(Color.BLACK));
 		txtEfectivo.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -2351,32 +2393,32 @@ public class PrincipalAdmin extends JFrame
 		btnCalcularCambio.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-		        if (!hayComprasEnLaTabla()) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si no hay compras
-		        }
-	            try {
-	                double totalAPagar = Double.parseDouble(txtTotal.getText().trim());
-	                double efectivoRecibido = Double.parseDouble(txtEfectivo.getText().trim());
+				if (!hayComprasEnLaTabla()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar una compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
+				try {
+					double totalAPagar = Double.parseDouble(txtTotal.getText().trim());
+					double efectivoRecibido = Double.parseDouble(txtEfectivo.getText().trim());
 
-	                if (efectivoRecibido < totalAPagar) {
-	                    JOptionPane.showMessageDialog(VentaLibre, "El efectivo recibido no es suficiente.", "Error", JOptionPane.ERROR_MESSAGE);
-	                    cambioCalculado = false;
-	                    return;
-	                }
+					if (efectivoRecibido < totalAPagar) {
+						JOptionPane.showMessageDialog(VentaLibre, "El efectivo recibido no es suficiente.", "Error", JOptionPane.ERROR_MESSAGE);
+						cambioCalculado = false;
+						return;
+					}
 
-	                double cambio = efectivoRecibido - totalAPagar;
-	                txtCambio.setText(String.format("%.2f", cambio));
+					double cambio = efectivoRecibido - totalAPagar;
+					txtCambio.setText(String.format("%.2f", cambio));
 
-	             // Marcar que el cambio ha sido calculado
-	                cambioCalculado = true;
-	                
-	            } catch (NumberFormatException ex) {
-	                JOptionPane.showMessageDialog(VentaLibre, "Por favor, ingrese valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
-	                cambioCalculado = false;
-	            }
+					// Marcar que el cambio ha sido calculado
+					cambioCalculado = true;
+
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(VentaLibre, "Por favor, ingrese valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+					cambioCalculado = false;
+				}
 			}
 		});
 		btnCalcularCambio.setBackground(UIManager.getColor("Button.light"));
@@ -2389,53 +2431,54 @@ public class PrincipalAdmin extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!cambioCalculado) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe calcular el cambio antes de realizar la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si el cambio no ha sido calculado
-		        }
-		        if (!hayComprasEnLaTabla()) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si no hay compras
-		        }
+					JOptionPane.showMessageDialog(null, 
+							"Debe calcular el cambio antes de realizar la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si el cambio no ha sido calculado
+				}
+				if (!hayComprasEnLaTabla()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar algún medicamento a la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
 				try {
-			        // Obtener el nombre del medicamento seleccionado
-			        String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
+					// Obtener el nombre del medicamento seleccionado
+					String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
 
-			        // Validar selección del medicamento
-			        if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
-			            JOptionPane.showMessageDialog(null, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar selección del medicamento
+					if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
+						JOptionPane.showMessageDialog(null, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener el nombre del paciente seleccionado
-			        String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
+					// Obtener el nombre del paciente seleccionado
+					String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
 
-			        // Validar selección del paciente
-			        if ("<Seleccione un paciente>".equals(nombrePaciente)) {
-			            JOptionPane.showMessageDialog(null, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar selección del paciente
+					if ("<Seleccione un paciente>".equals(nombrePaciente)) {
+						JOptionPane.showMessageDialog(null, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener la cantidad seleccionada
-			        int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
+					// Obtener la cantidad seleccionada
+					int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
 
-			        // Validar que la cantidad sea mayor que cero
-			        if (cantidadSeleccionada <= 0) {
-			            JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar que la cantidad sea mayor que cero
+					if (cantidadSeleccionada <= 0) {
+						JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener el precio del medicamento
-			        double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
+					// Obtener el precio del medicamento
+					double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
 
-			        // Calcular el importe total
-			        double importeTotal = precioMedicamento * cantidadSeleccionada;
+					// Calcular el importe total
+					double importeTotal = precioMedicamento * cantidadSeleccionada;
 
-			        // Convertir LocalDate a Date
-			        Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+					// Convertir LocalDate a Date
+					Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+
 
 			        // Crear una nueva instancia de VentaLibre
 			        Logica.VentaLibre venta = new Logica.VentaLibre(
@@ -2446,34 +2489,35 @@ public class PrincipalAdmin extends JFrame
 			                cantidadSeleccionada // Cantidad vendida
 			        );
 
-			        // Agregar la venta al historial de Farmacia
-			        Farmacia.obtenerInstancia().registrarVenta(venta);
 
-			        // Limpiar la tabla de compras
-			        comprasTableModel.getDataVector().clear();
-			        comprasTableModel.fireTableDataChanged();
+					// Agregar la venta al historial de Farmacia
+					Farmacia.obtenerInstancia().registrarVenta(venta);
 
-			        // Reiniciar el total
-			        txtTotal.setText("0.0");
-			        txtEfectivo.setText("");
-			        txtCambio.setText("");
+					// Limpiar la tabla de compras
+					comprasTableModel.getDataVector().clear();
+					comprasTableModel.fireTableDataChanged();
 
-			        // Habilitar el combobox de pacientes
-			        comboBoxPacientes.setEnabled(true);
-			        pacienteSeleccionado = false;
+					// Reiniciar el total
+					txtTotal.setText("0.0");
+					txtEfectivo.setText("");
+					txtCambio.setText("");
 
-			        // Opcional: Limpiar las selecciones actuales
-			        comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
-			        comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
-			        comboBoxCantidad.setSelectedItem("0");
+					// Habilitar el combobox de pacientes
+					comboBoxPacientes.setEnabled(true);
+					pacienteSeleccionado = false;
 
-			        // Mostrar mensaje de éxito
-			        JOptionPane.showMessageDialog(null, "Compra realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+					// Opcional: Limpiar las selecciones actuales
+					comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
+					comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
+					comboBoxCantidad.setSelectedItem("0");
 
-			    } catch (RuntimeException ex) {
-			        // Manejar errores, como medicamento no encontrado
-			        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			    }
+					// Mostrar mensaje de éxito
+					JOptionPane.showMessageDialog(null, "Compra realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+				} catch (RuntimeException ex) {
+					// Manejar errores, como medicamento no encontrado
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		btnRealizarCompra.setBackground(new Color(204, 255, 204));
@@ -2487,91 +2531,91 @@ public class PrincipalAdmin extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!cambioCalculado) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe calcular el cambio antes de realizar la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si el cambio no ha sido calculado
-		        }
-		        if (!hayComprasEnLaTabla()) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si no hay compras
-		        }
+					JOptionPane.showMessageDialog(null, 
+							"Debe calcular el cambio antes de realizar la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si el cambio no ha sido calculado
+				}
+				if (!hayComprasEnLaTabla()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar algún medicamento a la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
 				try {
-			        // Obtener el nombre del medicamento seleccionado
-			        String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
+					// Obtener el nombre del medicamento seleccionado
+					String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
 
-			        // Validar selección del medicamento
-			        if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
-			            JOptionPane.showMessageDialog(null, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar selección del medicamento
+					if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
+						JOptionPane.showMessageDialog(null, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener el nombre del paciente seleccionado
-			        String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
+					// Obtener el nombre del paciente seleccionado
+					String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
 
-			        // Validar selección del paciente
-			        if ("<Seleccione un paciente>".equals(nombrePaciente)) {
-			            JOptionPane.showMessageDialog(null, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar selección del paciente
+					if ("<Seleccione un paciente>".equals(nombrePaciente)) {
+						JOptionPane.showMessageDialog(null, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener la cantidad seleccionada
-			        int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
+					// Obtener la cantidad seleccionada
+					int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
 
-			        // Validar que la cantidad sea mayor que cero
-			        if (cantidadSeleccionada <= 0) {
-			            JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar que la cantidad sea mayor que cero
+					if (cantidadSeleccionada <= 0) {
+						JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener el precio del medicamento
-			        double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
+					// Obtener el precio del medicamento
+					double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
 
-			        // Calcular el importe total
-			        double importeTotal = precioMedicamento * cantidadSeleccionada;
+					// Calcular el importe total
+					double importeTotal = precioMedicamento * cantidadSeleccionada;
 
-			        // Convertir LocalDate a Date
-			        Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+					// Convertir LocalDate a Date
+					Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-			        // Crear una nueva instancia de VentaLibre
-			        Logica.VentaLibre venta = new Logica.VentaLibre(
-			                fechaDeCompra, // Fecha de compra
-			                importeTotal, // Importe total
-			                nombreMedicamento, // Nombre del medicamento
-			                "MC-001", // Código del medicamento (puedes ajustarlo según sea necesario)
-			                cantidadSeleccionada // Cantidad vendida
-			        );
+					// Crear una nueva instancia de VentaLibre
+					Logica.VentaLibre venta = new Logica.VentaLibre(
+							fechaDeCompra, // Fecha de compra
+							importeTotal, // Importe total
+							nombreMedicamento, // Nombre del medicamento
+							"MC-001", // Código del medicamento (puedes ajustarlo según sea necesario)
+							cantidadSeleccionada // Cantidad vendida
+							);
 
-			        // Agregar la venta al historial de Farmacia
-			        Farmacia.obtenerInstancia().registrarVenta(venta);
+					// Agregar la venta al historial de Farmacia
+					Farmacia.obtenerInstancia().registrarVenta(venta);
 
-			        // Limpiar la tabla de compras
-			        comprasTableModel.getDataVector().clear();
-			        comprasTableModel.fireTableDataChanged();
+					// Limpiar la tabla de compras
+					comprasTableModel.getDataVector().clear();
+					comprasTableModel.fireTableDataChanged();
 
-			        // Reiniciar el total
-			        txtTotal.setText("0.0");
-			        txtEfectivo.setText("");
-			        txtCambio.setText("");
+					// Reiniciar el total
+					txtTotal.setText("0.0");
+					txtEfectivo.setText("");
+					txtCambio.setText("");
 
-			        // Habilitar el combobox de pacientes
-			        comboBoxPacientes.setEnabled(true);
-			        pacienteSeleccionado = false;
+					// Habilitar el combobox de pacientes
+					comboBoxPacientes.setEnabled(true);
+					pacienteSeleccionado = false;
 
-			        // Opcional: Limpiar las selecciones actuales
-			        comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
-			        comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
-			        comboBoxCantidad.setSelectedItem("0");
+					// Opcional: Limpiar las selecciones actuales
+					comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
+					comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
+					comboBoxCantidad.setSelectedItem("0");
 
-			        // Mostrar mensaje de éxito
-			        JOptionPane.showMessageDialog(null, "Compra realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+					// Mostrar mensaje de éxito
+					JOptionPane.showMessageDialog(null, "Compra realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-			    } catch (RuntimeException ex) {
-			        // Manejar errores, como medicamento no encontrado
-			        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			    }
+				} catch (RuntimeException ex) {
+					// Manejar errores, como medicamento no encontrado
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		lblRealizarCompra.setFont(new Font("Tahoma", Font.PLAIN, 27));
@@ -2583,92 +2627,92 @@ public class PrincipalAdmin extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!cambioCalculado) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe calcular el cambio antes de realizar la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si el cambio no ha sido calculado
-		        }
-		        if (!hayComprasEnLaTabla()) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si no hay compras
-		        }
+					JOptionPane.showMessageDialog(null, 
+							"Debe calcular el cambio antes de realizar la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si el cambio no ha sido calculado
+				}
+				if (!hayComprasEnLaTabla()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar algún medicamento a la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
 				try {
-			        // Obtener el nombre del medicamento seleccionado
-			        String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
+					// Obtener el nombre del medicamento seleccionado
+					String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
 
-			        // Validar selección del medicamento
-			        if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
-			            JOptionPane.showMessageDialog(null, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar selección del medicamento
+					if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
+						JOptionPane.showMessageDialog(null, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener el nombre del paciente seleccionado
-			        String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
+					// Obtener el nombre del paciente seleccionado
+					String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
 
-			        // Validar selección del paciente
-			        if ("<Seleccione un paciente>".equals(nombrePaciente)) {
-			            JOptionPane.showMessageDialog(null, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar selección del paciente
+					if ("<Seleccione un paciente>".equals(nombrePaciente)) {
+						JOptionPane.showMessageDialog(null, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener la cantidad seleccionada
-			        int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
+					// Obtener la cantidad seleccionada
+					int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
 
-			        // Validar que la cantidad sea mayor que cero
-			        if (cantidadSeleccionada <= 0) 
-			        {
-			            JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar que la cantidad sea mayor que cero
+					if (cantidadSeleccionada <= 0) 
+					{
+						JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener el precio del medicamento
-			        double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
+					// Obtener el precio del medicamento
+					double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
 
-			        // Calcular el importe total
-			        double importeTotal = precioMedicamento * cantidadSeleccionada;
+					// Calcular el importe total
+					double importeTotal = precioMedicamento * cantidadSeleccionada;
 
-			        // Convertir LocalDate a Date
-			        Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+					// Convertir LocalDate a Date
+					Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-			        // Crear una nueva instancia de VentaLibre
-			        Logica.VentaLibre venta = new Logica.VentaLibre(
-			                fechaDeCompra, // Fecha de compra
-			                importeTotal, // Importe total
-			                nombreMedicamento, // Nombre del medicamento
-			                "MC-001", // Código del medicamento (puedes ajustarlo según sea necesario)
-			                cantidadSeleccionada // Cantidad vendida
-			        );
+					// Crear una nueva instancia de VentaLibre
+					Logica.VentaLibre venta = new Logica.VentaLibre(
+							fechaDeCompra, // Fecha de compra
+							importeTotal, // Importe total
+							nombreMedicamento, // Nombre del medicamento
+							"MC-001", // Código del medicamento (puedes ajustarlo según sea necesario)
+							cantidadSeleccionada // Cantidad vendida
+							);
 
-			        // Agregar la venta al historial de Farmacia
-			        Farmacia.obtenerInstancia().registrarVenta(venta);
+					// Agregar la venta al historial de Farmacia
+					Farmacia.obtenerInstancia().registrarVenta(venta);
 
-			        // Limpiar la tabla de compras
-			        comprasTableModel.getDataVector().clear();
-			        comprasTableModel.fireTableDataChanged();
+					// Limpiar la tabla de compras
+					comprasTableModel.getDataVector().clear();
+					comprasTableModel.fireTableDataChanged();
 
-			        // Reiniciar el total
-			        txtTotal.setText("0.0");
-			        txtEfectivo.setText("");
-			        txtCambio.setText("");
+					// Reiniciar el total
+					txtTotal.setText("0.0");
+					txtEfectivo.setText("");
+					txtCambio.setText("");
 
-			        // Habilitar el combobox de pacientes
-			        comboBoxPacientes.setEnabled(true);
-			        pacienteSeleccionado = false;
+					// Habilitar el combobox de pacientes
+					comboBoxPacientes.setEnabled(true);
+					pacienteSeleccionado = false;
 
-			        // Opcional: Limpiar las selecciones actuales
-			        comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
-			        comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
-			        comboBoxCantidad.setSelectedItem("0");
+					// Opcional: Limpiar las selecciones actuales
+					comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
+					comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
+					comboBoxCantidad.setSelectedItem("0");
 
-			        // Mostrar mensaje de éxito
-			        JOptionPane.showMessageDialog(null, "Compra realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+					// Mostrar mensaje de éxito
+					JOptionPane.showMessageDialog(null, "Compra realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-			    } catch (RuntimeException ex) {
-			        // Manejar errores, como medicamento no encontrado
-			        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			    }
+				} catch (RuntimeException ex) {
+					// Manejar errores, como medicamento no encontrado
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		label_72.setBounds(119, 13, 65, 53);
@@ -2680,91 +2724,91 @@ public class PrincipalAdmin extends JFrame
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (!cambioCalculado) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe calcular el cambio antes de realizar la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si el cambio no ha sido calculado
-		        }
-		        if (!hayComprasEnLaTabla()) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si no hay compras
-		        }
+					JOptionPane.showMessageDialog(null, 
+							"Debe calcular el cambio antes de realizar la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si el cambio no ha sido calculado
+				}
+				if (!hayComprasEnLaTabla()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar algún medicamento a la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
 				try {
-			        // Obtener el nombre del medicamento seleccionado
-			        String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
+					// Obtener el nombre del medicamento seleccionado
+					String nombreMedicamento = (String) comboBoxMedicamentos.getSelectedItem();
 
-			        // Validar selección del medicamento
-			        if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
-			            JOptionPane.showMessageDialog(null, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar selección del medicamento
+					if ("<Seleccione un medicamento>".equals(nombreMedicamento)) {
+						JOptionPane.showMessageDialog(null, "Por favor, seleccione un medicamento válido.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener el nombre del paciente seleccionado
-			        String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
+					// Obtener el nombre del paciente seleccionado
+					String nombrePaciente = (String) comboBoxPacientes.getSelectedItem();
 
-			        // Validar selección del paciente
-			        if ("<Seleccione un paciente>".equals(nombrePaciente)) {
-			            JOptionPane.showMessageDialog(null, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar selección del paciente
+					if ("<Seleccione un paciente>".equals(nombrePaciente)) {
+						JOptionPane.showMessageDialog(null, "Por favor, seleccione un paciente válido.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener la cantidad seleccionada
-			        int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
+					// Obtener la cantidad seleccionada
+					int cantidadSeleccionada = Integer.parseInt(((String) comboBoxCantidad.getSelectedItem()).trim());
 
-			        // Validar que la cantidad sea mayor que cero
-			        if (cantidadSeleccionada <= 0) {
-			            JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
-			            return;
-			        }
+					// Validar que la cantidad sea mayor que cero
+					if (cantidadSeleccionada <= 0) {
+						JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
+						return;
+					}
 
-			        // Obtener el precio del medicamento
-			        double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
+					// Obtener el precio del medicamento
+					double precioMedicamento = Farmacia.obtenerInstancia().obtenerPrecioMedicamento(nombreMedicamento);
 
-			        // Calcular el importe total
-			        double importeTotal = precioMedicamento * cantidadSeleccionada;
+					// Calcular el importe total
+					double importeTotal = precioMedicamento * cantidadSeleccionada;
 
-			        // Convertir LocalDate a Date
-			        Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+					// Convertir LocalDate a Date
+					Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-			        // Crear una nueva instancia de VentaLibre
-			        Logica.VentaLibre venta = new Logica.VentaLibre(
-			                fechaDeCompra, // Fecha de compra
-			                importeTotal, // Importe total
-			                nombreMedicamento, // Nombre del medicamento
-			                "MC-001", // Código del medicamento (puedes ajustarlo según sea necesario)
-			                cantidadSeleccionada // Cantidad vendida
-			        );
+					// Crear una nueva instancia de VentaLibre
+					Logica.VentaLibre venta = new Logica.VentaLibre(
+							fechaDeCompra, // Fecha de compra
+							importeTotal, // Importe total
+							nombreMedicamento, // Nombre del medicamento
+							"MC-001", // Código del medicamento (puedes ajustarlo según sea necesario)
+							cantidadSeleccionada // Cantidad vendida
+							);
 
-			        // Agregar la venta al historial de Farmacia
-			        Farmacia.obtenerInstancia().registrarVenta(venta);
+					// Agregar la venta al historial de Farmacia
+					Farmacia.obtenerInstancia().registrarVenta(venta);
 
-			        // Limpiar la tabla de compras
-			        comprasTableModel.getDataVector().clear();
-			        comprasTableModel.fireTableDataChanged();
+					// Limpiar la tabla de compras
+					comprasTableModel.getDataVector().clear();
+					comprasTableModel.fireTableDataChanged();
 
-			        // Reiniciar el total
-			        txtTotal.setText("0.0");
-			        txtEfectivo.setText("");
-			        txtCambio.setText("");
+					// Reiniciar el total
+					txtTotal.setText("0.0");
+					txtEfectivo.setText("");
+					txtCambio.setText("");
 
-			        // Habilitar el combobox de pacientes
-			        comboBoxPacientes.setEnabled(true);
-			        pacienteSeleccionado = false;
+					// Habilitar el combobox de pacientes
+					comboBoxPacientes.setEnabled(true);
+					pacienteSeleccionado = false;
 
-			        // Opcional: Limpiar las selecciones actuales
-			        comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
-			        comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
-			        comboBoxCantidad.setSelectedItem("0");
+					// Opcional: Limpiar las selecciones actuales
+					comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
+					comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
+					comboBoxCantidad.setSelectedItem("0");
 
-			        // Mostrar mensaje de éxito
-			        JOptionPane.showMessageDialog(null, "Compra realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+					// Mostrar mensaje de éxito
+					JOptionPane.showMessageDialog(null, "Compra realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-			    } catch (RuntimeException ex) {
-			        // Manejar errores, como medicamento no encontrado
-			        JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			    }
+				} catch (RuntimeException ex) {
+					// Manejar errores, como medicamento no encontrado
+					JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		lblCompra_1.setFont(new Font("Tahoma", Font.PLAIN, 27));
@@ -2782,235 +2826,236 @@ public class PrincipalAdmin extends JFrame
 		lblCompra.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		lblCompra.setBounds(30, 13, 153, 29);
 		panel_21.add(lblCompra);
-		
-		JPanel panel_23 = new JPanel();
-		panel_23.addMouseListener(new MouseAdapter() {
+
+		JPanel btnCancelarCompra = new JPanel();
+		btnCancelarCompra.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-		        if (!hayComprasEnLaTabla()) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si no hay compras
-		        }
-			    // Mostrar mensaje de confirmación
-			    int opcion = JOptionPane.showConfirmDialog(
-			        null,
-			        "¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
-			        "Confirmar Cancelación",
-			        JOptionPane.YES_NO_OPTION,
-			        JOptionPane.WARNING_MESSAGE
-			    );
+				if (!hayComprasEnLaTabla()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar algún medicamento a la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
+				// Mostrar mensaje de confirmación
+				int opcion = JOptionPane.showConfirmDialog(
+						null,
+						"¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
+						"Confirmar Cancelación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE
+						);
 
-			    // Si el usuario confirma, proceder con la cancelación
-			    if (opcion == JOptionPane.YES_OPTION) {
-			        // 1. Limpiar la tabla de compras
-			        comprasTableModel.getDataVector().clear();
-			        comprasTableModel.fireTableDataChanged();
+				// Si el usuario confirma, proceder con la cancelación
+				if (opcion == JOptionPane.YES_OPTION) {
+					// 1. Limpiar la tabla de compras
+					comprasTableModel.getDataVector().clear();
+					comprasTableModel.fireTableDataChanged();
 
-			        // 2. Reiniciar el total acumulado
-			        txtTotal.setText("0.0");
-			        txtEfectivo.setText("");
-			        txtCambio.setText("");
+					// 2. Reiniciar el total acumulado
+					txtTotal.setText("0.0");
+					txtEfectivo.setText("");
+					txtCambio.setText("");
 
-			        // 3. Restablecer las selecciones de los comboboxes
-			        comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
-			        comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
-			        comboBoxCantidad.setSelectedItem("0");
+					// 3. Restablecer las selecciones de los comboboxes
+					comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
+					comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
+					comboBoxCantidad.setSelectedItem("0");
 
-			        // 4. Reiniciar el registro de cantidades acumuladas
-			        cantidadesAcumuladas.clear();
+					// 4. Reiniciar el registro de cantidades acumuladas
+					cantidadesAcumuladas.clear();
 
-			        // 5. Habilitar el combobox de pacientes (en caso de que esté deshabilitado)
-			        comboBoxPacientes.setEnabled(true);
-			        pacienteSeleccionado = false;
+					// 5. Habilitar el combobox de pacientes (en caso de que esté deshabilitado)
+					comboBoxPacientes.setEnabled(true);
+					pacienteSeleccionado = false;
 
-			        // Opcional: Mostrar un mensaje de confirmación
-			        JOptionPane.showMessageDialog(
-			            null,
-			            "La compra ha sido cancelada.",
-			            "Compra Cancelada",
-			            JOptionPane.INFORMATION_MESSAGE
-			        );
-			    }
+					// Opcional: Mostrar un mensaje de confirmación
+					JOptionPane.showMessageDialog(
+							null,
+							"La compra ha sido cancelada.",
+							"Compra Cancelada",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				}
 			}
 		});
-		panel_23.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(255, 0, 0), 2)));
-		panel_23.setBackground(new Color(255, 105, 105));
-		panel_23.setBounds(779, 517, 208, 82);
-		VentaLibre.add(panel_23);
-		panel_23.setLayout(null);
-		
+		btnCancelarCompra.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(255, 0, 0), 2)));
+		btnCancelarCompra.setBackground(new Color(255, 105, 105));
+		btnCancelarCompra.setBounds(779, 517, 208, 82);
+		VentaLibre.add(btnCancelarCompra);
+		btnCancelarCompra.setLayout(null);
+
 		JLabel lblCancelar = new JLabel("Cancelar");
 		lblCancelar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-		        if (!hayComprasEnLaTabla()) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si no hay compras
-		        }
-			    // Mostrar mensaje de confirmación
-			    int opcion = JOptionPane.showConfirmDialog(
-			        null,
-			        "¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
-			        "Confirmar Cancelación",
-			        JOptionPane.YES_NO_OPTION,
-			        JOptionPane.WARNING_MESSAGE
-			    );
+				if (!hayComprasEnLaTabla()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar algún medicamento a la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
+				// Mostrar mensaje de confirmación
+				int opcion = JOptionPane.showConfirmDialog(
+						null,
+						"¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
+						"Confirmar Cancelación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE
+						);
 
-			    // Si el usuario confirma, proceder con la cancelación
-			    if (opcion == JOptionPane.YES_OPTION) {
-			        // 1. Limpiar la tabla de compras
-			        comprasTableModel.getDataVector().clear();
-			        comprasTableModel.fireTableDataChanged();
+				// Si el usuario confirma, proceder con la cancelación
+				if (opcion == JOptionPane.YES_OPTION) {
+					// 1. Limpiar la tabla de compras
+					comprasTableModel.getDataVector().clear();
+					comprasTableModel.fireTableDataChanged();
 
-			        // 2. Reiniciar el total acumulado
-			        txtTotal.setText("0.0");
-			        txtEfectivo.setText("");
-			        txtCambio.setText("");
+					// 2. Reiniciar el total acumulado
+					txtTotal.setText("0.0");
+					txtEfectivo.setText("");
+					txtCambio.setText("");
 
-			        // 3. Restablecer las selecciones de los comboboxes
-			        comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
-			        comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
-			        comboBoxCantidad.setSelectedItem("0");
+					// 3. Restablecer las selecciones de los comboboxes
+					comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
+					comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
+					comboBoxCantidad.setSelectedItem("0");
 
-			        // 4. Reiniciar el registro de cantidades acumuladas
-			        cantidadesAcumuladas.clear();
+					// 4. Reiniciar el registro de cantidades acumuladas
+					cantidadesAcumuladas.clear();
 
-			        // 5. Habilitar el combobox de pacientes (en caso de que esté deshabilitado)
-			        comboBoxPacientes.setEnabled(true);
-			        pacienteSeleccionado = false;
+					// 5. Habilitar el combobox de pacientes (en caso de que esté deshabilitado)
+					comboBoxPacientes.setEnabled(true);
+					pacienteSeleccionado = false;
 
-			        // Opcional: Mostrar un mensaje de confirmación
-			        JOptionPane.showMessageDialog(
-			            null,
-			            "La compra ha sido cancelada.",
-			            "Compra Cancelada",
-			            JOptionPane.INFORMATION_MESSAGE
-			        );
-			    }
+					// Opcional: Mostrar un mensaje de confirmación
+					JOptionPane.showMessageDialog(
+							null,
+							"La compra ha sido cancelada.",
+							"Compra Cancelada",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				}
 			}
 		});
-		
+
 		JLabel label_76 = new JLabel("");
 		label_76.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e){
-		        if (!hayComprasEnLaTabla()) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si no hay compras
-		        }
-			    // Mostrar mensaje de confirmación
-			    int opcion = JOptionPane.showConfirmDialog(
-			        null,
-			        "¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
-			        "Confirmar Cancelación",
-			        JOptionPane.YES_NO_OPTION,
-			        JOptionPane.WARNING_MESSAGE
-			    );
+				if (!hayComprasEnLaTabla()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar algún medicamento a la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
+				// Mostrar mensaje de confirmación
+				int opcion = JOptionPane.showConfirmDialog(
+						null,
+						"¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
+						"Confirmar Cancelación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE
+						);
 
-			    // Si el usuario confirma, proceder con la cancelación
-			    if (opcion == JOptionPane.YES_OPTION) {
-			        // 1. Limpiar la tabla de compras
-			        comprasTableModel.getDataVector().clear();
-			        comprasTableModel.fireTableDataChanged();
+				// Si el usuario confirma, proceder con la cancelación
+				if (opcion == JOptionPane.YES_OPTION) {
+					// 1. Limpiar la tabla de compras
+					comprasTableModel.getDataVector().clear();
+					comprasTableModel.fireTableDataChanged();
 
-			        // 2. Reiniciar el total acumulado
-			        txtTotal.setText("0.0");
-			        txtEfectivo.setText("");
-			        txtCambio.setText("");
+					// 2. Reiniciar el total acumulado
+					txtTotal.setText("0.0");
+					txtEfectivo.setText("");
+					txtCambio.setText("");
 
-			        // 3. Restablecer las selecciones de los comboboxes
-			        comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
-			        comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
-			        comboBoxCantidad.setSelectedItem("0");
+					// 3. Restablecer las selecciones de los comboboxes
+					comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
+					comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
+					comboBoxCantidad.setSelectedItem("0");
 
-			        // 4. Reiniciar el registro de cantidades acumuladas
-			        cantidadesAcumuladas.clear();
+					// 4. Reiniciar el registro de cantidades acumuladas
+					cantidadesAcumuladas.clear();
 
-			        // 5. Habilitar el combobox de pacientes (en caso de que esté deshabilitado)
-			        comboBoxPacientes.setEnabled(true);
-			        pacienteSeleccionado = false;
+					// 5. Habilitar el combobox de pacientes (en caso de que esté deshabilitado)
+					comboBoxPacientes.setEnabled(true);
+					pacienteSeleccionado = false;
 
-			        // Opcional: Mostrar un mensaje de confirmación
-			        JOptionPane.showMessageDialog(
-			            null,
-			            "La compra ha sido cancelada.",
-			            "Compra Cancelada",
-			            JOptionPane.INFORMATION_MESSAGE
-			        );
-			    }
+					// Opcional: Mostrar un mensaje de confirmación
+					JOptionPane.showMessageDialog(
+							null,
+							"La compra ha sido cancelada.",
+							"Compra Cancelada",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				}
 			}
 		});
-		
+
 		label_76.setBounds(127, 13, 69, 53);
-		panel_23.add(label_76);
+		btnCancelarCompra.add(label_76);
 		lblCancelar.setFont(new Font("Tahoma", Font.PLAIN, 27));
 		lblCancelar.setBounds(12, 13, 101, 33);
-		panel_23.add(lblCancelar);
+		btnCancelarCompra.add(lblCancelar);
 		UtilesInterfaz.ajustarImagen(label_76, "src/iconos/circulo-cruzado.png");
-		
+
 		JLabel label_74 = new JLabel("Compra");
 		label_74.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-		        if (!hayComprasEnLaTabla()) {
-		            JOptionPane.showMessageDialog(null, 
-		                "Debe ingresar algún medicamento a la compra.", 
-		                "Error", JOptionPane.ERROR_MESSAGE);
-		            return; // Salir si no hay compras
-		        }
-			    // Mostrar mensaje de confirmación
-			    int opcion = JOptionPane.showConfirmDialog(
-			        null,
-			        "¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
-			        "Confirmar Cancelación",
-			        JOptionPane.YES_NO_OPTION,
-			        JOptionPane.WARNING_MESSAGE
-			    );
+				if (!hayComprasEnLaTabla()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar algún medicamento a la compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
+				// Mostrar mensaje de confirmación
+				int opcion = JOptionPane.showConfirmDialog(
+						null,
+						"¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
+						"Confirmar Cancelación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE
+						);
 
-			    // Si el usuario confirma, proceder con la cancelación
-			    if (opcion == JOptionPane.YES_OPTION) {
-			        // 1. Limpiar la tabla de compras
-			        comprasTableModel.getDataVector().clear();
-			        comprasTableModel.fireTableDataChanged();
+				// Si el usuario confirma, proceder con la cancelación
+				if (opcion == JOptionPane.YES_OPTION) {
+					// 1. Limpiar la tabla de compras
+					comprasTableModel.getDataVector().clear();
+					comprasTableModel.fireTableDataChanged();
 
-			        // 2. Reiniciar el total acumulado
-			        txtTotal.setText("0.0");
-			        txtEfectivo.setText("");
-			        txtCambio.setText("");
+					// 2. Reiniciar el total acumulado
+					txtTotal.setText("0.0");
+					txtEfectivo.setText("");
+					txtCambio.setText("");
 
-			        // 3. Restablecer las selecciones de los comboboxes
-			        comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
-			        comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
-			        comboBoxCantidad.setSelectedItem("0");
+					// 3. Restablecer las selecciones de los comboboxes
+					comboBoxMedicamentos.setSelectedItem("<Seleccione un medicamento>");
+					comboBoxPacientes.setSelectedItem("<Seleccione un paciente>");
+					comboBoxCantidad.setSelectedItem("0");
 
-			        // 4. Reiniciar el registro de cantidades acumuladas
-			        cantidadesAcumuladas.clear();
+					// 4. Reiniciar el registro de cantidades acumuladas
+					cantidadesAcumuladas.clear();
 
-			        // 5. Habilitar el combobox de pacientes (en caso de que esté deshabilitado)
-			        comboBoxPacientes.setEnabled(true);
-			        pacienteSeleccionado = false;
+					// 5. Habilitar el combobox de pacientes (en caso de que esté deshabilitado)
+					comboBoxPacientes.setEnabled(true);
+					pacienteSeleccionado = false;
 
-			        // Opcional: Mostrar un mensaje de confirmación
-			        JOptionPane.showMessageDialog(
-			            null,
-			            "La compra ha sido cancelada.",
-			            "Compra Cancelada",
-			            JOptionPane.INFORMATION_MESSAGE
-			        );
-			    }
+					// Opcional: Mostrar un mensaje de confirmación
+					JOptionPane.showMessageDialog(
+							null,
+							"La compra ha sido cancelada.",
+							"Compra Cancelada",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				}
 			}
 		});
 		label_74.setFont(new Font("Tahoma", Font.PLAIN, 27));
 		label_74.setBounds(12, 13, 127, 93);
-		panel_23.add(label_74);
+		btnCancelarCompra.add(label_74);
 
-		JPanel VentaAlmohadillas = new JPanel();
+		final JPanel VentaAlmohadillas = new JPanel();
+		VentaAlmohadillas.setBackground(Color.WHITE);
 		pestanas.addTab("New tab", null, VentaAlmohadillas, null);
 		VentaAlmohadillas.setLayout(null);
 
@@ -3035,6 +3080,490 @@ public class PrincipalAdmin extends JFrame
 		lblVentaAlmohadillasSanitarias_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblVentaAlmohadillasSanitarias_1.setBounds(79, 0, 517, 57);
 		panel_18.add(lblVentaAlmohadillasSanitarias_1);
+
+		JPanel panel_24 = new JPanel();
+		panel_24.setBounds(12, 228, 981, 230);
+		VentaAlmohadillas.add(panel_24);
+		panel_24.setLayout(null);
+
+		JScrollPane jscroll_18 = new JScrollPane();
+		jscroll_18.setBounds(12, 42, 957, 175);
+		panel_24.add(jscroll_18);
+
+		tableALmohadillas = new JTable();
+		jscroll_18.setViewportView(tableALmohadillas);
+		// Inicializar el modelo
+		modeloAlmohadillas = new AlmohadillasTableModel();
+
+		// Asignar el modelo a la tabla
+		tableALmohadillas.setModel(modeloAlmohadillas);
+
+		// Configurar el renderizador de botones para la columna de acción ("Eliminar")
+		tableALmohadillas.getColumnModel().getColumn(6).setCellRenderer(new ButtonRenderer());
+
+		// Agregar el MouseListener para manejar el evento de clic en "Eliminar"
+		tableALmohadillas.addMouseListener(new MouseAdapter() {
+		    @Override
+		    public void mouseClicked(MouseEvent e) {
+		        int fila = tableALmohadillas.rowAtPoint(e.getPoint());
+		        int columna = tableALmohadillas.columnAtPoint(e.getPoint());
+
+		        if (columna == 6) { // Columna de acción ("Eliminar")
+		            int opcion = JOptionPane.showConfirmDialog(
+		                null,
+		                "¿Está seguro de que desea eliminar esta compra?",
+		                "Confirmar eliminación",
+		                JOptionPane.YES_NO_OPTION
+		            );
+
+		            if (opcion == JOptionPane.YES_OPTION) {
+		                try {
+		                    // Validar que el índice de la fila sea válido
+		                    if (fila < 0 || fila >= modeloAlmohadillas.getRowCount()) {
+		                        JOptionPane.showMessageDialog(null, "La fila seleccionada no es válida.", "Error", JOptionPane.ERROR_MESSAGE);
+		                        return;
+		                    }
+
+		                    // Obtener el ID del núcleo familiar desde la tabla
+		                    String idNucleo =  (String) comboBoxNucleos.getSelectedItem();
+
+		                    // Buscar el núcleo familiar en la lista global
+		                    Logica.NucleoFamiliar nucleo = Farmacia.obtenerInstancia().buscarNucleoPorId(idNucleo);
+		                    if (nucleo == null) {
+		                        JOptionPane.showMessageDialog(null, "Núcleo familiar no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+		                        return;
+		                    }
+
+		                    // Reiniciar el estado del núcleo
+		                    nucleo.setCompraron(false);
+
+		                    // Eliminar la fila del modelo de tabla
+		                    modeloAlmohadillas.eliminarFila(fila);
+
+		                    // Recalcular el total acumulado
+		                    actualizarTotal(textTotal, modeloAlmohadillas);
+
+		                    // Mostrar mensaje de éxito
+		                    JOptionPane.showMessageDialog(null, "Compra eliminada y núcleo reiniciado correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+		                } catch (Exception ex) {
+		                    ex.printStackTrace(); // Imprime la traza completa de la excepción
+		                    JOptionPane.showMessageDialog(null, "Error al eliminar la fila: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		                }
+		            }
+		        }
+		    }
+		});
+
+		JLabel label_86 = new JLabel("Compra");
+		label_86.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		label_86.setBounds(12, 0, 153, 29);
+		panel_24.add(label_86);
+
+		JPanel panel_25 = new JPanel();
+		panel_25.setLayout(null);
+		panel_25.setBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)));
+		panel_25.setBackground(SystemColor.menu);
+		panel_25.setBounds(12, 486, 507, 126);
+		VentaAlmohadillas.add(panel_25);
+
+		JLabel label_77 = new JLabel("Total a Pagar :");
+		label_77.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		label_77.setBounds(12, 13, 133, 37);
+		panel_25.add(label_77);
+
+		JLabel label_78 = new JLabel("Efectivo :");
+		label_78.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		label_78.setBounds(12, 48, 122, 21);
+		panel_25.add(label_78);
+
+		JLabel label_79 = new JLabel("Cambio :");
+		label_79.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		label_79.setBounds(12, 74, 97, 27);
+		panel_25.add(label_79);
+
+		textTotal = new JTextField();
+		textTotal.setHorizontalAlignment(SwingConstants.CENTER);
+		textTotal.setFont(new Font("Arial", Font.PLAIN, 16));
+		textTotal.setEditable(false);
+		textTotal.setColumns(10);
+		textTotal.setBorder(new LineBorder(new Color(0, 0, 0)));
+		textTotal.setBackground(Color.WHITE);
+		textTotal.setBounds(130, 22, 148, 22);
+		panel_25.add(textTotal);
+
+		textEfectivo = new JTextField();
+		textEfectivo.setHorizontalAlignment(SwingConstants.CENTER);
+		textEfectivo.setFont(new Font("Arial", Font.PLAIN, 16));
+		textEfectivo.setColumns(10);
+		textEfectivo.setBorder(new LineBorder(Color.BLACK));
+		textEfectivo.setBounds(130, 49, 148, 22);
+		panel_25.add(textEfectivo);
+
+		textCambio = new JTextField();
+		textCambio.setHorizontalAlignment(SwingConstants.CENTER);
+		textCambio.setFont(new Font("Arial", Font.PLAIN, 16));
+		textCambio.setEditable(false);
+		textCambio.setColumns(10);
+		textCambio.setBorder(new LineBorder(Color.BLACK));
+		textCambio.setBackground(Color.WHITE);
+		textCambio.setBounds(130, 78, 148, 22);
+		panel_25.add(textCambio);
+
+		JButton buttonCambio = new JButton("Calcular Cambio");
+		buttonCambio.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+					if (!comproNucleo()) {
+						JOptionPane.showMessageDialog(null, 
+								"Debe ingresar una compra.", 
+								"Error", JOptionPane.ERROR_MESSAGE);
+						return; // Salir si no hay compras
+					}
+					try {
+						double totalAPagar = Double.parseDouble(textTotal.getText().trim());
+						double efectivoRecibido = Double.parseDouble(textEfectivo.getText().trim());
+
+						if (efectivoRecibido < totalAPagar) {
+							JOptionPane.showMessageDialog(VentaLibre, "El efectivo recibido no es suficiente.", "Error", JOptionPane.ERROR_MESSAGE);
+							cambioCalculado = false;
+							return;
+						}
+
+						double cambio = efectivoRecibido - totalAPagar;
+						textCambio.setText(String.format("%.2f", cambio));
+
+						// Marcar que el cambio ha sido calculado
+						cambioCalculado = true;
+
+					} catch (NumberFormatException ex) {
+						JOptionPane.showMessageDialog(VentaLibre, "Por favor, ingrese valores numéricos válidos.", "Error", JOptionPane.ERROR_MESSAGE);
+						cambioCalculado = false;
+					}
+
+			}
+		});
+		buttonCambio.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		buttonCambio.setBackground(SystemColor.controlHighlight);
+		buttonCambio.setBounds(318, 36, 164, 44);
+		panel_25.add(buttonCambio);
+
+		JPanel btnComprar = new JPanel();
+		btnComprar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+			        if (!comproNucleo()) {
+			            JOptionPane.showMessageDialog(null, "Debe ingresar al menos una compra.", "Error", JOptionPane.ERROR_MESSAGE);
+			            return;
+			        }
+			        
+			        if (!cambioCalculado) {
+			            JOptionPane.showMessageDialog(null, "Debe calcular el cambio antes de realizar la compra.", "Error", JOptionPane.ERROR_MESSAGE);
+			            return;
+			        }
+
+			        // Registrar todas las compras en el sistema
+		            for (int i = 0; i < modeloAlmohadillas.getRowCount(); i++) {
+		                Logica.AlmohadillasSanitarias compra = modeloAlmohadillas.getCompraAt(i);
+
+		                // Registrar la venta en el sistema de Farmacia usando el método proporcionado
+		                Farmacia.obtenerInstancia().agregarVentaAlmohadillasSanitarias(
+		                    LocalDate.now(), // Fecha actual
+		                    compra.getPrecioUnit(), // Precio unitario de la compra
+		                    compra.getCant() // Cantidad de almohadillas
+		                );
+
+			        // Limpiar datos
+			        modeloAlmohadillas.getDataVector().clear();
+			        modeloAlmohadillas.fireTableDataChanged();
+			        textTotal.setText("0.0");
+			        textEfectivo.setText("");
+			        textCambio.setText("");
+			        cambioCalculado = false;
+
+			        JOptionPane.showMessageDialog(null, "Compra realizada con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+			        
+		            }
+			    } catch (Exception ex) {
+			        ex.printStackTrace();
+			        JOptionPane.showMessageDialog(null, "Error al realizar la compra: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			    }
+			}
+		});
+		btnComprar.setLayout(null);
+		btnComprar.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(152, 251, 152), 2)));
+		btnComprar.setBackground(new Color(204, 255, 204));
+		btnComprar.setBounds(542, 503, 208, 82);
+		VentaAlmohadillas.add(btnComprar);
+
+		JLabel label_80 = new JLabel("Realizar ");
+		label_80.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		label_80.setBounds(12, -11, 127, 80);
+		btnComprar.add(label_80);
+
+		JLabel label_81 = new JLabel("");
+		label_81.setBounds(119, 13, 65, 53);
+		btnComprar.add(label_81);
+
+		JLabel label_82 = new JLabel("Compra");
+		label_82.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		label_82.setBounds(12, 13, 127, 93);
+		btnComprar.add(label_82);
+
+		JPanel btnCancelar = new JPanel();
+		btnCancelar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!comproNucleo()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar una compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
+				// Mostrar mensaje de confirmación
+				int opcion = JOptionPane.showConfirmDialog(
+						null,
+						"¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
+						"Confirmar Cancelación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE
+						);
+
+				// Si el usuario confirma, proceder con la cancelación
+				if (opcion == JOptionPane.YES_OPTION) {
+					// 1. Limpiar la tabla de compras
+					modeloAlmohadillas.getDataVector().clear();
+					modeloAlmohadillas.fireTableDataChanged();
+
+					// 2. Reiniciar el total acumulado
+					textTotal.setText("0.0");
+					textEfectivo.setText("");
+					textCambio.setText("");
+
+					nucleosComboBoxModel.setSelectedItem("<Seleccione un nucleo>");
+					
+					// Opcional: Mostrar un mensaje de confirmación
+					JOptionPane.showMessageDialog(
+							null,
+							"La compra ha sido cancelada.",
+							"Compra Cancelada",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				}
+			}
+		});
+		btnCancelar.setLayout(null);
+		btnCancelar.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(255, 0, 0), 2)));
+		btnCancelar.setBackground(new Color(255, 105, 105));
+		btnCancelar.setBounds(762, 503, 208, 82);
+		VentaAlmohadillas.add(btnCancelar);
+
+		JLabel label_83 = new JLabel("");
+		label_83.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!comproNucleo()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar una compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
+				// Mostrar mensaje de confirmación
+				int opcion = JOptionPane.showConfirmDialog(
+						null,
+						"¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
+						"Confirmar Cancelación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE
+						);
+
+				// Si el usuario confirma, proceder con la cancelación
+				if (opcion == JOptionPane.YES_OPTION) {
+					// 1. Limpiar la tabla de compras
+					modeloAlmohadillas.getDataVector().clear();
+					modeloAlmohadillas.fireTableDataChanged();
+
+					// 2. Reiniciar el total acumulado
+					textTotal.setText("0.0");
+					textEfectivo.setText("");
+					textCambio.setText("");
+
+					
+					
+					// Opcional: Mostrar un mensaje de confirmación
+					JOptionPane.showMessageDialog(
+							null,
+							"La compra ha sido cancelada.",
+							"Compra Cancelada",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				}
+			}
+		});
+		label_83.setBounds(127, 13, 69, 53);
+		btnCancelar.add(label_83);
+
+		JLabel label_84 = new JLabel("Cancelar");
+		label_84.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!comproNucleo()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar una compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
+				// Mostrar mensaje de confirmación
+				int opcion = JOptionPane.showConfirmDialog(
+						null,
+						"¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
+						"Confirmar Cancelación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE
+						);
+
+				// Si el usuario confirma, proceder con la cancelación
+				if (opcion == JOptionPane.YES_OPTION) {
+					// 1. Limpiar la tabla de compras
+					modeloAlmohadillas.getDataVector().clear();
+					modeloAlmohadillas.fireTableDataChanged();
+
+					// 2. Reiniciar el total acumulado
+					textTotal.setText("0.0");
+					textEfectivo.setText("");
+					textCambio.setText("");
+
+					
+					
+					// Opcional: Mostrar un mensaje de confirmación
+					JOptionPane.showMessageDialog(
+							null,
+							"La compra ha sido cancelada.",
+							"Compra Cancelada",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				}
+			}
+		});
+		label_84.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		label_84.setBounds(12, 13, 101, 33);
+		btnCancelar.add(label_84);
+
+		JLabel label_85 = new JLabel("Compra");
+		label_85.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (!comproNucleo()) {
+					JOptionPane.showMessageDialog(null, 
+							"Debe ingresar una compra.", 
+							"Error", JOptionPane.ERROR_MESSAGE);
+					return; // Salir si no hay compras
+				}
+				// Mostrar mensaje de confirmación
+				int opcion = JOptionPane.showConfirmDialog(
+						null,
+						"¿Está seguro de que desea cancelar la compra?\nSe perderán todos los datos ingresados hasta el momento.",
+						"Confirmar Cancelación",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE
+						);
+
+				// Si el usuario confirma, proceder con la cancelación
+				if (opcion == JOptionPane.YES_OPTION) {
+					// 1. Limpiar la tabla de compras
+					modeloAlmohadillas.getDataVector().clear();
+					modeloAlmohadillas.fireTableDataChanged();
+
+					// 2. Reiniciar el total acumulado
+					textTotal.setText("0.0");
+					textEfectivo.setText("");
+					textCambio.setText("");
+
+					
+					
+					// Opcional: Mostrar un mensaje de confirmación
+					JOptionPane.showMessageDialog(
+							null,
+							"La compra ha sido cancelada.",
+							"Compra Cancelada",
+							JOptionPane.INFORMATION_MESSAGE
+							);
+				}
+			}
+		});
+		label_85.setFont(new Font("Tahoma", Font.PLAIN, 27));
+		label_85.setBounds(12, 13, 127, 93);
+		btnCancelar.add(label_85);
+
+		JLabel lblNcleos = new JLabel("N\u00FAcleos");
+		lblNcleos.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblNcleos.setBounds(34, 72, 121, 39);
+		VentaAlmohadillas.add(lblNcleos);
+
+		 final JComboBox <String>comboBoxNucleos = new JComboBox<String>();
+		comboBoxNucleos.setFont(new Font("Tahoma", Font.PLAIN, 20));
+
+		comboBoxNucleos.setBounds(124, 77, 244, 31);
+		NucleosComboBoxModel nucleosComboBoxModel = new NucleosComboBoxModel();
+		comboBoxNucleos.setModel(nucleosComboBoxModel);
+		nucleosComboBoxModel.cargarDatos();
+
+		VentaAlmohadillas.add(comboBoxNucleos);
+
+		JButton button = new JButton("A\u00F1adir a la Compra");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+			        // Validaciones previas
+			        String nucleoSeleccionado = (String) comboBoxNucleos.getSelectedItem();
+			        if (nucleoSeleccionado == null || nucleoSeleccionado.equals("<Seleccione un núcleo>")) {
+			            JOptionPane.showMessageDialog(null, "Debe seleccionar un núcleo familiar válido.", "Error", JOptionPane.ERROR_MESSAGE);
+			            return;
+			        }
+			        
+			        String idNucleo = nucleoSeleccionado.split(" - ")[0];
+			        Logica.NucleoFamiliar nucleo = Farmacia.obtenerInstancia().buscarNucleoPorId(idNucleo);
+			        
+			        if (nucleo.getCompraron()) {
+			            JOptionPane.showMessageDialog(null, "Este núcleo ya realizó una compra.", "Error", JOptionPane.ERROR_MESSAGE);
+			            return;
+			        }
+
+			        int cantidadMujeres = nucleo.getMujeres() != null ? nucleo.getMujeres().size() : 0;
+			        if (cantidadMujeres <= 0) {
+			            JOptionPane.showMessageDialog(null, "El núcleo seleccionado no tiene mujeres registradas.", "Error", JOptionPane.ERROR_MESSAGE);
+			            return;
+			        }
+
+			        // Crear nueva compra
+			        double precioUnitario = 8.5;
+			        Date fechaDeCompra = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+			        
+			        Logica.AlmohadillasSanitarias venta = new Logica.AlmohadillasSanitarias(
+			            precioUnitario,
+			            cantidadMujeres,
+			            fechaDeCompra
+			        );
+			        
+			        modeloAlmohadillas.adicionar(venta);
+			        actualizarTotal(textTotal, modeloAlmohadillas);
+			        nucleo.setCompraron(true);
+			        
+			       
+
+			    } catch (Exception ex) {
+			        ex.printStackTrace();
+			        JOptionPane.showMessageDialog(null, "Error al añadir la compra: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			    }	
+			}
+				});
+
+		button.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		button.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		button.setBounds(30, 124, 224, 51);
+		VentaAlmohadillas.add(button);
 
 		JPanel VentaControlada = new JPanel();
 		pestanas.addTab("New tab", null, VentaControlada, null);
@@ -3104,7 +3633,7 @@ public class PrincipalAdmin extends JFrame
 		lblUsuarios_1.setFont(new Font("Times New Roman", Font.BOLD, 26));
 		lblUsuarios_1.setBounds(12, 0, 205, 43);
 		panel_16.add(lblUsuarios_1);
-				
+
 		// Inicialización del modelo
 		TablaDePacientes modeloTabla = new TablaDePacientes();
 
@@ -3117,7 +3646,9 @@ public class PrincipalAdmin extends JFrame
 		tablaPacientes.setRowHeight(28);
 
 		// Agregar al JScrollPane
+
 		JScrollPane scrollPane_6 = new JScrollPane(tablaPacientes);
+		scrollPane_6 = new JScrollPane(tablaPacientes);
 		scrollPane_6.setBounds(0, 395, 1005, 255);
 		usuarios.add(scrollPane_6);
 	}

@@ -2,7 +2,6 @@ package LogicaUtiles;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Date;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 
@@ -29,7 +28,6 @@ public class Validaciones
 
 	public static boolean esMayusculaLaPrimeraLetra(String texto)
 	{
-		boolean esValido = true;
 		char primLetra = texto.charAt(0);
 		return Character.isUpperCase(primLetra);
 	}
@@ -330,6 +328,7 @@ public class Validaciones
 		{
 			throw new IllegalArgumentException("El CI debe tener 11 dígitos numéricos");
 		}
+
 
 		if(ci == null)
 		{

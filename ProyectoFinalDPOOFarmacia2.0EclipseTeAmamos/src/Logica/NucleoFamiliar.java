@@ -32,10 +32,9 @@ public class NucleoFamiliar
 
 	public void setCompraron(boolean compraron) 
 	{
-		if(compraron == true || compraron == false)
+		
 			this.compraron = compraron;
-		else
-			throw new IllegalArgumentException("El campo: compraron tiene que ser si o no");
+		
 	}
 
 	public String getId() 

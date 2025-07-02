@@ -1,12 +1,16 @@
 package modelos;
 
 import Logica.Medicamento;
+
 import Logica.Farmacia;
 
 import javax.swing.table.DefaultTableModel;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+
+
+
 
 public class MedicamentoTableModel extends ModeloPrincipalTableModel<Medicamento> 
 {
