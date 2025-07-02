@@ -73,6 +73,12 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 		Validaciones.removerMedicamentosControladosRepetidos(); 
 		Validaciones.removerMedicamentosRepetidos() ; 
 		Validaciones.carnetsDeIdentidadRepetido();
+		Validaciones.reajustarNucleosYDirecciones();
+		Validaciones.seRepiteCodDelMed();
+		for(NucleoFamiliar n: Farmacia.obtenerInstancia().getNucleos())
+			System.out.println("Nucleo Familiar id : "+ n.getId());
+		Validaciones.seRepiteCodDelNucleo();
+		Validaciones.seRepiteCodDelMedCon();
 		System.out.println("Total de medicamentos: "+Farmacia.obtenerInstancia().getMedicamentos().size());
 		System.out.println("Total de medicamentos Controlados: "+Farmacia.obtenerInstancia().getMedicamentoControlado().size());
 	}
@@ -2012,7 +2018,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						}
 						return listaRecetas;
 					}
-					
+
 					// Método para obtener la lista de mujeres
 					public List<String> obtenerListaMujeres() {
 						List<String> listaMujeres = new ArrayList<>();
@@ -2023,7 +2029,7 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						}
 						return listaMujeres;
 					}
-					
+
 					public double obtenerPrecioMedicamento(String nombreMedicamento) 
 					{
 						for (Medicamento medicamento : medicamentos) {
@@ -2034,6 +2040,10 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 						throw new RuntimeException("Medicamento no encontrado: " + nombreMedicamento);
 					}
 
+
+
+
+					//=============== Filtros =============================================================================================================
 					public ArrayList<Medicamento> filtroLetrasParaMed()
 					{
 						ArrayList<Medicamento> med = new ArrayList<Medicamento>();
@@ -2083,54 +2093,62 @@ public class Farmacia implements Reportes,Facturar,GestionarStockAlmohadillasSan
 								Double primerValor = m1.getPrecio();
 								Double segundoValor = m2.getPrecio();
 								return primerValor.compareTo(segundoValor);
-								
+
 							}
 								});
 
 						return med;	
 					}
-					
+
 					public ArrayList<Medicamento> desorganizarPorLimites() 
 					{
-					    ArrayList<Medicamento> med = new ArrayList<Medicamento>();
-					    
-					    // Guardo todos los datos en la lista
-					    
+						ArrayList<Medicamento> med = new ArrayList<Medicamento>();
+
+						// Guardo todos los datos en la lista
+
 						for(Medicamento m: medicamentos)
 							med.add(m);
 						for(MedicamentoControlado mc: medicamentoControlado)
 							med.add(mc);
-						
-					    int n = med.size();
-					    
-					    for (int i = 0; i < n / 2; i++) 
-					    {
-					        int j = n - 1 - i;
 
-					        // Se Intercambia la posición de i con la posición j
-					        
-					        Medicamento temp = med.get(i);
-					        med.set(i, med.get(j));
-					        med.set(j, temp);
-					    }
+						int n = med.size();
 
-					    return med;
+						for (int i = 0; i < n / 2; i++) 
+						{
+							int j = n - 1 - i;
+
+							// Se Intercambia la posición de i con la posición j
+
+							Medicamento temp = med.get(i);
+							med.set(i, med.get(j));
+							med.set(j, temp);
+						}
+
+						return med;
 					}
 
-			
-//==========================================================================================================================================
-				    // Método auxiliar para buscar un núcleo familiar por su ID
-				    public NucleoFamiliar buscarNucleoPorId(String idNucleo) 
-				    {
-				        for (NucleoFamiliar nucleo : nucleos) 
-				        {
-				            if (nucleo.getId().equals(idNucleo)) 
-				            {
-				                return nucleo;
-				            }
-				        }
-				        return null;
-				    }
+
+					//==========================================================================================================================================
+					// Método auxiliar para buscar un núcleo familiar por su ID
+					public NucleoFamiliar buscarNucleoPorId(String idNucleo) 
+					{
+						for (NucleoFamiliar nucleo : nucleos) 
+						{
+							if (nucleo.getId().equals(idNucleo)) 
+							{
+								return nucleo;
+							}
+						}
+						return null;
+					}
+					
+					
+					//==========================================================================================================================================
+					
+					
+
+
+
 }
 
 

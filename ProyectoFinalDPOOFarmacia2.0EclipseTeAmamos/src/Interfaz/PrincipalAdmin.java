@@ -1007,7 +1007,7 @@ public class PrincipalAdmin extends JFrame
 		JPanel panel_8 = new JPanel();
 		panel_8.setBackground(Color.WHITE);
 		panel_8.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 128, 0)), new LineBorder(new Color(0, 0, 0))));
-		panel_8.setBounds(12, 77, 184, 70);
+		panel_8.setBounds(12, 77, 184, 87);
 		medicamentos.add(panel_8);
 		panel_8.setLayout(null);
 
@@ -1027,14 +1027,14 @@ public class PrincipalAdmin extends JFrame
 		
 		txtpnOrdenarNombresComunes.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnOrdenarNombresComunes.setText("Ordenar nombres comunes");
-		txtpnOrdenarNombresComunes.setBounds(12, 13, 152, 44);
+		txtpnOrdenarNombresComunes.setBounds(15, 16, 152, 55);
 		panel_8.add(txtpnOrdenarNombresComunes);
 
 			
 		JPanel panel_9 = new JPanel(); 
 		panel_9.setBackground(Color.WHITE);
 		panel_9.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 128, 0)), new LineBorder(new Color(0, 0, 0))));
-		panel_9.setBounds(12, 153, 184, 70);
+		panel_9.setBounds(12, 175, 184, 87);
 		panel_9.setLayout(null);
 		medicamentos.add(panel_9);
 		
@@ -1052,33 +1052,19 @@ public class PrincipalAdmin extends JFrame
 				medicamentoTableModel.actualizar(orden);
 			}
 		});
-		txtpnOrdenarPreciosde.setBounds(12, 13, 160, 44);
+		txtpnOrdenarPreciosde.setBounds(12, 13, 160, 68);
 		panel_9.add(txtpnOrdenarPreciosde);
-
-		JPanel panel_10 = new JPanel();
-		panel_10.setLayout(null);
-		panel_10.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 128, 0)), new LineBorder(new Color(0, 0, 0))));
-		panel_10.setBackground(Color.WHITE);
-		panel_10.setBounds(12, 228, 184, 70);
-		medicamentos.add(panel_10);
-
-		JTextPane txtpnOrdenarPorPrximos = new JTextPane();
-		txtpnOrdenarPorPrximos.setEditable(false);
-		txtpnOrdenarPorPrximos.setText("Ordenar por pr\u00F3ximos a vencerse");
-		txtpnOrdenarPorPrximos.setFont(new Font("Tahoma", Font.PLAIN, 17));
-		txtpnOrdenarPorPrximos.setBounds(12, 13, 160, 44);
-		panel_10.add(txtpnOrdenarPorPrximos);
 
 		JPanel panel_11 = new JPanel();
 		panel_11.setLayout(null);
 		panel_11.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 128, 0)), new LineBorder(new Color(0, 0, 0))));
 		panel_11.setBackground(Color.WHITE);
-		panel_11.setBounds(12, 303, 184, 70);
+		panel_11.setBounds(12, 278, 184, 87);
 		medicamentos.add(panel_11);
 
 		JTextPane txtpnSinOrdenar = new JTextPane();
 		txtpnSinOrdenar.setEditable(false);
-		txtpnSinOrdenar.setText("Sin ordenar");
+		txtpnSinOrdenar.setText("     Sin  ordenar");
 		txtpnSinOrdenar.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		txtpnSinOrdenar.addMouseListener(new MouseAdapter() 
 		{
@@ -1090,7 +1076,7 @@ public class PrincipalAdmin extends JFrame
 				medicamentoTableModel.actualizar(orden);
 			}
 		});
-		txtpnSinOrdenar.setBounds(36, 23, 115, 34);
+		txtpnSinOrdenar.setBounds(15, 16, 154, 55);
 		panel_11.add(txtpnSinOrdenar);
 
 		JLabel label_8 = new JLabel("|");

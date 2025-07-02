@@ -65,7 +65,7 @@ public class Informacion extends JDialog {
 			}
 		});
 		panel.setBorder(new CompoundBorder(new MatteBorder(2, 2, 2, 2, (Color) new Color(0, 0, 0)), new LineBorder(new Color(152, 251, 152), 2)));
-		panel.setBounds(146, 258, 174, 59);
+		panel.setBounds(135, 260, 174, 59);
 		contentPanel.add(panel);
 		panel.setLayout(null);
 		
